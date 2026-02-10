@@ -1,5 +1,5 @@
 # Development
-# docker buildx build -t wally:latest --compress --load .
+# docker build -t wally .
 # docker run --rm -v $(pwd)/api:/wally/api -v $(pwd)/web:/wally/web -e DEMO=true -p 80:80 wally
 
 # ==============================
@@ -40,7 +40,7 @@ COPY --from=builder /install /usr/local
 
 # Copy app code
 COPY api /wally/api
-COPY web /wally/web
+COPY --chown=nginx:nginx web /wally/web
 RUN mkdir /wally/data
 
 # Copy Nginx config

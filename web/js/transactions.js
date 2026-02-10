@@ -157,6 +157,8 @@ async function renderTags() {
 }
 
 async function renderNameAutocomplete() {
+  const nameCategoryMap = new Map();
+
   nameInput = new TomSelect('#nameInput', {
     create: true,
     addPrecedence: true,
@@ -169,6 +171,19 @@ async function renderNameAutocomplete() {
       if (!str || str.length === 0) {
         this.clearOptions();
         this.close();
+      }
+    },
+    onItemAdd: function(value) {
+      // Only auto-fill category if the selected name came from the API suggestions
+      if (nameCategoryMap.has(value)) {
+        const category = nameCategoryMap.get(value);
+        if (category) {
+          const categorySelect = document.getElementById('categorySelect');
+          const categoryOptions = Array.from(categorySelect.options).map(o => o.value);
+          if (categoryOptions.includes(category)) {
+            categorySelect.value = category;
+          }
+        }
       }
     },
     load: async function(query, callback) {
@@ -189,8 +204,9 @@ async function renderNameAutocomplete() {
           return callback();
         }
         
-        const names = await response.json();
-        const options = names.map(name => ({ value: name, text: name }));
+        const results = await response.json();
+        results.forEach(r => nameCategoryMap.set(r.name, r.category));
+        const options = results.map(r => ({ value: r.name, text: r.name }));
         callback(options);
       } catch (error) {
         console.error('Error loading transaction names:', error);
@@ -370,81 +386,36 @@ async function initGrid() {
         width: 100,
         cellRenderer: (params) => {
           const container = document.createElement("div");
-          container.style.display = "flex";
-          container.style.alignItems = "center";
+          container.className = "actions-container";
 
           // Edit button
-          const editButton = document.createElement("span");
-          editButton.className = "action-button-mobile";
-          editButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" style="display: inline-block; vertical-align: middle;">
-          <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/>
-          </svg>
-          <span class="action-button-text" style="margin-left: 6px; font-size: 14px;">${i18n.t('common.edit')}</span>
-          `;
-          editButton.style.display = "flex";
-          editButton.style.justifyContent = "center";
-          editButton.style.alignItems = "center";
-          editButton.style.height = "32px";
-          editButton.style.paddingLeft = "8px";
-          editButton.style.paddingRight = "10px";
-          editButton.style.borderRadius = "6px";
-          editButton.style.cursor = "pointer";
-          editButton.style.marginRight = "8px";
-          editButton.style.color = "#3d8bfd";
-          editButton.style.transition = "all 0.2s ease";
-          editButton.style.backgroundColor = "transparent";
-          editButton.style.lineHeight = "0";
+          const editButton = document.createElement("button");
+          editButton.className = "grid-action-btn grid-btn-edit";
+          editButton.type = "button";
           editButton.title = i18n.t('common.edit');
-
-          editButton.addEventListener("mouseenter", () => {
-            editButton.style.color = "#0d6efd";
-            editButton.style.backgroundColor = "rgba(13, 110, 253, 0.15)";
-          });
-          editButton.addEventListener("mouseleave", () => {
-            editButton.style.color = "#3d8bfd";
-            editButton.style.backgroundColor = "transparent";
-          });
+          editButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14" fill="currentColor">
+              <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/>
+            </svg>
+          `;
           editButton.addEventListener("click", () => {
             selectedRow = params.data;
-            editTransaction()
+            editTransaction();
           });
 
           // Delete button
-          const deleteButton = document.createElement("span");
-          deleteButton.className = "action-button-mobile";
-          deleteButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="15" fill="currentColor" style="display: inline-block; vertical-align: middle;">
-          <path d="M136.7 5.9C141.1-7.2 153.3-16 167.1-16l113.9 0c13.8 0 26 8.8 30.4 21.9L320 32 416 32c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 8.7-26.1zM32 144l384 0 0 304c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-304zm88 64c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24zm104 0c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24zm104 0c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24z"/>
-          </svg>
-          <span class="action-button-text" style="margin-left: 6px; font-size: 14px;">${i18n.t('common.delete')}</span>
-          `;
-          deleteButton.style.display = "flex";
-          deleteButton.style.justifyContent = "center";
-          deleteButton.style.alignItems = "center";
-          deleteButton.style.height = "32px";
-          deleteButton.style.paddingLeft = "8px";
-          deleteButton.style.paddingRight = "10px";
-          deleteButton.style.borderRadius = "6px";
-          deleteButton.style.cursor = "pointer";
-          deleteButton.style.marginLeft = "8px";
-          deleteButton.style.color = "#e35d6a";
-          deleteButton.style.transition = "all 0.2s ease";
-          deleteButton.style.backgroundColor = "transparent";
-          deleteButton.style.lineHeight = "0";
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "grid-action-btn grid-btn-delete";
+          deleteButton.type = "button";
           deleteButton.title = i18n.t('common.delete');
-
-          deleteButton.addEventListener("mouseenter", () => {
-            deleteButton.style.color = "#dc3545";
-            deleteButton.style.backgroundColor = "rgba(220, 53, 69, 0.15)";
-          });
-          deleteButton.addEventListener("mouseleave", () => {
-            deleteButton.style.color = "#e35d6a";
-            deleteButton.style.backgroundColor = "transparent";
-          });
+          deleteButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="14" height="14" fill="currentColor">
+              <path d="M136.7 5.9C141.1-7.2 153.3-16 167.1-16l113.9 0c13.8 0 26 8.8 30.4 21.9L320 32 416 32c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 8.7-26.1zM32 144l384 0 0 304c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-304zm88 64c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24zm104 0c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24zm104 0c-13.3 0-24 10.7-24 24l0 192c0 13.3 10.7 24 24 24s24-10.7 24-24l0-192c0-13.3-10.7-24-24-24z"/>
+            </svg>
+          `;
           deleteButton.addEventListener("click", () => {
             selectedRow = params.data;
-            deleteTransaction()
+            deleteTransaction();
           });
 
           container.appendChild(editButton);
@@ -914,8 +885,8 @@ function deleteSelectedTransactions() {
   const selectedRows = gridApi.getSelectedRows();
   const count = selectedRows.length;
 
-  document.getElementById('deleteMultipleCount').textContent = count;
-  document.getElementById('deleteMultiplePlural').textContent = count === 1 ? '' : 's';
+  document.getElementById('deleteMultipleMessage').innerHTML =
+    i18n.t('transactions.delete_multiple_confirm').replace('{count}', `<strong>${count}</strong>`);
 
   const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('transactionModalDeleteMultiple'));
   modal.show();

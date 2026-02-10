@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "この取引を削除してもよろしいですか？",
     "delete_multiple_title": "取引を削除",
-    "delete_multiple_confirm": "選択した取引を削除してもよろしいですか？",
+    "delete_multiple_confirm": "選択した{count}件の取引を削除してもよろしいですか？",
     "recurring_label": "定期的",
     "start_date_label": "開始日",
     "end_date_label": "終了日",
@@ -131,7 +131,8 @@
       "edit_title": "通貨を編集",
       "edit_tooltip": "編集",
       "delete_tooltip": "削除",
-      "cannot_delete": "選択した通貨は削除できません"
+      "cannot_delete": "選択した通貨は削除できません",
+      "active": "有効"
     },
     "messages": {
       "category_updated": "カテゴリーを更新しました。",

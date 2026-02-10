@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "确定要删除此交易吗？",
     "delete_multiple_title": "删除交易",
-    "delete_multiple_confirm": "确定要删除选定的交易吗？",
+    "delete_multiple_confirm": "确定要删除选定的{count}笔交易吗？",
     "recurring_label": "重复",
     "start_date_label": "开始日期",
     "end_date_label": "结束日期",
@@ -131,7 +131,8 @@
       "edit_title": "编辑货币",
       "edit_tooltip": "编辑",
       "delete_tooltip": "删除",
-      "cannot_delete": "无法删除所选货币"
+      "cannot_delete": "无法删除所选货币",
+      "active": "使用中"
     },
     "messages": {
       "category_updated": "类别更新成功。",

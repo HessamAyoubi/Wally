@@ -27,17 +27,17 @@ def get_transaction_by_id(
     transaction = db.get(Transaction, transaction_id)
     return [transaction] if transaction else []
 
-@router.get("/transactions/names/search", response_model=list[str])
+@router.get("/transactions/names/search")
 def search_transaction_names(
     db: Annotated[Session, Depends(get_session)],
     q: str
 ):
-    """Search for unique transaction names containing the query string (last year only, max 10 results)"""
+    """Search for unique transaction names containing the query string (last year only, max 10 results). Returns name and most recently used category."""
     # Get date from one year ago
     today = date.today()
     one_year_ago = today - relativedelta(years=1)
     
-    # Search for names containing the query (case-insensitive) from last year
+    # Search for distinct names containing the query (case-insensitive) from last year
     stmt = (
         select(Transaction.name)
         .distinct()
@@ -46,8 +46,20 @@ def search_transaction_names(
         .order_by(Transaction.name)
         .limit(10)
     )
-    
-    results = db.exec(stmt).all()
+    names = db.exec(stmt).all()
+
+    # For each name, find the most recently used category
+    results = []
+    for name in names:
+        cat_stmt = (
+            select(Transaction.category)
+            .where(Transaction.name == name)
+            .order_by(desc(Transaction.created_date))
+            .limit(1)
+        )
+        category = db.exec(cat_stmt).first()
+        results.append({"name": name, "category": category or ""})
+
     return results
 
 @router.get("/transactions/date/{year}-{month}", response_model=list[TransactionPublic])

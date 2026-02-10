@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "هل أنت متأكد من حذف هذه المعاملة؟",
     "delete_multiple_title": "حذف معاملات",
-    "delete_multiple_confirm": "هل أنت متأكد من حذف المعاملات المحددة؟",
+    "delete_multiple_confirm": "هل أنت متأكد من حذف {count} معاملة محددة؟",
     "recurring_label": "متكررة",
     "start_date_label": "تاريخ البداية",
     "end_date_label": "تاريخ النهاية",
@@ -131,7 +131,8 @@
       "edit_title": "تعديل العملة",
       "edit_tooltip": "تعديل",
       "delete_tooltip": "حذف",
-      "cannot_delete": "لا يمكن حذف العملة المحددة"
+      "cannot_delete": "لا يمكن حذف العملة المحددة",
+      "active": "نشط"
     },
     "messages": {
       "category_updated": "تم تحديث الفئة بنجاح.",

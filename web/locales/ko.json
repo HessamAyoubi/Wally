@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "이 거래를 삭제하시겠습니까?",
     "delete_multiple_title": "거래 삭제",
-    "delete_multiple_confirm": "선택한 거래를 삭제하시겠습니까?",
+    "delete_multiple_confirm": "선택한 {count}개의 거래를 삭제하시겠습니까?",
     "recurring_label": "반복",
     "start_date_label": "시작 날짜",
     "end_date_label": "종료 날짜",
@@ -131,7 +131,8 @@
       "edit_title": "통화 편집",
       "edit_tooltip": "편집",
       "delete_tooltip": "삭제",
-      "cannot_delete": "선택한 통화를 삭제할 수 없습니다"
+      "cannot_delete": "선택한 통화를 삭제할 수 없습니다",
+      "active": "활성"
     },
     "messages": {
       "category_updated": "카테고리가 성공적으로 업데이트되었습니다.",

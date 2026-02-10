@@ -51,6 +51,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Tem certeza de que deseja eliminar esta transação?",
     "delete_multiple_title": "Excluir transações",
+    "delete_multiple_confirm": "Tem certeza de que deseja excluir as {count} transações selecionadas?",
     "recurring_label": "Recorrente",
     "start_date_label": "Data de Início",
     "end_date_label": "Data de Fim",
@@ -126,7 +127,8 @@
       "edit_title": "Editar Moeda",
       "edit_tooltip": "Editar",
       "delete_tooltip": "Eliminar",
-      "cannot_delete": "Não é possível eliminar a moeda selecionada"
+      "cannot_delete": "Não é possível eliminar a moeda selecionada",
+      "active": "Ativa"
     },
     "messages": {
       "category_updated": "Categoria atualizada com sucesso.",

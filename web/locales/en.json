@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Are you sure you want to delete this transaction?",
     "delete_multiple_title": "Delete Transactions",
-    "delete_multiple_confirm": "Are you sure you want to delete the selected transactions?",
+    "delete_multiple_confirm": "Are you sure you want to delete the selected {count} transactions?",
     "recurring_label": "Recurring",
     "start_date_label": "Start Date",
     "end_date_label": "End Date",
@@ -131,7 +131,8 @@
       "edit_title": "Edit Currency",
       "edit_tooltip": "Edit",
       "delete_tooltip": "Delete",
-      "cannot_delete": "Cannot delete selected currency"
+      "cannot_delete": "Cannot delete selected currency",
+      "active": "Active"
     },
     "messages": {
       "category_updated": "Category updated successfully.",

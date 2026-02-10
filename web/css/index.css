@@ -1,6 +1,6 @@
 body {
   opacity: 0;
-  transition: opacity 0.1s ease-in;
+  transition: opacity 0.2s ease-in;
 }
 body.i18n-loaded {
   opacity: 1;
@@ -10,6 +10,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 html {
@@ -17,19 +18,33 @@ html {
 }
 
 :root[data-bs-theme="light"] {
-  --header-bg: #f8f8f8;
-  --pill-bg: #f4f4f7;
-  --pill-color: #000;
+  --header-bg: #ffffff;
+  --pill-bg: #f0f2f5;
+  --pill-color: #1a1a2e;
   --amount-color: var(--bs-gray-800);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --nav-active-color: #0d6efd;
+  --focus-ring: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 :root[data-bs-theme="dark"] {
   --header-bg: #262a2e;
   --pill-bg: #282c30;
   --pill-color: #FFF;
   --amount-color: var(--bs-gray-500);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --nav-active-color: #ffffff;
+  --focus-ring: 0 0 0 3px rgba(255, 255, 255, 0.15);
 }
 header {
   background-color: var(--header-bg);
+  border-bottom: 1px solid var(--bs-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 input, .option {
@@ -39,6 +54,7 @@ input, .option {
 .ts-control .item {
   background-color: var(--pill-bg)!important;
   color: var(--pill-color)!important;
+  border-radius: 6px !important;
 }
 
 .ts-control .item .remove {
@@ -51,6 +67,16 @@ input, .option {
 
 .form-check-input {
   background-color: white;
+}
+
+/* Enhanced form controls */
+.form-control, .form-select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: var(--focus-ring);
 }
 
 .custom-range-inputs {
@@ -89,35 +115,40 @@ input, .option {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  user-select: none;
 }
 
 .current-month {
-  font-size: 1.6rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 700;
   min-width: 200px;
   text-align: center;
+  letter-spacing: -0.01em;
 }
 
 #prevMonth, #nextMonth {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 40px;
-  border-radius: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   cursor: pointer;
   color: var(--pill-color);
   position: relative;
-  /* No border or background */
-  border: 2px solid transparent;
+  border: none;
   background-color: transparent;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 #prevMonth:hover, #nextMonth:hover {
-  background-color: #cce4ff;
-  border-color: #4a90e2;
-  color: #004aad;
+  background-color: var(--pill-bg);
+  color: var(--nav-active-color);
+  transform: scale(1.05);
+}
+
+#prevMonth:active, #nextMonth:active {
+  transform: scale(0.95);
 }
 
 main.container {
@@ -131,9 +162,12 @@ main.container {
   gap: 1rem;
   margin-bottom: 0rem;
   background-color: var(--header-bg);
-  border-radius: 8px;
+  border-radius: 16px;
   min-height: 450px;
   align-items: center;
+  border: 1px solid var(--bs-border-color);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
 }
 
 .chart-box {
@@ -205,6 +239,125 @@ main.container {
   text-align: center;
   font-style: italic;
   padding: 2rem;
+  color: var(--bs-secondary-color);
+}
+
+/* Enhanced Navbar */
+.navbar {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.navbar-brand span {
+  letter-spacing: -0.02em;
+}
+
+.navbar-nav .nav-link {
+  position: relative;
+  padding-bottom: 0.4rem;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2.5px;
+  background-color: var(--nav-active-color);
+  border-radius: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav .nav-link.active::after {
+    display: none;
+  }
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--nav-active-color) !important;
+}
+
+/* Enhanced buttons */
+.btn {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #198754 0%, #20a068 100%);
+  border: none;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #157347 0%, #198754 100%);
+  box-shadow: 0 3px 8px rgba(25, 135, 84, 0.3);
+}
+
+/* Enhanced Modals */
+.modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: 1.1rem 1.25rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--bs-border-color);
+  padding: 1rem 1.25rem;
+}
+
+.modal-body {
+  padding: 1.25rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.dialog-warning-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--bs-danger);
+}
+
+.dialog-warning-icon.warning {
+  background-color: rgba(255, 193, 7, 0.12);
+  color: var(--bs-warning);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bs-secondary-bg);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-secondary-color);
 }
 
 /* Cashflow styles */
@@ -222,7 +375,7 @@ main.container {
   position: relative;
   flex: 1;
   padding: 1rem 1rem;
-  border-radius: 8px;
+  border-radius: 14px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -230,7 +383,8 @@ main.container {
   background: var(--header-bg);
   border: 1px solid var(--bs-border-color);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .cashflow-item::before {
@@ -244,8 +398,8 @@ main.container {
 }
 
 .cashflow-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .cashflow-item:hover::before {

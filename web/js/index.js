@@ -745,6 +745,8 @@ async function renderTags() {
 }
 
 async function renderNameAutocomplete() {
+  const nameCategoryMap = new Map();
+
   nameInput = new TomSelect('#nameInput', {
     create: true,
     addPrecedence: true,
@@ -757,6 +759,19 @@ async function renderNameAutocomplete() {
       if (!str || str.length === 0) {
         this.clearOptions();
         this.close();
+      }
+    },
+    onItemAdd: function(value) {
+      // Only auto-fill category if the selected name came from the API suggestions
+      if (nameCategoryMap.has(value)) {
+        const category = nameCategoryMap.get(value);
+        if (category) {
+          const categorySelect = document.getElementById('categorySelect');
+          const categoryOptions = Array.from(categorySelect.options).map(o => o.value);
+          if (categoryOptions.includes(category)) {
+            categorySelect.value = category;
+          }
+        }
       }
     },
     load: async function(query, callback) {
@@ -777,8 +792,9 @@ async function renderNameAutocomplete() {
           return callback();
         }
         
-        const names = await response.json();
-        const options = names.map(name => ({ value: name, text: name }));
+        const results = await response.json();
+        results.forEach(r => nameCategoryMap.set(r.name, r.category));
+        const options = results.map(r => ({ value: r.name, text: r.name }));
         callback(options);
       } catch (error) {
         console.error('Error loading transaction names:', error);

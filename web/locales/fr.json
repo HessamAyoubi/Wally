@@ -52,7 +52,7 @@
     "amount_label": "Montant",
     "amount_placeholder": "0.00",
     "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette transaction?",    "delete_multiple_title": "Supprimer les transactions",
-    "delete_multiple_confirm": "Êtes-vous sûr de vouloir supprimer les transactions sélectionnées?",    "recurring_label": "Récurrente",
+    "delete_multiple_confirm": "Êtes-vous sûr de vouloir supprimer les {count} transactions sélectionnées?",    "recurring_label": "Récurrente",
     "start_date_label": "Date de Début",
     "end_date_label": "Date de Fin",
     "frequency_label": "Fréquence",
@@ -127,7 +127,8 @@
       "edit_title": "Éditer la Monnaie",
       "edit_tooltip": "Éditer",
       "delete_tooltip": "Supprimer",
-      "cannot_delete": "Impossible de supprimer la monnaie sélectionnée"
+      "cannot_delete": "Impossible de supprimer la monnaie sélectionnée",
+      "active": "Active"
     },
     "messages": {
       "category_updated": "Catégorie mise à jour avec succès.",

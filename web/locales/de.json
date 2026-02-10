@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Möchten Sie diese Transaktion wirklich löschen?",
     "delete_multiple_title": "Transaktionen löschen",
-    "delete_multiple_confirm": "Möchten Sie die ausgewählten Transaktionen wirklich löschen?",
+    "delete_multiple_confirm": "Möchten Sie die ausgewählten {count} Transaktionen wirklich löschen?",
     "recurring_label": "Wiederkehrend",
     "start_date_label": "Startdatum",
     "end_date_label": "Enddatum",
@@ -131,7 +131,8 @@
       "edit_title": "Währung bearbeiten",
       "edit_tooltip": "Bearbeiten",
       "delete_tooltip": "Löschen",
-      "cannot_delete": "Ausgewählte Währung kann nicht gelöscht werden"
+      "cannot_delete": "Ausgewählte Währung kann nicht gelöscht werden",
+      "active": "Aktiv"
     },
     "messages": {
       "category_updated": "Kategorie erfolgreich aktualisiert.",

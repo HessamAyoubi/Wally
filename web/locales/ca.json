@@ -54,6 +54,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Segur que vols eliminar aquesta transacció?",
     "delete_multiple_title": "Eliminar transaccions",
+    "delete_multiple_confirm": "Esteu segur que voleu eliminar les {count} transaccions seleccionades?",
     "recurring_label": "Recurrent",
     "start_date_label": "Data d'Inici",
     "end_date_label": "Data de Fi",
@@ -130,7 +131,8 @@
       "edit_title": "Editar Moneda",
       "edit_tooltip": "Editar",
       "delete_tooltip": "Eliminar",
-      "cannot_delete": "No es pot eliminar la moneda seleccionada"
+      "cannot_delete": "No es pot eliminar la moneda seleccionada",
+      "active": "Activa"
     },
     "messages": {
       "category_updated": "Categoria actualitzada correctament.",

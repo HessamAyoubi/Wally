@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Sei sicuro di voler eliminare questa transazione?",
     "delete_multiple_title": "Elimina Transazioni",
-    "delete_multiple_confirm": "Sei sicuro di voler eliminare le transazioni selezionate?",
+    "delete_multiple_confirm": "Sei sicuro di voler eliminare le {count} transazioni selezionate?",
     "recurring_label": "Ricorrente",
     "start_date_label": "Data di Inizio",
     "end_date_label": "Data di Fine",
@@ -131,7 +131,8 @@
       "edit_title": "Modifica Valuta",
       "edit_tooltip": "Modifica",
       "delete_tooltip": "Elimina",
-      "cannot_delete": "Impossibile eliminare la valuta selezionata"
+      "cannot_delete": "Impossibile eliminare la valuta selezionata",
+      "active": "Attiva"
     },
     "messages": {
       "category_updated": "Categoria aggiornata con successo.",

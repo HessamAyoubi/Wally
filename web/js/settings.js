@@ -736,103 +736,60 @@ function filterCurrencyList() {
   tbody.innerHTML = '';
 
   const filtered = allCurrencies.currencies.filter(c =>
-  c.name.toLowerCase().includes(search) || c.symbol.toLowerCase().includes(search)
+    c.name.toLowerCase().includes(search) || c.symbol.toLowerCase().includes(search)
   );
 
   filtered.forEach(c => {
     const row = document.createElement('tr');
     const isSelected = c.name === allCurrencies.selected;
-    row.style.transition = 'background-color 0.15s ease';
-    if (isSelected) {
-      row.style.backgroundColor = 'var(--bs-primary-bg-subtle)';
-    }
+    row.className = 'currency-row' + (isSelected ? ' currency-row-active' : '');
 
+    // Code cell
     const nameCell = document.createElement('td');
-    nameCell.style.padding = '12px 16px';
-    nameCell.style.fontWeight = '500';
+    nameCell.className = 'currency-cell-name';
     if (isSelected) {
       nameCell.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span>${c.name}</span>
-          <span style="display: inline-block; padding: 2px 8px; background: var(--bs-primary); color: white; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">Active</span>
-        </div>
+        <span class="currency-code">${c.name}</span>
+        <span class="currency-active-badge">${i18n.t('settings.currency.active') || 'Active'}</span>
       `;
     } else {
-      nameCell.textContent = c.name;
+      nameCell.innerHTML = `<span class="currency-code">${c.name}</span>`;
     }
 
+    // Symbol cell
     const symbolCell = document.createElement('td');
-    symbolCell.style.padding = '12px 16px';
-    symbolCell.style.color = 'var(--bs-secondary-color)';
-    symbolCell.textContent = c.symbol;
+    symbolCell.className = 'currency-cell-symbol';
+    symbolCell.innerHTML = `<span class="currency-symbol-display">${c.symbol}</span>`;
 
+    // Actions cell
     const actionsCell = document.createElement('td');
-    actionsCell.style.padding = '8px 16px';
-    actionsCell.style.textAlign = 'center';
-    actionsCell.style.whiteSpace = 'nowrap';
+    actionsCell.className = 'currency-cell-actions';
 
     // Edit button
-    const editButton = document.createElement('span');
-    editButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" style="display: inline-block; vertical-align: middle;">
-    <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/>
-    </svg>
-    `;
-    editButton.style.display = "inline-flex";
-    editButton.style.justifyContent = "center";
-    editButton.style.alignItems = "center";
-    editButton.style.height = "36px";
-    editButton.style.width = "36px";
-    editButton.style.borderRadius = "6px";
-    editButton.style.cursor = "pointer";
-    editButton.style.color = "var(--bs-primary)";
-    editButton.style.transition = "all 0.15s ease";
-    editButton.style.backgroundColor = "transparent";
+    const editButton = document.createElement('button');
+    editButton.type = 'button';
+    editButton.className = 'currency-action-btn currency-btn-edit';
     editButton.title = i18n.t('settings.currency.edit_tooltip');
-    editButton.addEventListener("mouseenter", () => {
-      editButton.style.backgroundColor = "var(--bs-primary-bg-subtle)";
-      editButton.style.transform = "scale(1.05)";
-    });
-    editButton.addEventListener("mouseleave", () => {
-      editButton.style.backgroundColor = "transparent";
-      editButton.style.transform = "scale(1)";
-    });
-    editButton.addEventListener("click", () => {
-      editCurrency(c.name, c.symbol);
-    });
+    editButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14" fill="currentColor">
+        <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/>
+      </svg>
+    `;
+    editButton.addEventListener('click', () => editCurrency(c.name, c.symbol));
 
     // Delete button
-    const deleteButton = document.createElement('span');
-    deleteButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="15" fill="currentColor" style="display: inline-block; vertical-align: middle;">
-    <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-    </svg>
-    `;
-    deleteButton.style.display = "inline-flex";
-    deleteButton.style.justifyContent = "center";
-    deleteButton.style.alignItems = "center";
-    deleteButton.style.height = "36px";
-    deleteButton.style.width = "36px";
-    deleteButton.style.borderRadius = "6px";
-    deleteButton.style.cursor = isSelected ? "not-allowed" : "pointer";
-    deleteButton.style.color = isSelected ? "var(--bs-secondary-color)" : "var(--bs-danger)";
-    deleteButton.style.transition = "all 0.15s ease";
-    deleteButton.style.backgroundColor = "transparent";
-    deleteButton.style.opacity = isSelected ? "0.4" : "1";
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.className = 'currency-action-btn currency-btn-delete' + (isSelected ? ' disabled' : '');
     deleteButton.title = isSelected ? i18n.t('settings.currency.cannot_delete') : i18n.t('settings.currency.delete_tooltip');
-
+    deleteButton.disabled = isSelected;
+    deleteButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="14" height="14" fill="currentColor">
+        <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+      </svg>
+    `;
     if (!isSelected) {
-      deleteButton.addEventListener("mouseenter", () => {
-        deleteButton.style.backgroundColor = "var(--bs-danger-bg-subtle)";
-        deleteButton.style.transform = "scale(1.05)";
-      });
-      deleteButton.addEventListener("mouseleave", () => {
-        deleteButton.style.backgroundColor = "transparent";
-        deleteButton.style.transform = "scale(1)";
-      });
-      deleteButton.addEventListener("click", () => {
-        deleteCurrency(c.name);
-      });
+      deleteButton.addEventListener('click', () => deleteCurrency(c.name));
     }
 
     actionsCell.appendChild(editButton);
@@ -846,7 +803,14 @@ function filterCurrencyList() {
   });
 
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">No currencies found</td></tr>';
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="3" class="text-center text-muted py-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.4; margin-bottom: 6px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div style="font-size: 0.85rem;">${i18n.t('settings.currency.no_results') || 'No currencies found'}</div>
+        </td>
+      </tr>
+    `;
   }
 }
 

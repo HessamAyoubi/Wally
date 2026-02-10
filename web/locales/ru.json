@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "Вы уверены, что хотите удалить эту транзакцию?",
     "delete_multiple_title": "Удалить транзакции",
-    "delete_multiple_confirm": "Вы уверены, что хотите удалить выбранные транзакции?",
+    "delete_multiple_confirm": "Вы уверены, что хотите удалить выбранные {count} транзакции?",
     "recurring_label": "Повторяющаяся",
     "start_date_label": "Дата начала",
     "end_date_label": "Дата окончания",
@@ -131,7 +131,8 @@
       "edit_title": "Редактировать валюту",
       "edit_tooltip": "Редактировать",
       "delete_tooltip": "Удалить",
-      "cannot_delete": "Невозможно удалить выбранную валюту"
+      "cannot_delete": "Невозможно удалить выбранную валюту",
+      "active": "Активная"
     },
     "messages": {
       "category_updated": "Категория успешно обновлена.",

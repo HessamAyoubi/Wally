@@ -1,6 +1,6 @@
 body {
   opacity: 0;
-  transition: opacity 0.1s ease-in;
+  transition: opacity 0.2s ease-in;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 body.i18n-loaded {
@@ -8,17 +8,31 @@ body.i18n-loaded {
 }
 
 :root[data-bs-theme="light"] {
-  --header-bg: #f8f8f8;
-  --pill-bg: #f4f4f7;
-  --pill-color: #000;
+  --header-bg: #ffffff;
+  --pill-bg: #f0f2f5;
+  --pill-color: #1a1a2e;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --nav-active-color: #0d6efd;
+  --focus-ring: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 :root[data-bs-theme="dark"] {
   --header-bg: #262a2e;
   --pill-bg: #282c30;
   --pill-color: #FFF;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --nav-active-color: #ffffff;
+  --focus-ring: 0 0 0 3px rgba(255, 255, 255, 0.15);
 }
 header {
   background-color: var(--header-bg);
+  border-bottom: 1px solid var(--bs-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 input, .option {
   color: var(--pill-color)!important;
@@ -27,6 +41,7 @@ input, .option {
 .ts-control .item {
   background-color: var(--pill-bg)!important;
   color: var(--pill-color)!important;
+  border-radius: 6px !important;
 }
 
 .ts-control .item .remove {
@@ -36,6 +51,13 @@ input, .option {
 .badge {
   background-color: var(--pill-bg);
   color: var(--pill-color);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: scale(1.03);
 }
 
 .text-green {
@@ -50,6 +72,7 @@ input, .option {
 .toast {
   min-width: 250px;
   max-width: 350px;
+  border-radius: 12px;
 }
 
 /* Wider toasts for error messages */
@@ -63,4 +86,335 @@ input, .option {
 .toast-body {
   word-wrap: break-word;
   white-space: normal;
+}
+
+/* Enhanced Navbar */
+.navbar {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.navbar-brand span {
+  letter-spacing: -0.02em;
+}
+
+.navbar-nav .nav-link {
+  position: relative;
+  padding-bottom: 0.4rem;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2.5px;
+  background-color: var(--nav-active-color);
+  border-radius: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav .nav-link.active::after {
+    display: none;
+  }
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--nav-active-color) !important;
+}
+
+/* Enhanced Cards */
+.card {
+  border-radius: 14px;
+  border: 1px solid var(--bs-border-color);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
+  overflow: visible;
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  background-color: transparent;
+  padding: 0.9rem 1.1rem;
+}
+
+/* Enhanced form controls */
+.form-control, .form-select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: var(--focus-ring);
+}
+
+/* Enhanced buttons */
+.btn {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Enhanced Modals */
+.modal .modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+/* Fix input-group inside cards (category/tag forms reuse modal-content class) */
+.card .modal-content {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--bs-border-color);
+  padding: 1.1rem 1.25rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--bs-border-color);
+  padding: 1rem 1.25rem;
+}
+
+.modal-body {
+  padding: 1.25rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.dialog-warning-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--bs-danger);
+}
+
+.dialog-warning-icon.warning {
+  background-color: rgba(255, 193, 7, 0.12);
+  color: var(--bs-warning);
+}
+
+/* Currency Modal */
+.currency-search-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.currency-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--bs-secondary-color);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.currency-search-input {
+  padding-left: 36px !important;
+  font-size: 0.9rem;
+  border-radius: 10px !important;
+  height: 42px;
+}
+
+.currency-list-container {
+  max-height: 370px;
+  overflow-y: auto;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.currency-table {
+  font-size: 0.88rem;
+  margin-bottom: 0;
+}
+
+.currency-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bs-secondary-bg);
+}
+
+.currency-table thead th {
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--bs-secondary-color);
+  border-bottom: 2px solid var(--bs-border-color);
+}
+
+.currency-row {
+  transition: background-color 0.15s ease;
+}
+
+.currency-row-active {
+  background-color: var(--bs-primary-bg-subtle) !important;
+}
+
+.currency-cell-name {
+  padding: 10px 16px;
+  font-weight: 500;
+}
+
+.currency-code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88rem;
+  letter-spacing: 0.3px;
+}
+
+.currency-active-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-left: 8px;
+  background: var(--bs-primary);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+}
+
+.currency-cell-symbol {
+  padding: 10px 16px;
+}
+
+.currency-symbol-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--bs-tertiary-bg);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--bs-emphasis-color);
+}
+
+.currency-cell-actions {
+  padding: 8px 16px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.currency-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin: 0 2px;
+}
+
+.currency-action-btn:active {
+  transform: scale(0.88);
+}
+
+.currency-btn-edit {
+  color: var(--bs-primary);
+}
+
+.currency-btn-edit:hover {
+  background-color: rgba(13, 110, 253, 0.12);
+  border-color: rgba(13, 110, 253, 0.25);
+  color: #0d6efd;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.15);
+}
+
+.currency-btn-delete {
+  color: var(--bs-danger);
+}
+
+.currency-btn-delete:hover:not(:disabled) {
+  background-color: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.25);
+  color: #dc3545;
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.15);
+}
+
+.currency-btn-delete:disabled,
+.currency-btn-delete.disabled {
+  color: var(--bs-secondary-color);
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Add currency form */
+.currency-add-form {
+  padding-top: 0;
+}
+
+.currency-add-row {
+  display: flex;
+  gap: 8px;
+}
+
+.currency-add-row .form-control {
+  font-size: 0.9rem;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.currency-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px !important;
+  padding: 0 16px;
+  white-space: nowrap;
+  height: 40px;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bs-secondary-bg);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-secondary-color);
 }

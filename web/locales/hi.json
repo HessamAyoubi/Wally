@@ -55,7 +55,7 @@
     "amount_placeholder": "0.00",
     "delete_confirm": "क्या आप वाकई इस लेन-देन को हटाना चाहते हैं?",
     "delete_multiple_title": "लेन-देन हटाएं",
-    "delete_multiple_confirm": "क्या आप वाकई चयनित लेन-देन हटाना चाहते हैं?",
+    "delete_multiple_confirm": "क्या आप वाकई चयनित {count} लेन-देन हटाना चाहते हैं?",
     "recurring_label": "आवर्ती",
     "start_date_label": "प्रारंभ तिथि",
     "end_date_label": "समाप्ति तिथि",
@@ -131,7 +131,8 @@
       "edit_title": "मुद्रा संपादित करें",
       "edit_tooltip": "संपादित करें",
       "delete_tooltip": "हटाएं",
-      "cannot_delete": "चयनित मुद्रा को हटाया नहीं जा सकता"
+      "cannot_delete": "चयनित मुद्रा को हटाया नहीं जा सकता",
+      "active": "सक्रिय"
     },
     "messages": {
       "category_updated": "श्रेणी सफलतापूर्वक अपडेट की गई।",
