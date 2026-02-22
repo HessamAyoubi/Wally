@@ -12,6 +12,11 @@
     "filter": "Mudar",
     "change_dashboard": "Mudar Painel",
     "no_expenses": "Não há despesas.",
+    "group_by": {
+      "categories": "Categorias",
+      "tags": "Tags",
+      "untagged": "Sem tag"
+    },
     "cashflow": {
       "income": "Receitas",
       "expenses": "Despesas",

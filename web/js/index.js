@@ -7,6 +7,7 @@ let currency;
 
 let chart;
 let chartSelected = "currentMonth";
+let chartGroupBy = 'category';
 let chartDisabledFields = new Set();
 
 let tagsInput;
@@ -40,6 +41,9 @@ async function main() {
   await renderCategories();
   await renderTags();
   await renderNameAutocomplete();
+
+  // Group by toggle
+  setupGroupByToggle();
 
   // Show page after all translations are applied
   i18n.showPage();
@@ -275,10 +279,10 @@ function updateChart(data) {
         responsive: true,
         maintainAspectRatio: false,
         onHover: (event, elements) => {
-          event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+          event.native.target.style.cursor = elements.length > 0 && chartGroupBy === 'category' ? 'pointer' : 'default';
         },
         onClick: (event, elements) => {
-          if (elements.length > 0) {
+          if (elements.length > 0 && chartGroupBy === 'category') {
             const index = elements[0].index;
             const category = data[index].name;
             window.location.href = `transactions?category=${encodeURIComponent(category)}`;
@@ -421,16 +425,26 @@ function updateChart(data) {
 
 function calculateBreakdown(transactions) {
   const breakdownMap = {};
+  const untaggedLabel = i18n.t('dashboard.group_by.untagged');
 
-  for (const { type, amount, date, ...rest } of transactions) {
-    const groupValue = rest.category;
+  for (const { type, amount, date, category, tags: txTags } of transactions) {
+    if (type !== 'expense') continue;
 
-    if (type === 'expense' && !chartDisabledFields.has(groupValue)) {
-      if (!breakdownMap[groupValue]) {
-        breakdownMap[groupValue] = { total: 0, months: {} };
+    const monthKey = date.slice(0, 7); // YYYY-MM
+
+    if (chartGroupBy === 'tags') {
+      const groupKeys = txTags && txTags.length > 0 ? txTags : [untaggedLabel];
+      const share = Decimal.div(amount, groupKeys.length).toNumber();
+      for (const groupValue of groupKeys) {
+        if (chartDisabledFields.has(groupValue)) continue;
+        if (!breakdownMap[groupValue]) breakdownMap[groupValue] = { total: 0, months: {} };
+        breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, share).toNumber();
+        breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), share).toNumber();
       }
-
-      const monthKey = date.slice(0, 7); // YYYY-MM
+    } else {
+      const groupValue = category;
+      if (chartDisabledFields.has(groupValue)) continue;
+      if (!breakdownMap[groupValue]) breakdownMap[groupValue] = { total: 0, months: {} };
       breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, amount).toNumber();
       breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), amount).toNumber();
     }
@@ -463,10 +477,22 @@ function updateLegend(transactions, data) {
 
   const monthExpenses = transactions.filter(t => t.type === 'expense');
   const labelMap = new Map(data.map(x => [x.name, x]));
+  const untaggedLabel = i18n.t('dashboard.group_by.untagged');
 
-  monthExpenses
-  .map(exp => exp.category)
-  .filter((v, i, a) => a.indexOf(v) === i) // Remove duplicates
+  // Collect unique labels based on groupBy
+  let uniqueLabels;
+  if (chartGroupBy === 'tags') {
+    const labelSet = new Set();
+    monthExpenses.forEach(exp => {
+      if (exp.tags && exp.tags.length > 0) exp.tags.forEach(t => labelSet.add(t));
+      else labelSet.add(untaggedLabel);
+    });
+    uniqueLabels = Array.from(labelSet);
+  } else {
+    uniqueLabels = monthExpenses.map(exp => exp.category).filter((v, i, a) => a.indexOf(v) === i);
+  }
+
+  uniqueLabels
   .sort((a, b) => {
     const da = labelMap.get(a), db = labelMap.get(b);
     if (da && db) return db.total - da.total;
@@ -475,10 +501,10 @@ function updateLegend(transactions, data) {
     return a.localeCompare(b);
   })
   .forEach((label, index) => {
-    const categoryData = labelMap.get(label);
+    const itemData = labelMap.get(label);
     const color = chartColors[index % chartColors.length];
-    const percentage = categoryData ? ` (${categoryData.percentage.toFixed(1)}%)` : '';
-    const amount = categoryData ? formatCurrency(categoryData.total) : '';
+    const percentage = itemData ? ` (${itemData.percentage.toFixed(1)}%)` : '';
+    const amount = itemData ? formatCurrency(itemData.total) : '';
     const item = document.createElement('div');
     item.className = `legend-item${chartDisabledFields.has(label) ? ' disabled' : ''}`;
     item.innerHTML = `
@@ -492,9 +518,21 @@ function updateLegend(transactions, data) {
     legendContainer.appendChild(item);
   });
 
-  const activeTotal = monthExpenses
-  .filter(x => !chartDisabledFields.has(x.category))
-  .reduce((sum, x) => Decimal.add(sum, x.amount).toNumber(), 0);
+  // Calculate active total — always the real expense sum (never inflated)
+  let activeTotal;
+  if (chartGroupBy === 'tags') {
+    // Only count transactions whose tags are not ALL disabled
+    activeTotal = monthExpenses
+    .filter(tx => {
+      const keys = tx.tags && tx.tags.length > 0 ? tx.tags : [untaggedLabel];
+      return keys.some(t => !chartDisabledFields.has(t));
+    })
+    .reduce((sum, x) => Decimal.add(sum, x.amount).toNumber(), 0);
+  } else {
+    activeTotal = monthExpenses
+    .filter(x => !chartDisabledFields.has(x.category))
+    .reduce((sum, x) => Decimal.add(sum, x.amount).toNumber(), 0);
+  }
 
   legendContainer.insertAdjacentHTML('beforeend', `
   <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--bs-border-color);">
@@ -517,6 +555,20 @@ function toggleLegend(label) {
   if (chartDisabledFields.has(label)) chartDisabledFields.delete(label);
   else chartDisabledFields.add(label);
   loadChart();
+}
+
+function setupGroupByToggle() {
+  const buttons = document.querySelectorAll('.group-by-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('active')) return;
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      chartGroupBy = btn.dataset.group;
+      chartDisabledFields = new Set();
+      loadChart();
+    });
+  });
 }
 
 function populateYearDropdowns() {

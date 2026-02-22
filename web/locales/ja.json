@@ -12,6 +12,11 @@
     "filter": "変更",
     "change_dashboard": "ダッシュボードを変更",
     "no_expenses": "支出はありません。",
+    "group_by": {
+      "categories": "カテゴリ",
+      "tags": "タグ",
+      "untagged": "タグなし"
+    },
     "cashflow": {
       "income": "収入",
       "expenses": "支出",

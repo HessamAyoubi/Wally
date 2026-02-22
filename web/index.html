@@ -92,7 +92,7 @@
     <div id="monthHeaderAll" class="month-navigation current-month" style="display: none; height: 40px"></div>
 
     <!-- Action buttons -->
-    <div class="d-flex justify-content-center align-items-center gap-2 mb-4" style="margin-top: 20px">
+    <div class="d-flex justify-content-center align-items-center gap-2 my-3">
       <button type="button" class="btn btn-success d-inline-flex align-items-center justify-content-center gap-1" style="font-size: 0.9rem; min-width: 150px; height: 42px; border-radius: 100px" data-bs-toggle="modal" data-bs-target="#transactionModal" onclick="addTransaction()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="15" fill="currentColor">
           <path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/>
@@ -107,14 +107,23 @@
       </button>
     </div>
 
-    <!-- Chart & Legend Box -->
-    <div class="row chart-container">
-      <div id="noDataMessage" class="no-data" style="display: none; width: 100%;" data-i18n="dashboard.no_expenses">There are no expenses.</div>
-      <div class="col-lg-6 chart-box">
-        <canvas id="chartCanvas"></canvas>
+    <!-- Group By Toggle -->
+    <div class="d-flex justify-content-center mb-2">
+      <div class="group-by-toggle" role="group" aria-label="Group by">
+        <button type="button" class="group-by-btn active" data-group="category" data-i18n="dashboard.group_by.categories">Categories</button>
+        <button type="button" class="group-by-btn" data-group="tags" data-i18n="dashboard.group_by.tags">Tags</button>
       </div>
-      <div id="customLegend" class="col-lg-6 legend-box"></div>
     </div>
+
+    <!-- Chart & Legend Box -->
+    <div class="chart-cashflow-wrapper">
+      <div class="row chart-container">
+        <div id="noDataMessage" class="no-data" style="display: none; width: 100%;" data-i18n="dashboard.no_expenses">There are no expenses.</div>
+        <div class="col-lg-6 chart-box">
+          <canvas id="chartCanvas"></canvas>
+        </div>
+        <div id="customLegend" class="col-lg-6 legend-box"></div>
+      </div>
 
     <!-- Cashflow Section -->
     <div id="cashflow-section" class="cashflow-container" style="display: none">
@@ -151,6 +160,7 @@
         </div>
         <div class="cashflow-value" id="cashflow-balance"></div>
       </div>
+    </div>
     </div>
   </main>
 

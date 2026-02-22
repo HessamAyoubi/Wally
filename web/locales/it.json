@@ -12,6 +12,11 @@
     "filter": "Cambia",
     "change_dashboard": "Cambia Dashboard",
     "no_expenses": "Non ci sono spese.",
+    "group_by": {
+      "categories": "Categorie",
+      "tags": "Tag",
+      "untagged": "Senza tag"
+    },
     "cashflow": {
       "income": "Entrate",
       "expenses": "Spese",

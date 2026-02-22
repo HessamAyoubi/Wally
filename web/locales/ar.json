@@ -12,6 +12,11 @@
     "filter": "تغيير",
     "change_dashboard": "تغيير لوحة التحكم",
     "no_expenses": "لا توجد نفقات.",
+    "group_by": {
+      "categories": "الفئات",
+      "tags": "العلامات",
+      "untagged": "بدون علامة"
+    },
     "cashflow": {
       "income": "الدخل",
       "expenses": "النفقات",

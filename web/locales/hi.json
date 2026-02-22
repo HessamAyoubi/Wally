@@ -12,6 +12,11 @@
     "filter": "बदलें",
     "change_dashboard": "डैशबोर्ड बदलें",
     "no_expenses": "कोई खर्च नहीं है।",
+    "group_by": {
+      "categories": "श्रेणियाँ",
+      "tags": "टैग",
+      "untagged": "बिना टैग"
+    },
     "cashflow": {
       "income": "आय",
       "expenses": "खर्च",

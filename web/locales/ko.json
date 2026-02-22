@@ -12,6 +12,11 @@
     "filter": "변경",
     "change_dashboard": "대시보드 변경",
     "no_expenses": "지출이 없습니다.",
+    "group_by": {
+      "categories": "카테고리",
+      "tags": "태그",
+      "untagged": "태그 없음"
+    },
     "cashflow": {
       "income": "수입",
       "expenses": "지출",

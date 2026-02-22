@@ -12,6 +12,11 @@
     "filter": "Изменить",
     "change_dashboard": "Сменить дашборд",
     "no_expenses": "Нет расходов.",
+    "group_by": {
+      "categories": "Категории",
+      "tags": "Теги",
+      "untagged": "Без тега"
+    },
     "cashflow": {
       "income": "Доходы",
       "expenses": "Расходы",

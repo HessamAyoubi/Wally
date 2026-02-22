@@ -11,6 +11,11 @@
     "filter": "Changer",
     "change_dashboard": "Changer le Tableau de bord",
     "no_expenses": "Il n'y a pas de dépenses.",
+    "group_by": {
+      "categories": "Catégories",
+      "tags": "Étiquettes",
+      "untagged": "Sans étiquette"
+    },
     "cashflow": {
       "income": "Revenus",
       "expenses": "Dépenses",

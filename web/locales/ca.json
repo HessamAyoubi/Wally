@@ -11,6 +11,11 @@
     "filter": "Canviar",
     "change_dashboard": "Canviar Gràfic",
     "no_expenses": "No hi ha despeses.",
+    "group_by": {
+      "categories": "Categories",
+      "tags": "Etiquetes",
+      "untagged": "Sense etiqueta"
+    },
     "cashflow": {
       "income": "Ingressos",
       "expenses": "Despeses",

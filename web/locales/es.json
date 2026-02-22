@@ -11,6 +11,11 @@
     "filter": "Cambiar",
     "change_dashboard": "Cambiar Panel",
     "no_expenses": "No hay gastos.",
+    "group_by": {
+      "categories": "Categorías",
+      "tags": "Etiquetas",
+      "untagged": "Sin etiqueta"
+    },
     "cashflow": {
       "income": "Ingresos",
       "expenses": "Gastos",
