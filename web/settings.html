@@ -181,10 +181,12 @@
           </div>
           <div class="card-body">
             <p class="card-text mb-3" style="font-size: 0.9rem" data-i18n="settings.login.description">Enable the login page. Off allows access without signing in.</p>
-            <button class="btn btn-primary" id="loginEnableBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalEnable" onclick="enableLogin()" data-i18n="settings.login.enable">Enable</button>
-            <button class="btn btn-danger" id="loginDisableBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalDisable" data-i18n="settings.login.disable">Disable</button>
-            <button class="btn btn-primary" id="loginChangeBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;"  data-bs-toggle="modal" data-bs-target="#loginModalChange" onclick="changeLogin()" data-i18n="settings.login.change">Change password</button>
-            <button class="btn btn-primary" id="apiKeysBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#apiKeysModal" onclick="loadApiKeys()" data-i18n="settings.login.manage_api_keys">Manage API Keys</button>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-primary" id="loginEnableBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalEnable" onclick="enableLogin()" data-i18n="settings.login.enable">Enable</button>
+              <button class="btn btn-danger" id="loginDisableBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalDisable" data-i18n="settings.login.disable">Disable</button>
+              <button class="btn btn-primary" id="loginChangeBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalChange" onclick="changeLogin()" data-i18n="settings.login.change">Change password</button>
+              <button class="btn btn-primary" id="apiKeysBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#apiKeysModal" onclick="loadApiKeys()" data-i18n="settings.login.manage_api_keys">Manage API Keys</button>
+            </div>
           </div>
         </div>
       </div>
@@ -196,19 +198,21 @@
           <div class="card-header" style="font-weight: 500" data-i18n="settings.import_export.title">Import / Export Transactions</div>
           <div class="card-body">
             <p class="card-text" style="font-size: 0.9rem;" data-i18n="settings.import_export.description">Export or import transactions quickly using CSV files.</p>
-            <button class="btn btn-sm btn-primary" style="margin-right: 1px; min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="exportToCSV()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 3px">
-                <path d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7-105.4-105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
-              </svg>
-              <span data-i18n="settings.import_export.export">Export to CSV</span>
-            </button>
-            <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="importFromCSV(event)">
-            <button class="btn btn-sm btn-primary" style="min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="csvInput.click()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 3px">
-                <path d="M214.6 17.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 117.3 160 488c0 17.7 14.3 32 32 32s32-14.3 32-32l0-370.7 105.4 105.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
-              </svg>
-              <span data-i18n="settings.import_export.import">Import from CSV</span>
-            </button>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-sm btn-primary" style="min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="exportToCSV()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 3px">
+                  <path d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7-105.4-105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
+                </svg>
+                <span data-i18n="settings.import_export.export">Export to CSV</span>
+              </button>
+              <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="importFromCSV(event)">
+              <button class="btn btn-sm btn-primary" style="min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="csvInput.click()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 3px">
+                  <path d="M214.6 17.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 117.3 160 488c0 17.7 14.3 32 32 32s32-14.3 32-32l0-370.7 105.4 105.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+                </svg>
+                <span data-i18n="settings.import_export.import">Import from CSV</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
