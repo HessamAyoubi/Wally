@@ -159,7 +159,10 @@
       "end_date_max_years": "Das Enddatum darf nicht mehr als 100 Jahre nach dem Startdatum liegen.",
       "recurring_added": "Wiederkehrende Transaktion hinzugefügt.",
       "recurring_edited": "Wiederkehrende Transaktion bearbeitet.",
-      "recurring_deleted": "Wiederkehrende Transaktion gelöscht."
+      "recurring_deleted": "Wiederkehrende Transaktion gelöscht.",
+      "api_key_created": "API-Schlüssel erstellt.",
+      "api_key_deleted": "API-Schlüssel gelöscht.",
+      "api_key_copied": "API-Schlüssel in die Zwischenablage kopiert."
     },
     "language": {
       "title": "Sprache",
@@ -168,9 +171,10 @@
     "login": {
       "title": "Anmeldung",
       "description": "Anmeldeseite aktivieren. Aus erlaubt Zugriff ohne Anmeldung.",
-      "enable": "Anmeldung aktivieren",
-      "disable": "Anmeldung deaktivieren",
+      "enable": "Aktivieren",
+      "disable": "Deaktivieren",
       "change": "Passwort ändern",
+      "manage_api_keys": "API-Schlüssel verwalten",
       "enable_title": "Anmeldeseite aktivieren",
       "disable_title": "Anmeldeseite deaktivieren",
       "change_title": "Passwort ändern",
@@ -182,6 +186,31 @@
       "disable_btn": "Deaktivieren",
       "change_btn": "Ändern",
       "disable_confirm": "Möchten Sie die Anmeldeseite wirklich deaktivieren?"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "API-Schlüssel für den programmatischen Zugriff erstellen und verwalten.",
+      "name_placeholder": "Name des API-Schlüssels",
+      "create": "API-Schlüssel erstellen",
+      "created_title": "API-Schlüssel erstellt",
+      "created_description": "Kopieren Sie Ihren API-Schlüssel jetzt. Sie können ihn nicht erneut sehen.",
+      "copy": "Kopieren",
+      "delete_title": "API-Schlüssel löschen",
+      "delete_confirm": "Möchten Sie den API-Schlüssel wirklich löschen",
+      "delete_tooltip": "Löschen",
+      "no_keys": "Keine API-Schlüssel erstellt",
+      "name": "Name",
+      "created": "Erstellt",
+      "last_used": "Zuletzt verwendet",
+      "never": "Nie",
+      "actions": "Aktionen",
+      "usage_title": "Verwendung",
+      "usage_desc_before": "Verwende den",
+      "usage_desc_after": "Header zur Authentifizierung deiner Anfragen.",
+      "usage_get_transactions": "Alle Transaktionen abrufen.",
+      "usage_get_by_month": "Transaktionen für einen bestimmten Monat abrufen.",
+      "usage_create_transaction": "Eine neue Transaktion erstellen.",
+      "max_reached": "Maximum von 3 API-Schlüsseln erreicht"
     },
     "import_export": {
       "title": "Transaktionen importieren/exportieren",

@@ -6,12 +6,12 @@ from sqlmodel import Session, select
 
 from .database import create_db_and_tables, engine
 from .demo import generate_demo
-from .routers import transactions, recurring_transactions, categories, tags, currency, auth
+from .routers import transactions, recurring_transactions, categories, tags, currency, auth, api_keys
 from .models.app import AppConfig, DEFAULT_CONFIG
 from .models.categories import Category, DEFAULT_CATEGORIES
 from .models.currency import Currency, DEFAULT_CURRENCIES
 
-VERSION = "1.11"
+VERSION = "1.12"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -63,6 +63,7 @@ app.include_router(categories.router)
 app.include_router(tags.router)
 app.include_router(currency.router)
 app.include_router(auth.router)
+app.include_router(api_keys.router)
 
 # Add root route
 @app.get("/", tags=["Root"])

@@ -134,7 +134,18 @@ def generate_month_transactions(year: int, month: int, n: int):
 # ------------------------
 def generate_demo():
     db_path = Path("data/wally.db")
-    db_path.unlink(missing_ok=True)
+
+    # Safety check: refuse to run demo mode if a real database already exists
+    if db_path.exists():
+        print("\n" + "=" * 60)
+        print("ERROR: Cannot start in DEMO mode.")
+        print(f"An existing database was found at: {db_path.resolve()}")
+        print("This may contain real data that would be permanently lost.")
+        print("Remove the database file manually or unset DEMO=true.")
+        print("=" * 60 + "\n")
+        raise SystemExit(1)
+
+    db_path.parent.mkdir(parents=True, exist_ok=True)
 
     engine = create_engine(f"sqlite:///{db_path}")
     SQLModel.metadata.create_all(engine)

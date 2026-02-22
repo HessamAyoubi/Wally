@@ -159,7 +159,10 @@
       "end_date_max_years": "La data di fine non può essere più di 100 anni dopo la data di inizio.",
       "recurring_added": "Transazione ricorrente aggiunta.",
       "recurring_edited": "Transazione ricorrente modificata.",
-      "recurring_deleted": "Transazione ricorrente eliminata."
+      "recurring_deleted": "Transazione ricorrente eliminata.",
+      "api_key_created": "Chiave API creata.",
+      "api_key_deleted": "Chiave API eliminata.",
+      "api_key_copied": "Chiave API copiata negli appunti."
     },
     "language": {
       "title": "Lingua",
@@ -168,9 +171,10 @@
     "login": {
       "title": "Accesso",
       "description": "Abilita la pagina di accesso. Se disabilitato consente l'accesso senza effettuare il login.",
-      "enable": "Abilita Accesso",
-      "disable": "Disabilita Accesso",
-      "change": "Cambia Password",
+      "enable": "Abilita",
+      "disable": "Disabilita",
+      "change": "Cambia password",
+      "manage_api_keys": "Gestisci chiavi API",
       "enable_title": "Abilita Pagina di Accesso",
       "disable_title": "Disabilita Pagina di Accesso",
       "change_title": "Cambia Password",
@@ -182,6 +186,31 @@
       "disable_btn": "Disabilita",
       "change_btn": "Cambia",
       "disable_confirm": "Sei sicuro di voler disabilitare la pagina di accesso?"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "Crea e gestisci chiavi API per l'accesso programmatico.",
+      "name_placeholder": "Nome della chiave API",
+      "create": "Crea chiave API",
+      "created_title": "Chiave API creata",
+      "created_description": "Copia la tua chiave API adesso. Non potrai più vederla.",
+      "copy": "Copia",
+      "delete_title": "Elimina chiave API",
+      "delete_confirm": "Sei sicuro di voler eliminare la chiave API",
+      "delete_tooltip": "Elimina",
+      "no_keys": "Nessuna chiave API creata",
+      "name": "Nome",
+      "created": "Creato",
+      "last_used": "Ultimo utilizzo",
+      "never": "Mai",
+      "actions": "Azioni",
+      "usage_title": "Utilizzo",
+      "usage_desc_before": "Usa l'intestazione",
+      "usage_desc_after": "per autenticare le tue richieste.",
+      "usage_get_transactions": "Recupera tutte le transazioni.",
+      "usage_get_by_month": "Recupera le transazioni di un mese specifico.",
+      "usage_create_transaction": "Crea una nuova transazione.",
+      "max_reached": "Massimo di 3 chiavi API raggiunto"
     },
     "import_export": {
       "title": "Importa / Esporta Transazioni",

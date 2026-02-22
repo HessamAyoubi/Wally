@@ -159,7 +159,10 @@
       "end_date_max_years": "لا يمكن أن يكون تاريخ النهاية بعد أكثر من 100 عام من تاريخ البداية.",
       "recurring_added": "تمت إضافة المعاملة المتكررة.",
       "recurring_edited": "تم تعديل المعاملة المتكررة.",
-      "recurring_deleted": "تم حذف المعاملة المتكررة."
+      "recurring_deleted": "تم حذف المعاملة المتكررة.",
+      "api_key_created": "تم إنشاء مفتاح API.",
+      "api_key_deleted": "تم حذف مفتاح API.",
+      "api_key_copied": "تم نسخ مفتاح API إلى الحافظة."
     },
     "language": {
       "title": "اللغة",
@@ -168,9 +171,10 @@
     "login": {
       "title": "تسجيل الدخول",
       "description": "تمكين صفحة تسجيل الدخول. التعطيل يسمح بالوصول دون تسجيل الدخول.",
-      "enable": "تمكين تسجيل الدخول",
-      "disable": "تعطيل تسجيل الدخول",
+      "enable": "تمكين",
+      "disable": "تعطيل",
       "change": "تغيير كلمة المرور",
+      "manage_api_keys": "إدارة مفاتيح API",
       "enable_title": "تمكين صفحة تسجيل الدخول",
       "disable_title": "تعطيل صفحة تسجيل الدخول",
       "change_title": "تغيير كلمة المرور",
@@ -182,6 +186,31 @@
       "disable_btn": "تعطيل",
       "change_btn": "تغيير",
       "disable_confirm": "هل أنت متأكد من تعطيل صفحة تسجيل الدخول؟"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "إنشاء وإدارة مفاتيح API للوصول البرمجي.",
+      "name_placeholder": "اسم مفتاح API",
+      "create": "إنشاء مفتاح API",
+      "created_title": "تم إنشاء مفتاح API",
+      "created_description": "انسخ مفتاح API الآن. لن تتمكن من رؤيته مرة أخرى.",
+      "copy": "نسخ",
+      "delete_title": "حذف مفتاح API",
+      "delete_confirm": "هل أنت متأكد من حذف مفتاح API",
+      "delete_tooltip": "حذف",
+      "no_keys": "لم يتم إنشاء مفاتيح API",
+      "name": "الاسم",
+      "created": "تاريخ الإنشاء",
+      "last_used": "آخر استخدام",
+      "never": "أبداً",
+      "actions": "إجراءات",
+      "usage_title": "الاستخدام",
+      "usage_desc_before": "استخدم رأس",
+      "usage_desc_after": "لمصادقة طلباتك.",
+      "usage_get_transactions": "استرداد جميع المعاملات.",
+      "usage_get_by_month": "استرداد المعاملات لشهر محدد.",
+      "usage_create_transaction": "إنشاء معاملة جديدة.",
+      "max_reached": "تم الوصول إلى الحد الأقصى وهو 3 مفاتيح API"
     },
     "import_export": {
       "title": "استيراد / تصدير المعاملات",

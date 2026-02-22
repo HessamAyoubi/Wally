@@ -159,7 +159,10 @@
       "end_date_max_years": "終了日は開始日から100年以上後にすることはできません。",
       "recurring_added": "定期取引を追加しました。",
       "recurring_edited": "定期取引を編集しました。",
-      "recurring_deleted": "定期取引を削除しました。"
+      "recurring_deleted": "定期取引を削除しました。",
+      "api_key_created": "APIキーを作成しました。",
+      "api_key_deleted": "APIキーを削除しました。",
+      "api_key_copied": "APIキーをクリップボードにコピーしました。"
     },
     "language": {
       "title": "言語",
@@ -168,9 +171,10 @@
     "login": {
       "title": "ログイン",
       "description": "ログインページを有効にします。オフにするとログインなしでアクセスできます。",
-      "enable": "ログインを有効化",
-      "disable": "ログインを無効化",
+      "enable": "有効化",
+      "disable": "無効化",
       "change": "パスワードを変更",
+      "manage_api_keys": "APIキーを管理",
       "enable_title": "ログインページを有効化",
       "disable_title": "ログインページを無効化",
       "change_title": "パスワードを変更",
@@ -182,6 +186,31 @@
       "disable_btn": "無効化",
       "change_btn": "変更",
       "disable_confirm": "ログインページを無効にしてもよろしいですか？"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "プログラムによるアクセスのためのAPIキーを作成・管理します。",
+      "name_placeholder": "APIキー名",
+      "create": "APIキーを作成",
+      "created_title": "APIキーが作成されました",
+      "created_description": "APIキーを今コピーしてください。再度表示することはできません。",
+      "copy": "コピー",
+      "delete_title": "APIキーを削除",
+      "delete_confirm": "APIキーを削除してもよろしいですか",
+      "delete_tooltip": "削除",
+      "no_keys": "APIキーは作成されていません",
+      "name": "名前",
+      "created": "作成日",
+      "last_used": "最終使用",
+      "never": "未使用",
+      "actions": "操作",
+      "usage_title": "使い方",
+      "usage_desc_before": "",
+      "usage_desc_after": "ヘッダーを使用してリクエストを認証します。",
+      "usage_get_transactions": "すべての取引を取得します。",
+      "usage_get_by_month": "特定の月の取引を取得します。",
+      "usage_create_transaction": "新しい取引を作成します。",
+      "max_reached": "APIキーは最大3つまでです"
     },
     "import_export": {
       "title": "取引のインポート/エクスポート",

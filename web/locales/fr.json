@@ -4,7 +4,8 @@
     "transactions": "Transactions",
     "settings": "Paramètres",
     "logout": "Se déconnecter"
-  },  "dashboard": {
+  },
+  "dashboard": {
     "title": "Wally | Tableaux de bord",
     "add": "Ajouter",
     "filter": "Changer",
@@ -51,8 +52,10 @@
     "type_expense": "Dépense",
     "amount_label": "Montant",
     "amount_placeholder": "0.00",
-    "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette transaction?",    "delete_multiple_title": "Supprimer les transactions",
-    "delete_multiple_confirm": "Êtes-vous sûr de vouloir supprimer les {count} transactions sélectionnées?",    "recurring_label": "Récurrente",
+    "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette transaction?",
+    "delete_multiple_title": "Supprimer les transactions",
+    "delete_multiple_confirm": "Êtes-vous sûr de vouloir supprimer les {count} transactions sélectionnées?",
+    "recurring_label": "Récurrente",
     "start_date_label": "Date de Début",
     "end_date_label": "Date de Fin",
     "frequency_label": "Fréquence",
@@ -155,7 +158,10 @@
       "end_date_max_years": "La date de fin ne peut pas être plus de 100 ans après la date de début.",
       "recurring_added": "Transaction récurrente ajoutée.",
       "recurring_edited": "Transaction récurrente modifiée.",
-      "recurring_deleted": "Transaction récurrente supprimée."
+      "recurring_deleted": "Transaction récurrente supprimée.",
+      "api_key_created": "Clé API créée.",
+      "api_key_deleted": "Clé API supprimée.",
+      "api_key_copied": "Clé API copiée dans le presse-papiers."
     },
     "language": {
       "title": "Langue",
@@ -166,7 +172,8 @@
       "description": "Activer la page de connexion. Désactivé permet l'accès sans connexion.",
       "enable": "Activer",
       "disable": "Désactiver",
-      "change": "Changer",
+      "change": "Changer le mot de passe",
+      "manage_api_keys": "Gérer les clés API",
       "enable_title": "Activer la Page de Connexion",
       "disable_title": "Désactiver la Page de Connexion",
       "change_title": "Changer le Mot de Passe",
@@ -178,6 +185,31 @@
       "disable_btn": "Désactiver",
       "change_btn": "Changer",
       "disable_confirm": "Êtes-vous sûr de vouloir désactiver la page de connexion ?"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "Créez et gérez des clés API pour l'accès programmatique.",
+      "name_placeholder": "Nom de la clé API",
+      "create": "Créer une clé API",
+      "created_title": "Clé API créée",
+      "created_description": "Copiez votre clé API maintenant. Vous ne pourrez plus la voir.",
+      "copy": "Copier",
+      "delete_title": "Supprimer la clé API",
+      "delete_confirm": "Êtes-vous sûr de vouloir supprimer la clé API",
+      "delete_tooltip": "Supprimer",
+      "no_keys": "Aucune clé API créée",
+      "name": "Nom",
+      "created": "Créé",
+      "last_used": "Dernière utilisation",
+      "never": "Jamais",
+      "actions": "Actions",
+      "usage_title": "Utilisation",
+      "usage_desc_before": "Utilisez l'en-tête",
+      "usage_desc_after": "pour authentifier vos requêtes.",
+      "usage_get_transactions": "Récupérer toutes les transactions.",
+      "usage_get_by_month": "Récupérer les transactions d'un mois spécifique.",
+      "usage_create_transaction": "Créer une nouvelle transaction.",
+      "max_reached": "Maximum de 3 clés API atteint"
     },
     "import_export": {
       "title": "Importer / Exporter Transactions",
@@ -238,7 +270,9 @@
     "close": "Fermer",
     "enter_new_name": "Entrez le nouveau nom",
     "no_rows": "Aucune Ligne À Afficher",
-    "no_recurring_transactions": "Aucune transaction récurrente créée",    "year_placeholder": "Année",    "months": {
+    "no_recurring_transactions": "Aucune transaction récurrente créée",
+    "year_placeholder": "Année",
+    "months": {
       "january": "Janvier",
       "february": "Février",
       "march": "Mars",
@@ -252,7 +286,8 @@
       "november": "Novembre",
       "december": "Décembre",
       "select_month": "Sélectionner le mois"
-    }  },
+    }
+  },
   "login": {
     "title": "Wally | Connexion",
     "header": "CONNEXION",
@@ -262,5 +297,6 @@
     "forgot_password": "Mot de passe oublié",
     "invalid_password": "Mot de passe invalide",
     "error_occurred": "Une erreur s'est produite.",
-    "recovery_message": "Un mot de passe de récupération temporaire a été créé.<br><br>{file}"  }
+    "recovery_message": "Un mot de passe de récupération temporaire a été créé.<br><br>{file}"
+  }
 }

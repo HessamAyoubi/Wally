@@ -181,9 +181,10 @@
           </div>
           <div class="card-body">
             <p class="card-text mb-3" style="font-size: 0.9rem" data-i18n="settings.login.description">Enable the login page. Off allows access without signing in.</p>
-            <button class="btn btn-primary" id="loginEnableBtn" style="min-width: 120px; font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalEnable" onclick="enableLogin()" data-i18n="settings.login.enable">Enable Login</button>
-            <button class="btn btn-danger" id="loginDisableBtn" style="min-width: 120px; font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalDisable" data-i18n="settings.login.disable">Disable Login</button>
-            <button class="btn btn-primary" id="loginChangeBtn" style="min-width: 180px; font-size: 0.9rem; display: none;"  data-bs-toggle="modal" data-bs-target="#loginModalChange" onclick="changeLogin()" data-i18n="settings.login.change">Change Password</button>
+            <button class="btn btn-primary" id="loginEnableBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalEnable" onclick="enableLogin()" data-i18n="settings.login.enable">Enable</button>
+            <button class="btn btn-danger" id="loginDisableBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;" data-bs-toggle="modal" data-bs-target="#loginModalDisable" data-i18n="settings.login.disable">Disable</button>
+            <button class="btn btn-primary" id="loginChangeBtn" style="font-size: 0.9rem; margin-right: 1px; display: none;"  data-bs-toggle="modal" data-bs-target="#loginModalChange" onclick="changeLogin()" data-i18n="settings.login.change">Change password</button>
+            <button class="btn btn-primary" id="apiKeysBtn" style="font-size: 0.9rem; display: none;" data-bs-toggle="modal" data-bs-target="#apiKeysModal" onclick="loadApiKeys()" data-i18n="settings.login.manage_api_keys">Manage API Keys</button>
           </div>
         </div>
       </div>
@@ -216,10 +217,7 @@
     <div class="card mt-3">
       <div class="card-header d-flex align-items-center" style="font-weight: 500">
         <span data-i18n="settings.recurring.title">Recurring Transactions</span>
-        <button class="btn btn-sm btn-success ms-auto" data-i18n-title="settings.recurring.add_tooltip" title="Add new recurring transaction" style="width: 80px" data-bs-toggle="modal" data-bs-target="#recurringModal" onclick="addRecurring()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12" fill="white" style="margin-right: 3px; padding-bottom: 2px">
-            <path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/>
-          </svg>
+        <button class="btn btn-sm btn-success ms-auto" data-i18n-title="settings.recurring.add_tooltip" title="Add new recurring transaction" style="width: 65px" data-bs-toggle="modal" data-bs-target="#recurringModal" onclick="addRecurring()">
           <span data-i18n="settings.recurring.add_btn">Add</span>
         </button>
       </div>
@@ -675,6 +673,127 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
           <button type="submit" class="btn btn-primary" style="min-width: 120px" data-i18n="settings.login.change_btn">Change</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- API Keys Management Modal -->
+  <div class="modal fade" id="apiKeysModal" tabindex="-1" aria-labelledby="apiKeysModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title" id="apiKeysModalLabel">API Keys</h5>
+            <p class="text-muted mb-0" style="font-size: 0.82rem;" data-i18n="settings.api_keys.description">Create and manage API keys for programmatic access.</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- API Usage Guide -->
+          <div class="api-usage-section-container mb-3">
+            <div class="api-usage-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+              <span data-i18n="settings.api_keys.usage_title">Usage</span>
+            </div>
+            <div class="api-usage-content">
+              <p class="text-muted mb-3" style="font-size: 0.84rem;"><span data-i18n="settings.api_keys.usage_desc_before">Use the</span> <code class="api-header-highlight">X-API-Key</code> <span data-i18n="settings.api_keys.usage_desc_after">header to authenticate your requests.</span></p>
+              <div class="api-endpoint-header">
+                <span class="api-method-badge">GET</span>
+                <span class="api-endpoint-path">/transactions</span>
+              </div>
+              <p class="api-endpoint-desc" data-i18n="settings.api_keys.usage_get_transactions">Retrieve all transactions.</p>
+              <div class="api-code-block">
+                <button class="btn btn-sm api-code-copy-btn" onclick="copyCodeBlock(this)" title="Copy">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <pre><code>curl <span class="api-url-placeholder">URL</span>/transactions \
+  -H "X-API-Key: YOUR_API_KEY"</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div id="apiKeysList" class="api-keys-list-container"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary d-flex align-items-center gap-2" id="createApiKeyBtn" style="font-size: 0.9rem;" onclick="createApiKey()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span data-i18n="settings.api_keys.create">Create API key</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Key Created Modal (shows the key once) -->
+  <div class="modal fade" id="apiKeyCreatedModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-body text-center py-4">
+          <div class="api-key-success-icon mx-auto mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          <h6 class="fw-semibold mb-2" data-i18n="settings.api_keys.created_title">API Key Created</h6>
+          <p class="text-muted mb-3" style="font-size: 0.85rem;" data-i18n="settings.api_keys.created_description">Copy your API key now. You won't be able to see it again.</p>
+          <div class="api-usage-section-container mb-3 text-start">
+            <div class="api-usage-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+              <span>API Key</span>
+            </div>
+            <div class="api-usage-content">
+              <div class="api-key-display">
+                <code id="apiKeyCreatedValue" class="user-select-all"></code>
+                <button class="btn btn-sm btn-outline-secondary api-key-copy-btn" type="button" onclick="copyApiKey()" data-i18n-title="settings.api_keys.copy" title="Copy">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Usage section with pre-filled API key -->
+          <div class="api-usage-section-container mt-4 text-start">
+            <div class="api-usage-header">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+              <span data-i18n="settings.api_keys.usage_title">Usage</span>
+            </div>
+            <div class="api-usage-content">
+              <p class="text-muted mb-3" style="font-size: 0.84rem;"><span data-i18n="settings.api_keys.usage_desc_before">Use the</span> <code class="api-header-highlight">X-API-Key</code> <span data-i18n="settings.api_keys.usage_desc_after">header to authenticate your requests.</span></p>
+              <div class="api-endpoint-header">
+                <span class="api-method-badge">GET</span>
+                <span class="api-endpoint-path">/transactions</span>
+              </div>
+              <p class="api-endpoint-desc" data-i18n="settings.api_keys.usage_get_transactions">Retrieve all transactions.</p>
+              <div class="api-code-block">
+                <button class="btn btn-sm api-code-copy-btn" onclick="copyCodeBlock(this)" title="Copy">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <pre><code>curl <span class="api-url-placeholder">URL</span>/transactions \
+  -H "X-API-Key: <span id="apiKeyCreatedUsageValue"></span>"</code></pre>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary mt-4" data-bs-dismiss="modal" data-i18n="common.close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Key Delete Confirmation Modal -->
+  <div class="modal fade" id="apiKeyDeleteModal" tabindex="-1" aria-labelledby="apiKeyDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" onsubmit="deleteApiKeySubmit(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="apiKeyDeleteModalLabel" data-i18n="settings.api_keys.delete_title">Delete API Key</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <div class="dialog-warning-icon mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p class="mb-0"><span data-i18n="settings.api_keys.delete_confirm">Are you sure you want to delete the API key</span> <strong id="apiKeyDeleteName"></strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-danger" style="min-width: 120px" data-i18n="common.delete">Delete</button>
         </div>
       </form>
     </div>

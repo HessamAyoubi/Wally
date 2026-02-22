@@ -159,7 +159,10 @@
       "end_date_max_years": "结束日期不能晚于开始日期100年以上。",
       "recurring_added": "重复交易已添加。",
       "recurring_edited": "重复交易已编辑。",
-      "recurring_deleted": "重复交易已删除。"
+      "recurring_deleted": "重复交易已删除.",
+      "api_key_created": "API 密钥已创建。",
+      "api_key_deleted": "API 密钥已删除。",
+      "api_key_copied": "API 密钥已复制到剪贴板。"
     },
     "language": {
       "title": "语言",
@@ -168,9 +171,10 @@
     "login": {
       "title": "登录",
       "description": "启用登录页面。关闭后允许无需登录即可访问。",
-      "enable": "启用登录",
-      "disable": "禁用登录",
+      "enable": "启用",
+      "disable": "禁用",
       "change": "更改密码",
+      "manage_api_keys": "管理 API 密钥",
       "enable_title": "启用登录页面",
       "disable_title": "禁用登录页面",
       "change_title": "更改密码",
@@ -182,6 +186,31 @@
       "disable_btn": "禁用",
       "change_btn": "更改",
       "disable_confirm": "确定要禁用登录页面吗？"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "创建和管理用于编程访问的 API 密钥。",
+      "name_placeholder": "API 密钥名称",
+      "create": "创建 API 密钥",
+      "created_title": "API 密钥已创建",
+      "created_description": "请立即复制您的 API 密钥。您将无法再次查看。",
+      "copy": "复制",
+      "delete_title": "删除 API 密钥",
+      "delete_confirm": "确定要删除 API 密钥",
+      "delete_tooltip": "删除",
+      "no_keys": "没有创建 API 密钥",
+      "name": "名称",
+      "created": "创建时间",
+      "last_used": "最后使用",
+      "never": "从未",
+      "actions": "操作",
+      "usage_title": "使用方法",
+      "usage_desc_before": "使用",
+      "usage_desc_after": "请求头来验证您的请求。",
+      "usage_get_transactions": "获取所有交易。",
+      "usage_get_by_month": "获取特定月份的交易。",
+      "usage_create_transaction": "创建新交易。",
+      "max_reached": "已达到最多 3 个 API 密钥的限制"
     },
     "import_export": {
       "title": "导入/导出交易",

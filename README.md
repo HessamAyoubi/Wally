@@ -54,7 +54,7 @@ Then open [http://localhost](http://localhost) in your browser.
 docker run -d \
   --name wally \
   -p 80:80 \
-  -v $(pwd):/wally/data
+  -v $(pwd):/wally/data \
   poliuscorp/wally
 ```
 
@@ -88,7 +88,6 @@ Wally supports the following environment variables:
 | Variable | Sample Value | Details |
 | --- | --- | --- |
 | DEMO | true | Pre-loads the app with random demo data |
-| HTTPS | true | Restricts authenticated API access to HTTPS only, ensuring authentication tokens are never sent over HTTP |
 
 ## Data Import / Export
 
@@ -130,5 +129,7 @@ Wally has been built using [ExpenseOwl](https://github.com/Tanq16/ExpenseOwl) as
 - **Dark theme improvements**: The dark mode color palette was refined for improved visual consistency and better contrast, resulting in a more balanced and neutral appearance.
 
 - **Storage changes**: Wally uses SQLite as its data storage solution, while ExpenseOwl offers either JSON files or PostgreSQL. For the type and scale of data this application handles, SQLite was selected as a more suitable and efficient choice.
+
+- **API Keys management**: When login is enabled, users can create and manage API keys directly from the Settings page. This allows secure, token-based access to Wally's API for external integrations and automation.
 
 - **Internationalization**: Wally supports translation into over 10 languages, making it accessible to users worldwide. 

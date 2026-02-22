@@ -980,16 +980,19 @@ function renderLogin() {
   const loginEnableBtn = document.getElementById('loginEnableBtn')
   const loginDisableBtn = document.getElementById('loginDisableBtn')
   const loginChangeBtn = document.getElementById('loginChangeBtn')
+  const apiKeysBtn = document.getElementById('apiKeysBtn')
 
   if (login) {
     loginEnableBtn.style.display = 'none'
     loginDisableBtn.style.display = 'inline'
     loginChangeBtn.style.display = 'inline'
+    apiKeysBtn.style.display = 'inline'
   }
   else {
     loginEnableBtn.style.display = 'inline'
     loginDisableBtn.style.display = 'none'
     loginChangeBtn.style.display = 'none'
+    apiKeysBtn.style.display = 'none'
   }
 }
 
@@ -1074,6 +1077,230 @@ async function loginSubmit(event, mode) {
       // Refresh UX
       renderLogin();
     }
+  }
+  catch (error) {
+    bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+  }
+}
+
+// --------------
+// - API KEYS -
+// --------------
+let apiKeyDeleteId = null;
+const MAX_API_KEYS = 3;
+
+async function loadApiKeys() {
+  try {
+    const response = await fetch(`${API_URL}/api-keys`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const keys = await response.json();
+    renderApiKeysList(keys);
+
+    // Populate URL placeholders in usage section
+    document.querySelectorAll('.api-url-placeholder').forEach(el => {
+      el.textContent = window.location.origin + '/api';
+    });
+  }
+  catch (error) {
+    bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+  }
+}
+
+function renderApiKeysList(keys) {
+  const container = document.getElementById('apiKeysList');
+
+  if (!keys.length) {
+    container.innerHTML = `
+      <div class="text-center py-5">
+        <div class="api-keys-empty-icon mx-auto mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </div>
+        <p class="text-muted mb-0" style="font-size: 0.9rem;" data-i18n="settings.api_keys.no_keys">${i18n.t('settings.api_keys.no_keys') || 'No API keys created'}</p>
+      </div>`;
+    updateCreateApiKeyBtn(0);
+    return;
+  }
+
+  let html = '<table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;"><thead><tr>';
+  html += `<th>ID</th>`;
+  html += `<th data-i18n="settings.api_keys.created">${i18n.t('settings.api_keys.created') || 'Created'}</th>`;
+  html += `<th data-i18n="settings.api_keys.last_used">${i18n.t('settings.api_keys.last_used') || 'Last Used'}</th>`;
+  html += `<th class="text-center" data-i18n="settings.api_keys.actions">${i18n.t('settings.api_keys.actions') || 'Actions'}</th>`;
+  html += '</tr></thead><tbody>';
+
+  for (const key of keys) {
+    const lastUsed = key.last_used || (i18n.t('settings.api_keys.never') || 'Never');
+    html += `<tr>`;
+    html += `<td><code>${escapeHtml(key.id)}</code></td>`;
+    html += `<td>${escapeHtml(key.created_at)}</td>`;
+    html += `<td>${escapeHtml(lastUsed)}</td>`;
+    html += `<td class="text-center">
+      <button class="btn btn-sm btn-outline-danger" onclick="confirmDeleteApiKey('${key.id}')" title="${i18n.t('settings.api_keys.delete_tooltip') || 'Delete'}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </button>
+    </td>`;
+    html += `</tr>`;
+  }
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+
+  // Disable create button at limit
+  updateCreateApiKeyBtn(keys.length);
+}
+
+function updateCreateApiKeyBtn(count) {
+  const btn = document.getElementById('createApiKeyBtn');
+  if (!btn) return;
+  btn.disabled = count >= MAX_API_KEYS;
+  if (count >= MAX_API_KEYS) {
+    btn.title = (i18n.t('settings.api_keys.max_reached') || `Maximum of ${MAX_API_KEYS} API keys reached`);
+  } else {
+    btn.title = '';
+  }
+}
+
+function copyCodeBlock(btn) {
+  const code = btn.closest('.api-code-block').querySelector('code');
+  navigator.clipboard.writeText(code.textContent);
+  // Brief visual feedback
+  btn.classList.add('copied');
+  setTimeout(() => btn.classList.remove('copied'), 1500);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function createApiKey() {
+  try {
+    const response = await fetch(`${API_URL}/api-keys`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    if (response.status === 405) {
+      bootstrap.showToast({body: i18n.t('settings.messages.demo_action_unavailable'), delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg)
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail)
+      throw new Error("An error occurred.")
+    }
+
+    // Reset form
+
+    // Hide the API keys modal
+    const apiKeysModalEl = document.getElementById('apiKeysModal');
+    const apiKeysModal = bootstrap.Modal.getInstance(apiKeysModalEl);
+    apiKeysModal.hide();
+
+    // Show the created key modal with the plaintext key
+    document.getElementById('apiKeyCreatedValue').textContent = json.key;
+    document.getElementById('apiKeyCreatedUsageValue').textContent = json.key;
+    // Populate URL placeholders in created modal usage section
+    document.querySelectorAll('#apiKeyCreatedModal .api-url-placeholder').forEach(el => {
+      el.textContent = window.location.origin + '/api';
+    });
+    const createdModalEl = document.getElementById('apiKeyCreatedModal');
+    const createdModal = new bootstrap.Modal(createdModalEl);
+    createdModal.show();
+
+    // When created modal closes, reopen the API keys modal with refreshed list
+    createdModalEl.addEventListener('hidden.bs.modal', async function handler() {
+      createdModalEl.removeEventListener('hidden.bs.modal', handler);
+      const apiKeysModal = new bootstrap.Modal(document.getElementById('apiKeysModal'));
+      apiKeysModal.show();
+      await loadApiKeys();
+    });
+
+    // Show toast
+    bootstrap.showToast({body: i18n.t('settings.messages.api_key_created'), delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+  }
+  catch (error) {
+    bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+  }
+}
+
+function copyApiKey() {
+  const el = document.getElementById('apiKeyCreatedValue');
+  navigator.clipboard.writeText(el.textContent);
+  bootstrap.showToast({body: i18n.t('settings.messages.api_key_copied'), delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+}
+
+function confirmDeleteApiKey(id) {
+  apiKeyDeleteId = id;
+  document.getElementById('apiKeyDeleteName').textContent = id;
+
+  // Hide the API keys list modal
+  const apiKeysModalEl = document.getElementById('apiKeysModal');
+  const apiKeysModal = bootstrap.Modal.getInstance(apiKeysModalEl);
+  apiKeysModal.hide();
+
+  // Show delete confirmation modal
+  const deleteModal = new bootstrap.Modal(document.getElementById('apiKeyDeleteModal'));
+  deleteModal.show();
+}
+
+async function deleteApiKeySubmit(event) {
+  event.preventDefault();
+
+  try {
+    const response = await fetch(`${API_URL}/api-keys/${apiKeyDeleteId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    if (response.status === 405) {
+      bootstrap.showToast({body: i18n.t('settings.messages.demo_action_unavailable'), delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg)
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail)
+      throw new Error("An error occurred.")
+    }
+
+    // Hide delete modal
+    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('apiKeyDeleteModal'));
+    deleteModal.hide();
+
+    // Show toast
+    bootstrap.showToast({body: i18n.t('settings.messages.api_key_deleted'), delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+
+    // Re-open the API keys modal with refreshed list
+    setTimeout(async () => {
+      const apiKeysModal = new bootstrap.Modal(document.getElementById('apiKeysModal'));
+      apiKeysModal.show();
+      await loadApiKeys();
+    }, 300);
   }
   catch (error) {
     bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})

@@ -159,7 +159,10 @@
       "end_date_max_years": "종료 날짜는 시작 날짜로부터 100년 이상 떨어질 수 없습니다.",
       "recurring_added": "반복 거래가 추가되었습니다.",
       "recurring_edited": "반복 거래가 편집되었습니다.",
-      "recurring_deleted": "반복 거래가 삭제되었습니다."
+      "recurring_deleted": "반복 거래가 삭제되었습니다.",
+      "api_key_created": "API 키가 생성되었습니다.",
+      "api_key_deleted": "API 키가 삭제되었습니다.",
+      "api_key_copied": "API 키가 클립보드에 복사되었습니다."
     },
     "language": {
       "title": "언어",
@@ -168,9 +171,10 @@
     "login": {
       "title": "로그인",
       "description": "로그인 페이지를 활성화합니다. 비활성화하면 로그인 없이 액세스할 수 있습니다.",
-      "enable": "로그인 활성화",
-      "disable": "로그인 비활성화",
+      "enable": "활성화",
+      "disable": "비활성화",
       "change": "비밀번호 변경",
+      "manage_api_keys": "API 키 관리",
       "enable_title": "로그인 페이지 활성화",
       "disable_title": "로그인 페이지 비활성화",
       "change_title": "비밀번호 변경",
@@ -182,6 +186,31 @@
       "disable_btn": "비활성화",
       "change_btn": "변경",
       "disable_confirm": "로그인 페이지를 비활성화하시겠습니까?"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "프로그래밍 방식 액세스를 위한 API 키를 생성하고 관리합니다.",
+      "name_placeholder": "API 키 이름",
+      "create": "API 키 생성",
+      "created_title": "API 키 생성됨",
+      "created_description": "지금 API 키를 복사하세요. 다시 볼 수 없습니다.",
+      "copy": "복사",
+      "delete_title": "API 키 삭제",
+      "delete_confirm": "API 키를 삭제하시겠습니까",
+      "delete_tooltip": "삭제",
+      "no_keys": "생성된 API 키가 없습니다",
+      "name": "이름",
+      "created": "생성일",
+      "last_used": "마지막 사용",
+      "never": "사용 안 함",
+      "actions": "작업",
+      "usage_title": "사용법",
+      "usage_desc_before": "",
+      "usage_desc_after": "헤더를 사용하여 요청을 인증하세요.",
+      "usage_get_transactions": "모든 거래를 조회합니다.",
+      "usage_get_by_month": "특정 월의 거래를 조회합니다.",
+      "usage_create_transaction": "새 거래를 생성합니다.",
+      "max_reached": "최대 3개의 API 키에 도달했습니다"
     },
     "import_export": {
       "title": "거래 가져오기 / 내보내기",

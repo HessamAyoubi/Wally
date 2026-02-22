@@ -159,7 +159,10 @@
       "end_date_max_years": "समाप्ति तिथि प्रारंभ तिथि के 100 वर्ष से अधिक बाद नहीं हो सकती।",
       "recurring_added": "आवर्ती लेन-देन जोड़ा गया।",
       "recurring_edited": "आवर्ती लेन-देन संपादित किया गया।",
-      "recurring_deleted": "आवर्ती लेन-देन हटाया गया।"
+      "recurring_deleted": "आवर्ती लेन-देन हटाया गया।",
+      "api_key_created": "API कुंजी बनाई गई।",
+      "api_key_deleted": "API कुंजी हटाई गई।",
+      "api_key_copied": "API कुंजी क्लिपबोर्ड पर कॉपी की गई।"
     },
     "language": {
       "title": "भाषा",
@@ -168,9 +171,10 @@
     "login": {
       "title": "लॉगिन",
       "description": "लॉगिन पृष्ठ सक्षम करें। बंद करने पर बिना साइन इन किए एक्सेस की अनुमति देता है।",
-      "enable": "लॉगिन सक्षम करें",
-      "disable": "लॉगिन अक्षम करें",
+      "enable": "सक्षम करें",
+      "disable": "अक्षम",
       "change": "पासवर्ड बदलें",
+      "manage_api_keys": "API कुंजियाँ प्रबंधित करें",
       "enable_title": "लॉगिन पृष्ठ सक्षम करें",
       "disable_title": "लॉगिन पृष्ठ अक्षम करें",
       "change_title": "पासवर्ड बदलें",
@@ -182,6 +186,31 @@
       "disable_btn": "अक्षम करें",
       "change_btn": "बदलें",
       "disable_confirm": "क्या आप वाकई लॉगिन पृष्ठ को अक्षम करना चाहते हैं?"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "description": "प्रोग्रामेटिक एक्सेस के लिए API कुंजियाँ बनाएँ और प्रबंधित करें।",
+      "name_placeholder": "API कुंजी का नाम",
+      "create": "API कुंजी बनाएं",
+      "created_title": "API कुंजी बनाई गई",
+      "created_description": "अपनी API कुंजी अभी कॉपी करें। आप इसे दोबारा नहीं देख पाएंगे।",
+      "copy": "कॉपी",
+      "delete_title": "API कुंजी हटाएं",
+      "delete_confirm": "क्या आप वाकई API कुंजी हटाना चाहते हैं",
+      "delete_tooltip": "हटाएं",
+      "no_keys": "कोई API कुंजियाँ नहीं बनाई गई",
+      "name": "नाम",
+      "created": "बनाया गया",
+      "last_used": "अंतिम उपयोग",
+      "never": "कभी नहीं",
+      "actions": "क्रियाएँ",
+      "usage_title": "उपयोग",
+      "usage_desc_before": "अपने अनुरोधों को प्रमाणित करने के लिए",
+      "usage_desc_after": "हेडर का उपयोग करें।",
+      "usage_get_transactions": "सभी लेनदेन प्राप्त करें।",
+      "usage_get_by_month": "किसी विशेष महीने के लेनदेन प्राप्त करें।",
+      "usage_create_transaction": "एक नया लेनदेन बनाएं।",
+      "max_reached": "अधिकतम 3 API कुंजियों तक पहुंच गया"
     },
     "import_export": {
       "title": "लेन-देन आयात / निर्यात करें",

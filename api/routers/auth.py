@@ -1,4 +1,3 @@
-import os
 import jwt
 import bcrypt
 import random
@@ -10,9 +9,11 @@ from pydantic import BaseModel
 from fastapi import Depends, APIRouter, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from sqlmodel import select
 
 from ..database import get_session
 from ..models.app import AppConfig
+from ..models.api_keys import ApiKeys
 
 class Login(BaseModel):
     password: str
@@ -22,15 +23,19 @@ class LoginPassword(BaseModel):
 
 ACCESS_EXPIRE_MINUTES = 5
 REFRESH_EXPIRE_DAYS = 365
-HTTPS = os.getenv("HTTPS", "false").lower() == "true"
+
+def is_https(request: Request) -> bool:
+    """Auto-detect if the request was made over HTTPS using the X-Forwarded-Proto header."""
+    return request.headers.get("x-forwarded-proto", "http") == "https"
 
 # Initialize FastAPI router
 router = APIRouter(tags=["Auth"])
 
 @router.post("/login")
 def login(
-    login: Login, 
-    db: Annotated[Session, Depends(get_session)]
+    login: Login,
+    request: Request,
+    db: Annotated[Session, Depends(get_session)],
 ) -> JSONResponse:
     
     # Retrieve login settings
@@ -77,7 +82,7 @@ def login(
     response = JSONResponse(f"Welcome back!", status_code=200)
 
     # Set the access token as a secure HTTP-only cookie (can't be accessed via JavaScript)
-    response.set_cookie(key="access_token", value=access_token, expires=datetime.now(timezone.utc) + timedelta(days=REFRESH_EXPIRE_DAYS), httponly=True, samesite='strict', secure=HTTPS)
+    response.set_cookie(key="access_token", value=access_token, expires=datetime.now(timezone.utc) + timedelta(days=REFRESH_EXPIRE_DAYS), httponly=True, samesite='strict', secure=is_https(request))
 
     # Return the response with access token and refresh token in the cookie
     return response
@@ -95,6 +100,19 @@ def check_login (
 ):
     # Check if login is enabled
     if int(db.get(AppConfig, "LOGIN_PAGE").value):
+        # Check for API key in header
+        api_key = request.headers.get("x-api-key")
+        if api_key:
+            api_keys = db.exec(select(ApiKeys)).all()
+            for ak in api_keys:
+                if bcrypt.checkpw(api_key.encode('utf-8'), ak.key_hash.encode('utf-8')):
+                    # Update last_used timestamp
+                    ak.last_used = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+                    db.add(ak)
+                    db.commit()
+                    return
+            raise HTTPException(status_code=401, detail="Invalid API key")
+
         secret_key = db.get(AppConfig, "SECRET_KEY").value
         login_token = db.get(AppConfig, "LOGIN_TOKEN").value
         access_token = request.cookies.get("access_token")
@@ -113,7 +131,7 @@ def check_login (
             else:
                 # Issue new access token
                 new_access_token = jwt.encode({"sub": "admin", "exp": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_EXPIRE_MINUTES)}, secret_key, algorithm='HS512')
-                response.set_cookie(key="access_token", value=new_access_token, expires=datetime.now(timezone.utc) + timedelta(days=REFRESH_EXPIRE_DAYS), httponly=True, samesite='strict', secure=HTTPS)
+                response.set_cookie(key="access_token", value=new_access_token, expires=datetime.now(timezone.utc) + timedelta(days=REFRESH_EXPIRE_DAYS), httponly=True, samesite='strict', secure=is_https(request))
 
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=401, detail="Invalid access token.")
