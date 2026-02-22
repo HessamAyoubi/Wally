@@ -6,6 +6,11 @@ body.i18n-loaded {
   opacity: 1;
 }
 
+/* Toast close button: white on colored backgrounds */
+.toast[class*="text-bg-"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 body {
   display: flex;
   justify-content: center;

@@ -1467,6 +1467,7 @@ async function initGrid() {
 
   const gridOptions = {
     theme: myTheme,
+    domLayout: 'autoHeight',
     suppressMovableColumns: true,
     rowData: [],
     defaultColDef: {

@@ -73,7 +73,7 @@
   </header>
 
   <!-- Main Content -->
-  <main class="container my-2" style="margin-top: 0!important;">
+  <main class="container" style="margin-top: 0; margin-bottom: 0;">
 
     <!-- Month Header -->
     <div id="monthHeader" class="month-navigation">
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Action buttons -->
-    <div id="actionButtonsContainer" class="d-flex flex-wrap justify-content-center align-items-center mb-4" style="margin-top: 20px; gap: 5px;">
+    <div id="actionButtonsContainer" class="d-flex flex-wrap justify-content-center align-items-center mb-3" style="margin-top: 12px; gap: 5px;">
       <button type="button" class="btn btn-success d-flex align-items-center justify-content-center btn-action" data-bs-toggle="modal" data-bs-target="#transactionModal" onclick="addTransaction()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="16" height="16" fill="currentColor">
           <path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/>
@@ -133,20 +133,23 @@
     </div>
 
     <!-- Grid Filter -->
-    <div class="mb-2">
-      <input type="text" class="form-control" id="searchInput" placeholder="Search..." data-i18n-placeholder="transactions.search_placeholder" oninput="onFilterTextBoxChanged()" />
+    <div class="mb-2 position-relative">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15" fill="currentColor">
+        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+      </svg>
+      <input type="text" class="form-control search-input" id="searchInput" placeholder="Search..." data-i18n-placeholder="transactions.search_placeholder" oninput="onFilterTextBoxChanged()" />
     </div>
 
     <!-- AG Grid Table -->
     <div id="myGrid"></div>
 
     <!-- AG Grid Table Footer -->
-    <div id="myGridFooter" class="mt-3" style="text-align: center; font-size: 0.9rem; font-weight: 400">
-      <span style="white-space: nowrap;"><span data-i18n="transactions.footer.rows">Rows</span>: <span id="rowCount" style="font-weight: 600; color:#007AFF">0</span></span>
-      <span style="padding-left: 6px; padding-right: 6px; opacity: 0.3;">|</span>
-      <span style="white-space: nowrap;"><span data-i18n="transactions.footer.income">Income</span>: <span id="incomeAmount" style="font-weight: 600; color: #198754">0</span></span>
-      <span style="padding-left: 6px; padding-right: 6px; opacity: 0.3;">|</span>
-      <span style="white-space: nowrap;"><span data-i18n="transactions.footer.expense">Expense</span>: <span id="expenseAmount" style="font-weight: 600; color:#ea4152">0</span></span>
+    <div id="myGridFooter" style="font-weight: 400; color: var(--bs-secondary-color);">
+      <span><span data-i18n="transactions.footer.rows">Rows</span>:&nbsp;<span id="rowCount" style="font-weight: 600; color:#007AFF">0</span></span>
+      <span class="footer-separator" style="opacity: 0.3;">•</span>
+      <span><span data-i18n="transactions.footer.income">Income</span>:&nbsp;<span id="incomeAmount" style="font-weight: 600; color: #198754">0</span></span>
+      <span class="footer-separator" style="opacity: 0.3;">•</span>
+      <span><span data-i18n="transactions.footer.expense">Expense</span>:&nbsp;<span id="expenseAmount" style="font-weight: 600; color:#ea4152">0</span></span>
     </div>
   </main>
 

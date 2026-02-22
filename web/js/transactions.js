@@ -870,14 +870,26 @@ function updateDeleteButton() {
   const container = document.getElementById('actionButtonsContainer');
 
   if (selectedRows.length > 0) {
-    deleteBtn.classList.add('d-flex');
-    deleteBtn.style.display = '';
     selectedCount.textContent = selectedRows.length;
+    // First: compact the existing buttons
     container.classList.add('compact-buttons');
+    // Then: reveal the delete button after buttons have resized
+    deleteBtn.style.display = '';
+    deleteBtn.classList.add('d-flex');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        deleteBtn.classList.add('show-delete');
+      });
+    });
   } else {
-    deleteBtn.classList.remove('d-flex');
-    deleteBtn.style.display = 'none';
-    container.classList.remove('compact-buttons');
+    // First: hide the delete button
+    deleteBtn.classList.remove('show-delete');
+    // Then: after transition, remove compact and hide fully
+    setTimeout(() => {
+      deleteBtn.classList.remove('d-flex');
+      deleteBtn.style.display = 'none';
+      container.classList.remove('compact-buttons');
+    }, 250);
   }
 }
 

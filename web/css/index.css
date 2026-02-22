@@ -6,6 +6,11 @@ body.i18n-loaded {
   opacity: 1;
 }
 
+/* Toast close button: white on colored backgrounds */
+.toast[class*="text-bg-"] .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -338,13 +343,11 @@ main.container {
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #198754 0%, #20a068 100%);
   border: none;
 }
 
 .btn-success:hover {
-  background: linear-gradient(135deg, #157347 0%, #198754 100%);
-  box-shadow: 0 3px 8px rgba(25, 135, 84, 0.3);
+  box-shadow: none;
 }
 
 /* Enhanced Modals */
