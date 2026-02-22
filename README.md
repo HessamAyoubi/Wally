@@ -17,20 +17,20 @@
 
 | | Desktop View | Mobile View |
 | --- | --- | --- |
-| Light | <img src="assets/dashboards-light.png" alt="Dashboards Light" /> | <img src="assets/dashboards-light-mobile.png" alt="Dashboards Light Mobile" /> |
-| Dark | <img src="assets/dashboards-dark.png" alt="Dashboards Dark" /> | <img src="assets/dashboards-dark-mobile.png" alt="Dashboards Dark Mobile" /> |
+| Light | <img src="assets/dashboards-light.png?version=1.14" alt="Dashboards Light" /> | <img src="assets/dashboards-light-mobile.png?version=1.14" alt="Dashboards Light Mobile" /> |
+| Dark | <img src="assets/dashboards-dark.png?version=1.14" alt="Dashboards Dark" /> | <img src="assets/dashboards-dark-mobile.png?version=1.14" alt="Dashboards Dark Mobile" /> |
 
 <details>
 <summary>Expand this to see screenshots of other pages</summary>
 
 | | Desktop View | Mobile View |
 | --- | --- | --- |
-| Transactions Light | <img src="assets/transactions-light.png" alt="Transactions Light" /> | <img src="assets/transactions-light-mobile.png" alt="Transactions Light Mobile " /> |
-| Transactions Dark | <img src="assets/transactions-dark.png" alt="Transactions Dark" /> | <img src="assets/transactions-dark-mobile.png" alt="Transactions Dark Mobile" /> |
-| Settings Light | <img src="assets/settings-light.png" alt="Settings Light" /> | <img src="assets/settings-light-mobile.png" alt="Settings Light Mobile" /> |
-| Settings Dark | <img src="assets/settings-dark.png" alt="Settings Dark" /> | <img src="assets/settings-dark-mobile.png" alt="Settings Dark Mobile" /> |
-| Login Light | <img src="assets/login-light.png" alt="Login Light" /> | <img src="assets/login-light-mobile.png" alt="Login Light Mobile" /> |
-| Login Dark | <img src="assets/login-dark.png" alt="Login Dark" /> | <img src="assets/login-dark-mobile.png" alt="Login Dark Mobile" /> |
+| Transactions Light | <img src="assets/transactions-light.png?version=1.14" alt="Transactions Light" /> | <img src="assets/transactions-light-mobile.png?version=1.14" alt="Transactions Light Mobile " /> |
+| Transactions Dark | <img src="assets/transactions-dark.png?version=1.14" alt="Transactions Dark" /> | <img src="assets/transactions-dark-mobile.png?version=1.14" alt="Transactions Dark Mobile" /> |
+| Settings Light | <img src="assets/settings-light.png?version=1.14" alt="Settings Light" /> | <img src="assets/settings-light-mobile.png?version=1.14" alt="Settings Light Mobile" /> |
+| Settings Dark | <img src="assets/settings-dark.png?version=1.14" alt="Settings Dark" /> | <img src="assets/settings-dark-mobile.png?version=1.14" alt="Settings Dark Mobile" /> |
+| Login Light | <img src="assets/login-light.png?version=1.14" alt="Login Light" /> | <img src="assets/login-light-mobile.png?version=1.14" alt="Login Light Mobile" /> |
+| Login Dark | <img src="assets/login-dark.png?version=1.14" alt="Login Dark" /> | <img src="assets/login-dark-mobile.png?version=1.14" alt="Login Dark Mobile" /> |
 
 </details>
 
