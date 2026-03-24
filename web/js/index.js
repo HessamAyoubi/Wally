@@ -434,12 +434,11 @@ function calculateBreakdown(transactions) {
 
     if (chartGroupBy === 'tags') {
       const groupKeys = txTags && txTags.length > 0 ? txTags : [untaggedLabel];
-      const share = Decimal.div(amount, groupKeys.length).toNumber();
       for (const groupValue of groupKeys) {
         if (chartDisabledFields.has(groupValue)) continue;
         if (!breakdownMap[groupValue]) breakdownMap[groupValue] = { total: 0, months: {} };
-        breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, share).toNumber();
-        breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), share).toNumber();
+        breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, amount).toNumber();
+        breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), amount).toNumber();
       }
     } else {
       const groupValue = category;
