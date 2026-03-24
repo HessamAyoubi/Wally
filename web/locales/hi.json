@@ -50,6 +50,7 @@
     "name_label": "नाम",
     "name_placeholder": "लेन-देन का नाम दर्ज करें",
     "category_label": "श्रेणी",
+    "category_placeholder": "श्रेणी चुनना",
     "tags_label": "टैग",
     "tags_placeholder": "एक टैग जोड़ें और Enter दबाएं",
     "date_label": "तारीख",

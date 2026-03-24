@@ -49,6 +49,7 @@
     "name_label": "Nom",
     "name_placeholder": "Introdueix el nom de la transacció",
     "category_label": "Categoria",
+    "category_placeholder": "Selecciona una categoria",
     "tags_label": "Etiquetes",
     "tags_placeholder": "Afegeix una etiqueta i prem Enter",
     "date_label": "Data",
