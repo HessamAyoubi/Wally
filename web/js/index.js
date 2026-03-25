@@ -461,7 +461,16 @@ function calculateBreakdown(transactions) {
   })
   .sort((a, b) => b.total - a.total);
 
-  const grandTotal = result.reduce((sum, item) => Decimal.add(sum, item.total).toNumber(), 0);
+  // For tags, sum unique transaction amounts to avoid double-counting multi-tagged transactions
+  const grandTotal = chartGroupBy === 'tags'
+    ? transactions
+        .filter(({ type, tags: txTags }) => {
+          if (type !== 'expense') return false;
+          const keys = txTags && txTags.length > 0 ? txTags : [untaggedLabel];
+          return keys.some(k => !chartDisabledFields.has(k));
+        })
+        .reduce((sum, { amount }) => Decimal.add(sum, amount).toNumber(), 0)
+    : result.reduce((sum, item) => Decimal.add(sum, item.total).toNumber(), 0);
 
   // Add percentage field
   return result.map(item => ({
