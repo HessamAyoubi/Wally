@@ -342,7 +342,8 @@ main.container {
   transition: all 0.25s ease;
 }
 
-/* Delete button animation */
+/* Edit / Delete button animation */
+#editSelectedBtn,
 #deleteSelectedBtn {
   overflow: hidden;
   opacity: 0;
@@ -353,6 +354,7 @@ main.container {
   transition: all 0.25s ease;
 }
 
+#editSelectedBtn.show-edit,
 #deleteSelectedBtn.show-delete {
   opacity: 1;
   width: 150px;
@@ -370,7 +372,7 @@ main.container {
   transform: scale(0.97);
 }
 
-/* Mobile: Compact when delete button is shown */
+/* Mobile: Compact when selection buttons are shown */
 @media (max-width: 767px) {
   .compact-buttons .btn-action {
     font-size: 0.8rem;
@@ -384,6 +386,7 @@ main.container {
     margin-right: 6px;
   }
 
+  .compact-buttons #editSelectedBtn.show-edit,
   .compact-buttons #deleteSelectedBtn.show-delete {
     width: 120px;
   }
@@ -402,6 +405,7 @@ main.container {
     margin-right: 5px;
   }
 
+  .compact-buttons #editSelectedBtn.show-edit,
   .compact-buttons #deleteSelectedBtn.show-delete {
     width: 105px;
   }

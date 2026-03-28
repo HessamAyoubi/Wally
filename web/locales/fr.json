@@ -89,8 +89,16 @@
       "transaction_edited": "Transaction modifiée.",
       "transaction_deleted": "Transaction supprimée.",
       "recurring_added": "Transaction récurrente ajoutée.",
-      "end_date_later": "La date de fin doit être postérieure à la date de début."
-    }
+      "end_date_later": "La date de fin doit être postérieure à la date de début.",
+      "transactions_updated": "{count} transactions mises à jour."
+    },
+    "edit": "Modifier",
+    "edit_multiple_title": "Modifier",
+    "edit_multiple_title_suffix": "transactions",
+    "edit_multiple_hint": "Seuls les champs modifiés seront mis à jour. Laissez les autres sur Conserver actuel.",
+    "bulk_keep_current": "— Conserver actuel —",
+    "bulk_none": "Aucun",
+    "edit_multiple_apply": "Appliquer"
   },
   "settings": {
     "title": "Wally | Paramètres",

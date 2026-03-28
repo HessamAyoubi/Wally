@@ -90,8 +90,16 @@
       "transaction_edited": "Transazione modificata.",
       "transaction_deleted": "Transazione eliminata.",
       "recurring_added": "Transazione ricorrente aggiunta.",
-      "end_date_later": "La data di fine deve essere successiva alla data di inizio."
-    }
+      "end_date_later": "La data di fine deve essere successiva alla data di inizio.",
+      "transactions_updated": "{count} transazioni aggiornate."
+    },
+    "edit": "Modifica",
+    "edit_multiple_title": "Modifica",
+    "edit_multiple_title_suffix": "transazioni",
+    "edit_multiple_hint": "Verranno aggiornati solo i campi modificati. Lascia gli altri su Mantieni corrente.",
+    "bulk_keep_current": "— Mantieni corrente —",
+    "bulk_none": "Nessuno",
+    "edit_multiple_apply": "Applica"
   },
   "settings": {
     "title": "Wally | Impostazioni",

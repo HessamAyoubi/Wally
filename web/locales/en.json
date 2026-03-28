@@ -90,8 +90,16 @@
       "transaction_edited": "Transaction edited.",
       "transaction_deleted": "Transaction deleted.",
       "recurring_added": "Recurring transaction added.",
-      "end_date_later": "The end date must be later than the start date."
-    }
+      "end_date_later": "The end date must be later than the start date.",
+      "transactions_updated": "{count} transactions updated."
+    },
+    "edit": "Edit",
+    "edit_multiple_title": "Edit",
+    "edit_multiple_title_suffix": "Transactions",
+    "edit_multiple_hint": "Only changed fields will be updated. Leave unchanged fields on Keep current.",
+    "bulk_keep_current": "— Keep current —",
+    "bulk_none": "None",
+    "edit_multiple_apply": "Apply"
   },
   "settings": {
     "title": "Wally | Settings",

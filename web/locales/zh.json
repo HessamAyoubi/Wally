@@ -90,8 +90,16 @@
       "transaction_edited": "交易已编辑。",
       "transaction_deleted": "交易已删除。",
       "recurring_added": "重复交易已添加。",
-      "end_date_later": "结束日期必须晚于开始日期。"
-    }
+      "end_date_later": "结束日期必须晚于开始日期。",
+      "transactions_updated": "已更新 {count} 笔交易。"
+    },
+    "edit": "编辑",
+    "edit_multiple_title": "编辑",
+    "edit_multiple_title_suffix": "笔交易",
+    "edit_multiple_hint": "只有更改的字段才会更新。",
+    "bulk_keep_current": "— 保留当前 —",
+    "bulk_none": "无",
+    "edit_multiple_apply": "应用"
   },
   "settings": {
     "title": "Wally | 设置",

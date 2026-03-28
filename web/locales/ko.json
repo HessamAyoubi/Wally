@@ -90,8 +90,16 @@
       "transaction_edited": "거래가 편집되었습니다.",
       "transaction_deleted": "거래가 삭제되었습니다.",
       "recurring_added": "반복 거래가 추가되었습니다.",
-      "end_date_later": "종료 날짜는 시작 날짜보다 늦어야 합니다."
-    }
+      "end_date_later": "종료 날짜는 시작 날짜보다 늦어야 합니다.",
+      "transactions_updated": "{count}건 거래가 업데이트되었습니다."
+    },
+    "edit": "편집",
+    "edit_multiple_title": "편집",
+    "edit_multiple_title_suffix": "건 거래",
+    "edit_multiple_hint": "변경된 필드만 업데이트됩니다이다.",
+    "bulk_keep_current": "— 현재 유지 —",
+    "bulk_none": "없음",
+    "edit_multiple_apply": "적용"
   },
   "settings": {
     "title": "Wally | 설정",

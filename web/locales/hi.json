@@ -90,8 +90,16 @@
       "transaction_edited": "लेन-देन संपादित किया गया।",
       "transaction_deleted": "लेन-देन हटाया गया।",
       "recurring_added": "आवर्ती लेन-देन जोड़ा गया।",
-      "end_date_later": "समाप्ति तिथि प्रारंभ तिथि के बाद होनी चाहिए।"
-    }
+      "end_date_later": "समाप्ति तिथि प्रारंभ तिथि के बाद होनी चाहिए।",
+      "transactions_updated": "{count} लेनदेन अपडेट किए गए।"
+    },
+    "edit": "संपादित करें",
+    "edit_multiple_title": "संपादित करें",
+    "edit_multiple_title_suffix": "लेनदेन",
+    "edit_multiple_hint": "केवल बदले गए फ़ील्ड अपडेट होंगे।",
+    "bulk_keep_current": "— वर्तमान रखें —",
+    "bulk_none": "कोई नहीं",
+    "edit_multiple_apply": "लागू करें"
   },
   "settings": {
     "title": "Wally | सेटिंग्स",

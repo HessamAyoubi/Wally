@@ -90,8 +90,16 @@
       "transaction_edited": "取引を編集しました。",
       "transaction_deleted": "取引を削除しました。",
       "recurring_added": "定期取引を追加しました。",
-      "end_date_later": "終了日は開始日より後である必要があります。"
-    }
+      "end_date_later": "終了日は開始日より後である必要があります。",
+      "transactions_updated": "{count}件の取引を更新しました。"
+    },
+    "edit": "編集",
+    "edit_multiple_title": "編集",
+    "edit_multiple_title_suffix": "件の取引",
+    "edit_multiple_hint": "変更されたフィールドのみ更新されます。",
+    "bulk_keep_current": "— 現在を維持 —",
+    "bulk_none": "なし",
+    "edit_multiple_apply": "適用"
   },
   "settings": {
     "title": "Wally | 設定",

@@ -186,6 +186,17 @@ async function renderCategories() {
     option.selected = false;
     select.appendChild(option);
   });
+
+  // Also populate bulk edit category select (keep the static "Keep current" first option)
+  const bulkSelect = document.getElementById('bulkCategorySelect');
+  // Remove all options except the first "Keep current"
+  while (bulkSelect.options.length > 1) bulkSelect.remove(1);
+  categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    bulkSelect.appendChild(option);
+  });
 }
 
 async function renderPersonSelect() {
@@ -202,6 +213,16 @@ async function renderPersonSelect() {
     option.value = person;
     option.textContent = person;
     select.appendChild(option);
+  });
+
+  // Also populate bulk edit person select (keep the first 2 static options: __keep__ and "")
+  const bulkSelect = document.getElementById('bulkPersonSelect');
+  while (bulkSelect.options.length > 2) bulkSelect.remove(2);
+  persons.forEach(person => {
+    const option = document.createElement('option');
+    option.value = person;
+    option.textContent = person;
+    bulkSelect.appendChild(option);
   });
 }
 
@@ -341,7 +362,7 @@ async function initGrid() {
       updateFooter(params.api);
     },
     onSelectionChanged: () => {
-      updateDeleteButton();
+      updateSelectionButtons();
     },
     columnDefs: [
       {
@@ -941,29 +962,35 @@ function toggleRecurring(enabled) {
   }
 }
 
-function updateDeleteButton() {
+function updateSelectionButtons() {
   const selectedRows = gridApi.getSelectedRows();
+  const count = selectedRows.length;
+  const editBtn = document.getElementById('editSelectedBtn');
   const deleteBtn = document.getElementById('deleteSelectedBtn');
-  const selectedCount = document.getElementById('selectedCount');
   const container = document.getElementById('actionButtonsContainer');
 
-  if (selectedRows.length > 0) {
-    selectedCount.textContent = selectedRows.length;
-    // First: compact the existing buttons
+  if (count > 0) {
+    document.getElementById('selectedCountEdit').textContent = count;
+    document.getElementById('selectedCount').textContent = count;
+    // Compact existing buttons
     container.classList.add('compact-buttons');
-    // Then: reveal the delete button after buttons have resized
+    // Reveal edit + delete buttons
+    editBtn.style.display = '';
+    editBtn.classList.add('d-flex');
     deleteBtn.style.display = '';
     deleteBtn.classList.add('d-flex');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        editBtn.classList.add('show-edit');
         deleteBtn.classList.add('show-delete');
       });
     });
   } else {
-    // First: hide the delete button
+    editBtn.classList.remove('show-edit');
     deleteBtn.classList.remove('show-delete');
-    // Then: after transition, remove compact and hide fully
     setTimeout(() => {
+      editBtn.classList.remove('d-flex');
+      editBtn.style.display = 'none';
       deleteBtn.classList.remove('d-flex');
       deleteBtn.style.display = 'none';
       container.classList.remove('compact-buttons');
@@ -1022,6 +1049,75 @@ async function submitTransactionDeleteMultiple(event) {
       bootstrap.showToast({body: `${error}`, delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
     }
   });
+}
+
+function editSelectedTransactions() {
+  const selectedRows = gridApi.getSelectedRows();
+  document.getElementById('editMultipleCount').textContent = selectedRows.length;
+
+  // Reset selects to "Keep current"
+  document.getElementById('bulkCategorySelect').value = '';
+  document.getElementById('bulkPersonSelect').value = '__keep__';
+  document.getElementById('bulkTypeSelect').value = '';
+
+  const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('transactionModalEditMultiple'));
+  modal.show();
+}
+
+async function submitTransactionEditMultiple(event) {
+  event.preventDefault();
+
+  const selectedRows = gridApi.getSelectedRows();
+  const newCategory = document.getElementById('bulkCategorySelect').value;
+  const newPerson = document.getElementById('bulkPersonSelect').value;
+  const newType = document.getElementById('bulkTypeSelect').value;
+
+  // Nothing to change
+  if (!newCategory && newPerson === '__keep__' && !newType) {
+    bootstrap.Modal.getInstance(document.getElementById('transactionModalEditMultiple')).hide();
+    return;
+  }
+
+  bootstrap.Modal.getInstance(document.getElementById('transactionModalEditMultiple')).hide();
+
+  try {
+    const updatePromises = selectedRows.map(row => {
+      const payload = {
+        name: row.name,
+        category: newCategory || row.category,
+        tags: row.tags,
+        person: newPerson !== '__keep__' ? newPerson : row.person,
+        amount: row.amount,
+        type: newType || row.type,
+        date: row.date,
+      };
+      return fetch(`${API_URL}/transactions/${row.id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    });
+
+    const responses = await Promise.all(updatePromises);
+
+    const failedResponse = responses.find(r => !r.ok);
+    if (failedResponse) {
+      if (failedResponse.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
+      throw new Error('An error occurred while updating transactions.');
+    }
+
+    const count = selectedRows.length;
+    bootstrap.showToast({ body: i18n.t('transactions.messages.transactions_updated').replace('{count}', count), delay: 2500, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-success' });
+
+    await getTransactions();
+  }
+  catch (error) {
+    bootstrap.showToast({ body: `${error}`, delay: 3000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+  }
 }
 
 // --------

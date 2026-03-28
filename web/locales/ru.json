@@ -90,8 +90,16 @@
       "transaction_edited": "Транзакция изменена.",
       "transaction_deleted": "Транзакция удалена.",
       "recurring_added": "Повторяющаяся транзакция добавлена.",
-      "end_date_later": "Дата окончания должна быть позже даты начала."
-    }
+      "end_date_later": "Дата окончания должна быть позже даты начала.",
+      "transactions_updated": "{count} транзакций обновлено."
+    },
+    "edit": "Изменить",
+    "edit_multiple_title": "Изменить",
+    "edit_multiple_title_suffix": "транзакций",
+    "edit_multiple_hint": "Будут обновлены только изменённые поля.",
+    "bulk_keep_current": "— Сохранить текущее —",
+    "bulk_none": "Нет",
+    "edit_multiple_apply": "Применить"
   },
   "settings": {
     "title": "Wally | Настройки",

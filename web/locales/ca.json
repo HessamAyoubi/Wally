@@ -90,8 +90,16 @@
       "transaction_edited": "Transacció editada.",
       "transaction_deleted": "Transacció eliminada.",
       "recurring_added": "Transacció recurrent afegida.",
-      "end_date_later": "La data de finalització ha de ser posterior a la data d'inici."
-    }
+      "end_date_later": "La data de finalització ha de ser posterior a la data d'inici.",
+      "transactions_updated": "{count} transaccions actualitzades."
+    },
+    "edit": "Edita",
+    "edit_multiple_title": "Edita",
+    "edit_multiple_title_suffix": "transaccions",
+    "edit_multiple_hint": "Només s'actualitzaran els camps modificats. Deixa els altres en Conserva l'actual.",
+    "bulk_keep_current": "— Conserva l'actual —",
+    "bulk_none": "Cap",
+    "edit_multiple_apply": "Aplica"
   },
   "settings": {
     "title": "Wally | Configuració",

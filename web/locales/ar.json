@@ -90,8 +90,16 @@
       "transaction_edited": "تم تعديل المعاملة.",
       "transaction_deleted": "تم حذف المعاملة.",
       "recurring_added": "تمت إضافة المعاملة المتكررة.",
-      "end_date_later": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية."
-    }
+      "end_date_later": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية.",
+      "transactions_updated": "تم تحديث {count} معاملة."
+    },
+    "edit": "تعديل",
+    "edit_multiple_title": "تعديل",
+    "edit_multiple_title_suffix": "معاملات",
+    "edit_multiple_hint": "سيتم تحديث الحقول المغيرة فقط.",
+    "bulk_keep_current": "— الاحتفاظ بالحالي —",
+    "bulk_none": "لا أحد",
+    "edit_multiple_apply": "تطبيق"
   },
   "settings": {
     "title": "Wally | الإعدادات",
