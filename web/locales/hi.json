@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "लेन-देन आयात / निर्यात करें",
-      "description": "CSV फ़ाइलों का उपयोग करके लेन-देन को जल्दी से निर्यात या आयात करें।",
+      "description": "लेनदेन को कई प्रारूपों में निर्यात करें या CSV से आयात करें।",
       "export": "CSV में निर्यात करें",
-      "import": "CSV से आयात करें"
+      "import": "CSV से आयात करें",
+      "export_btn": "निर्यात करें",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF (प्रिंट)",
+      "export_modal_title": "लेनदेन निर्यात करें",
+      "period_label": "अवधि",
+      "format_label": "प्रारूप",
+      "custom_range_required": "कृपया आरंभ और अंत दोनों महीने चुनें।"
     },
     "recurring": {
       "title": "आवर्ती लेन-देन",

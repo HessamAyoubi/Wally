@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "Importar / Exportar Transaccions",
-      "description": "Exporta o importa transaccions ràpidament utilitzant fitxers CSV.",
+      "description": "Exporta les transaccions en múltiples formats o importa des d'un CSV.",
       "export": "Exportar a CSV",
-      "import": "Importar de CSV"
+      "import": "Importar de CSV",
+      "export_btn": "Exporta",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF (Imprimeix)",
+      "export_modal_title": "Exporta transaccions",
+      "period_label": "Període",
+      "format_label": "Format",
+      "custom_range_required": "Selecciona els mesos d'inici i fi."
     },
     "recurring": {
       "title": "Transaccions Recurrents",

@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "取引のインポート/エクスポート",
-      "description": "CSVファイルを使用して取引を素早くエクスポートまたはインポートします。",
+      "description": "複数の形式でトランザクションをエクスポートするか、CSVからインポートします。",
       "export": "CSVにエクスポート",
-      "import": "CSVからインポート"
+      "import": "CSVからインポート",
+      "export_btn": "エクスポート",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF（印刷）",
+      "export_modal_title": "取引をエクスポート",
+      "period_label": "期間",
+      "format_label": "フォーマット",
+      "custom_range_required": "開始月と終了月を選択してください。"
     },
     "recurring": {
       "title": "定期取引",

@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "导入/导出交易",
-      "description": "使用CSV文件快速导出或导入交易。",
+      "description": "以多种格式导出交易记录，或从CSV导入。",
       "export": "导出为CSV",
-      "import": "从CSV导入"
+      "import": "从CSV导入",
+      "export_btn": "导出",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF（打印）",
+      "export_modal_title": "导出交易",
+      "period_label": "时间段",
+      "format_label": "格式",
+      "custom_range_required": "请选择开始月和结束月。"
     },
     "recurring": {
       "title": "重复交易",

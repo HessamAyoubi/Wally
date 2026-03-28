@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "Importar / Exportar Transações",
-      "description": "Exporte ou importe transações rapidamente usando arquivos CSV.",
+      "description": "Exporte transações em vários formatos ou importe de CSV.",
       "export": "Exportar para CSV",
-      "import": "Importar de CSV"
+      "import": "Importar de CSV",
+      "export_btn": "Exportar",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF (Imprimir)",
+      "export_modal_title": "Exportar transações",
+      "period_label": "Período",
+      "format_label": "Formato",
+      "custom_range_required": "Selecione os meses de início e fim."
     },
     "recurring": {
       "title": "Transações Recorrentes",

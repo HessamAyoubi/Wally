@@ -211,13 +211,13 @@
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.import_export.title">Import / Export Transactions</div>
           <div class="card-body">
-            <p class="card-text" style="font-size: 0.9rem;" data-i18n="settings.import_export.description">Export or import transactions quickly using CSV files.</p>
+            <p class="card-text" style="font-size: 0.9rem;" data-i18n="settings.import_export.description">Export transactions in multiple formats or import from CSV.</p>
             <div class="d-flex flex-wrap gap-2">
-              <button class="btn btn-sm btn-primary" style="min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="exportToCSV()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 3px">
+              <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal" style="min-width: 140px; padding-left: 12px; padding-right: 12px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12" fill="white" style="margin-right: 5px">
                   <path d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7-105.4-105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
                 </svg>
-                <span data-i18n="settings.import_export.export">Export to CSV</span>
+                <span data-i18n="settings.import_export.export_btn">Export</span>
               </button>
               <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="importFromCSV(event)">
               <button class="btn btn-sm btn-primary" style="min-width: 140px; padding-left: 12px; padding-right: 12px;" onclick="csvInput.click()">
@@ -913,6 +913,83 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
           <button type="submit" class="btn btn-danger" style="min-width: 120px" data-i18n="common.delete">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" onsubmit="submitExport(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exportModalLabel" data-i18n="settings.import_export.export_modal_title">Export Transactions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <!-- Period -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold" style="font-size: 0.9rem;" data-i18n="settings.import_export.period_label">Period</label>
+            <div class="d-flex flex-column gap-1" style="font-size: 0.9rem;">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodAll" value="all" onchange="toggleExportCustomRange()" checked>
+                <label class="form-check-label" for="periodAll" data-i18n="dashboard.modal.to_date">To date (All transactions)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodCurrentMonth" value="current_month" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodCurrentMonth" data-i18n="dashboard.modal.current_month">Current month</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodPast3" value="past_3" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodPast3" data-i18n="dashboard.modal.past_3_months">Past 3 months</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodPast6" value="past_6" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodPast6" data-i18n="dashboard.modal.past_6_months">Past 6 months</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodPast12" value="past_12" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodPast12" data-i18n="dashboard.modal.past_12_months">Past 12 months</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodYtd" value="ytd" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodYtd" data-i18n="dashboard.modal.year_to_date">Year to date</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exportPeriod" id="periodCustom" value="custom" onchange="toggleExportCustomRange()">
+                <label class="form-check-label" for="periodCustom" data-i18n="dashboard.modal.custom_range">Custom range</label>
+              </div>
+              <div id="exportCustomRange" class="ms-4 mt-1 d-none">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <label class="form-label mb-0" style="white-space: nowrap; font-size: 0.85rem;" data-i18n="dashboard.modal.from">From:</label>
+                  <input type="month" class="form-control form-control-sm" id="exportFromMonth" style="max-width: 160px;">
+                  <label class="form-label mb-0" style="white-space: nowrap; font-size: 0.85rem;" data-i18n="dashboard.modal.to">To:</label>
+                  <input type="month" class="form-control form-control-sm" id="exportToMonth" style="max-width: 160px;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-3">
+
+          <!-- Format -->
+          <div>
+            <label class="form-label fw-semibold" style="font-size: 0.9rem;" data-i18n="settings.import_export.format_label">Format</label>
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="exportFormat" id="formatCSV" value="csv" autocomplete="off" checked>
+              <label class="btn btn-outline-primary btn-sm" for="formatCSV" data-i18n="settings.import_export.export_csv">CSV (.csv)</label>
+              <input type="radio" class="btn-check" name="exportFormat" id="formatJSON" value="json" autocomplete="off">
+              <label class="btn btn-outline-primary btn-sm" for="formatJSON" data-i18n="settings.import_export.export_json">JSON (.json)</label>
+              <input type="radio" class="btn-check" name="exportFormat" id="formatPDF" value="pdf" autocomplete="off">
+              <label class="btn btn-outline-primary btn-sm" for="formatPDF" data-i18n="settings.import_export.export_pdf">PDF (Print)</label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="min-width: 120px" data-i18n="settings.import_export.export_btn">Export</button>
         </div>
       </form>
     </div>

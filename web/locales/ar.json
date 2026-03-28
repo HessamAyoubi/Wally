@@ -235,9 +235,17 @@
     },
     "import_export": {
       "title": "استيراد / تصدير المعاملات",
-      "description": "قم بتصدير أو استيراد المعاملات بسرعة باستخدام ملفات CSV.",
+      "description": "تصدير المعاملات بتنسيقات متعددة أو الاستيراد من CSV.",
       "export": "تصدير إلى CSV",
-      "import": "استيراد من CSV"
+      "import": "استيراد من CSV",
+      "export_btn": "تصدير",
+      "export_csv": "CSV (.csv)",
+      "export_json": "JSON (.json)",
+      "export_pdf": "PDF (طباعة)",
+      "export_modal_title": "تصدير المعاملات",
+      "period_label": "الفترة",
+      "format_label": "التنسيق",
+      "custom_range_required": "يرجى تحديد شهر البداية والنهاية."
     },
     "recurring": {
       "title": "المعاملات المتكررة",

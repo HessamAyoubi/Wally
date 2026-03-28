@@ -1623,6 +1623,230 @@ async function deleteApiKeySubmit(event) {
 // -------------------
 // - IMPORT / EXPORT -
 // -------------------
+
+document.getElementById('exportModal').addEventListener('show.bs.modal', () => {
+  // Reset to defaults each time the modal opens
+  document.getElementById('periodAll').checked = true;
+  document.getElementById('formatCSV').checked = true;
+  document.getElementById('exportCustomRange').classList.add('d-none');
+
+  // Pre-fill custom range inputs with current month
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const currentMonthValue = `${y}-${m}`;
+  document.getElementById('exportFromMonth').value = currentMonthValue;
+  document.getElementById('exportToMonth').value = currentMonthValue;
+});
+
+function toggleExportCustomRange() {
+  const isCustom = document.getElementById('periodCustom').checked;
+  document.getElementById('exportCustomRange').classList.toggle('d-none', !isCustom);
+}
+
+async function submitExport(event) {
+  event.preventDefault();
+
+  const period = document.querySelector('input[name="exportPeriod"]:checked').value;
+  const format = document.querySelector('input[name="exportFormat"]:checked').value;
+
+  // Validate custom range
+  if (period === 'custom') {
+    const from = document.getElementById('exportFromMonth').value;
+    const to = document.getElementById('exportToMonth').value;
+    if (!from || !to) {
+      bootstrap.showToast({ body: i18n.t('settings.import_export.custom_range_required'), delay: 2000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+      return;
+    }
+    if (from > to) {
+      bootstrap.showToast({ body: i18n.t('dashboard.modal.invalid_date_range'), delay: 2500, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+      return;
+    }
+  }
+
+  bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+
+  const data = await fetchExportData(period);
+  if (!data) return;
+
+  if (format === 'csv') doExportCSV(data, period);
+  else if (format === 'json') doExportJSON(data, period);
+  else if (format === 'pdf') doExportPDF(data, period);
+}
+
+async function fetchExportData(period) {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+
+  let url;
+  switch (period) {
+    case 'all':           url = `${API_URL}/transactions`; break;
+    case 'current_month': url = `${API_URL}/transactions/date/${y}-${m}`; break;
+    case 'past_3':        url = `${API_URL}/transactions/past-3-months`; break;
+    case 'past_6':        url = `${API_URL}/transactions/past-6-months`; break;
+    case 'past_12':       url = `${API_URL}/transactions/past-12-months`; break;
+    case 'ytd':           url = `${API_URL}/transactions/year-to-date`; break;
+    case 'custom': {
+      const [fy, fm] = document.getElementById('exportFromMonth').value.split('-');
+      const [ty, tm] = document.getElementById('exportToMonth').value.split('-');
+      url = `${API_URL}/transactions/range/${fy}-${parseInt(fm)}/${ty}-${parseInt(tm)}`;
+      break;
+    }
+    default: url = `${API_URL}/transactions`;
+  }
+
+  try {
+    const response = await fetch(url, { method: 'GET', credentials: 'include' });
+    if (response.status === 401) { window.location.href = '/login'; return null; }
+    const json = await response.json();
+    if (!response.ok) throw new Error(json.detail || 'An error occurred.');
+    if (!json.length) {
+      bootstrap.showToast({ body: i18n.t('settings.messages.no_transactions'), delay: 1500, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+      return null;
+    }
+    return json;
+  } catch (error) {
+    bootstrap.showToast({ body: `${error}`, delay: 2000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+    return null;
+  }
+}
+
+function getExportFilename(period, ext) {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  switch (period) {
+    case 'all':           return `transactions.${ext}`;
+    case 'current_month': return `transactions_${y}-${m}.${ext}`;
+    case 'past_3':        return `transactions_past-3-months.${ext}`;
+    case 'past_6':        return `transactions_past-6-months.${ext}`;
+    case 'past_12':       return `transactions_past-12-months.${ext}`;
+    case 'ytd':           return `transactions_${y}-ytd.${ext}`;
+    case 'custom': {
+      const from = document.getElementById('exportFromMonth').value;
+      const to = document.getElementById('exportToMonth').value;
+      return `transactions_${from}_to_${to}.${ext}`;
+    }
+    default: return `transactions.${ext}`;
+  }
+}
+
+function triggerDownload(blob, filename) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function doExportCSV(data, period) {
+  const columns = ["name", "category", "tags", "person", "amount", "type", "date"];
+  const csv = Papa.unparse(data, { columns });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(blob, getExportFilename(period, 'csv'));
+}
+
+function doExportJSON(data, period) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8;' });
+  triggerDownload(blob, getExportFilename(period, 'json'));
+}
+
+function doExportPDF(data, period) {
+  let totalIncome = 0, totalExpense = 0;
+  data.forEach(t => {
+    if (t.type === 'income') totalIncome += parseFloat(t.amount);
+    else totalExpense += parseFloat(t.amount);
+  });
+  const balance = totalIncome - totalExpense;
+
+  const fmt = (amount) => currency.position === 'left'
+    ? `${currency.symbol}${Math.abs(amount).toFixed(2)}`
+    : `${Math.abs(amount).toFixed(2)} ${currency.symbol}`;
+
+  const fmtSigned = (t) => {
+    const sign = t.type === 'expense' ? '-' : '';
+    return currency.position === 'left'
+      ? `${sign}${currency.symbol}${parseFloat(t.amount).toFixed(2)}`
+      : `${sign}${parseFloat(t.amount).toFixed(2)} ${currency.symbol}`;
+  };
+
+  const fmtDate = (d) => { const [y, mo, day] = d.split('-'); return `${day}/${mo}/${y}`; };
+
+  const periodLabels = {
+    all: i18n.t('dashboard.modal.to_date'),
+    current_month: i18n.t('dashboard.modal.current_month'),
+    past_3: i18n.t('dashboard.modal.past_3_months'),
+    past_6: i18n.t('dashboard.modal.past_6_months'),
+    past_12: i18n.t('dashboard.modal.past_12_months'),
+    ytd: i18n.t('dashboard.modal.year_to_date'),
+    custom: (() => {
+      const from = document.getElementById('exportFromMonth').value;
+      const to = document.getElementById('exportToMonth').value;
+      return `${from} → ${to}`;
+    })(),
+  };
+
+  const rows = data.map(t => `
+    <tr>
+      <td>${fmtDate(t.date)}</td>
+      <td>${t.name}</td>
+      <td>${t.category}</td>
+      <td>${Array.isArray(t.tags) ? t.tags.join(', ') : (t.tags || '')}</td>
+      <td>${t.person || ''}</td>
+      <td style="color:${t.type === 'income' ? '#198754' : '#ea4152'}; font-weight:500; white-space:nowrap;">${fmtSigned(t)}</td>
+    </tr>`).join('');
+
+  const balanceColor = balance >= 0 ? '#198754' : '#ea4152';
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wally — Transactions</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 11px; color: #222; padding: 24px; }
+    .header { margin-bottom: 4px; }
+    h1 { font-size: 20px; font-weight: 700; }
+    .subtitle { color: #888; font-size: 11px; margin-bottom: 16px; }
+    .summary { display: flex; gap: 32px; margin-bottom: 20px; padding: 12px 16px; background: #f5f5f5; border-radius: 6px; }
+    .summary-item { display: flex; flex-direction: column; gap: 2px; }
+    .summary-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; }
+    .summary-value { font-size: 14px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #f0f0f0; }
+    th { text-align: left; padding: 7px 8px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; border-bottom: 2px solid #ddd; }
+    td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    @media print { body { padding: 0; } @page { margin: 1.5cm; } }
+  </style>
+</head>
+<body>
+  <div class="header"><h1>Wally</h1></div>
+  <div class="subtitle">${periodLabels[period] || ''} &nbsp;·&nbsp; ${new Date().toLocaleDateString()} &nbsp;·&nbsp; ${data.length} transactions</div>
+  <div class="summary">
+    <div class="summary-item"><span class="summary-label">Income</span><span class="summary-value" style="color:#198754">${fmt(totalIncome)}</span></div>
+    <div class="summary-item"><span class="summary-label">Expense</span><span class="summary-value" style="color:#ea4152">${fmt(totalExpense)}</span></div>
+    <div class="summary-item"><span class="summary-label">Balance</span><span class="summary-value" style="color:${balanceColor}">${balance >= 0 ? '' : '-'}${fmt(balance)}</span></div>
+  </div>
+  <table>
+    <thead><tr><th>Date</th><th>Name</th><th>Category</th><th>Tags</th><th>Person</th><th>Amount</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+</body>
+</html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 400);
+}
+
+// Legacy wrappers kept for any external calls
 async function exportToCSV() {
   try {
     const response = await fetch(`${API_URL}/transactions`, {
@@ -1649,7 +1873,7 @@ async function exportToCSV() {
       }
 
       // Generate CSV only with mandatory columns
-      const mandatoryColumns = ["name", "category", "tags", "amount", "type", "date"];
+      const mandatoryColumns = ["name", "category", "tags", "person", "amount", "type", "date"];
       const csv = Papa.unparse(json, {
         columns: mandatoryColumns
       });
@@ -1668,6 +1892,175 @@ async function exportToCSV() {
   }
   catch (error) {
     bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
+  }
+}
+
+async function exportToJSON() {
+  try {
+    const response = await fetch(`${API_URL}/transactions`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg);
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+      throw new Error('An error occurred.');
+    }
+
+    if (!json.length) {
+      bootstrap.showToast({ body: i18n.t('settings.messages.no_transactions'), delay: 1000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+      return;
+    }
+
+    const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'transactions.json';
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  catch (error) {
+    bootstrap.showToast({ body: `${error}`, delay: 2000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+  }
+}
+
+async function exportToPDF() {
+  try {
+    const response = await fetch(`${API_URL}/transactions`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg);
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+      throw new Error('An error occurred.');
+    }
+
+    if (!json.length) {
+      bootstrap.showToast({ body: i18n.t('settings.messages.no_transactions'), delay: 1000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+      return;
+    }
+
+    // Calculate totals
+    let totalIncome = 0, totalExpense = 0;
+    json.forEach(t => {
+      if (t.type === 'income') totalIncome += parseFloat(t.amount);
+      else totalExpense += parseFloat(t.amount);
+    });
+    const balance = totalIncome - totalExpense;
+
+    const fmt = (amount) => currency.position === 'left'
+      ? `${currency.symbol}${Math.abs(amount).toFixed(2)}`
+      : `${Math.abs(amount).toFixed(2)} ${currency.symbol}`;
+
+    const fmtSigned = (t) => {
+      const sign = t.type === 'expense' ? '-' : '';
+      return currency.position === 'left'
+        ? `${sign}${currency.symbol}${parseFloat(t.amount).toFixed(2)}`
+        : `${sign}${parseFloat(t.amount).toFixed(2)} ${currency.symbol}`;
+    };
+
+    const fmtDate = (dateStr) => {
+      const [y, m, d] = dateStr.split('-');
+      return `${d}/${m}/${y}`;
+    };
+
+    const exportDate = new Date().toLocaleDateString();
+
+    const rows = json.map(t => `
+      <tr>
+        <td>${fmtDate(t.date)}</td>
+        <td>${t.name}</td>
+        <td>${t.category}</td>
+        <td>${Array.isArray(t.tags) ? t.tags.join(', ') : (t.tags || '')}</td>
+        <td>${t.person || ''}</td>
+        <td style="color: ${t.type === 'income' ? '#198754' : '#ea4152'}; font-weight: 500;">${fmtSigned(t)}</td>
+      </tr>`).join('');
+
+    const balanceColor = balance >= 0 ? '#198754' : '#ea4152';
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wally — Transactions</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 11px; color: #222; padding: 24px; }
+    .header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+    h1 { font-size: 20px; font-weight: 700; }
+    .subtitle { color: #888; font-size: 11px; margin-bottom: 16px; }
+    .summary { display: flex; gap: 32px; margin-bottom: 20px; padding: 12px 16px; background: #f5f5f5; border-radius: 6px; }
+    .summary-item { display: flex; flex-direction: column; gap: 2px; }
+    .summary-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; }
+    .summary-value { font-size: 14px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #f0f0f0; }
+    th { text-align: left; padding: 7px 8px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; border-bottom: 2px solid #ddd; }
+    td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    @media print { body { padding: 0; } @page { margin: 1.5cm; } }
+  </style>
+</head>
+<body>
+  <div class="header"><h1>Wally</h1></div>
+  <div class="subtitle">Exported on ${exportDate} &nbsp;·&nbsp; ${json.length} transactions</div>
+  <div class="summary">
+    <div class="summary-item">
+      <span class="summary-label">Income</span>
+      <span class="summary-value" style="color:#198754">${fmt(totalIncome)}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Expense</span>
+      <span class="summary-value" style="color:#ea4152">${fmt(totalExpense)}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Balance</span>
+      <span class="summary-value" style="color:${balanceColor}">${balance >= 0 ? '' : '-'}${fmt(balance)}</span>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Tags</th>
+        <th>Person</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+</body>
+</html>`;
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => printWindow.print(), 400);
+  }
+  catch (error) {
+    bootstrap.showToast({ body: `${error}`, delay: 2000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
   }
 }
 
