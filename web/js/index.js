@@ -3,6 +3,7 @@ const API_URL = '/api';
 let currentDate = new Date();
 let categories;
 let tags;
+let persons;
 let currency;
 
 let chart;
@@ -28,9 +29,10 @@ async function main() {
   });
 
   document.getElementById('dashboardForm').reset();
-  [categories, tags, currency, budgets] = await Promise.all([
+  [categories, tags, persons, currency, budgets] = await Promise.all([
     getCategories(),
     getTags(),
+    getPersons(),
     getCurrency(),
     getBudgets(),
     renderMonth(),
@@ -39,9 +41,10 @@ async function main() {
   // Load chart
   await loadChart();
 
-  // Render categories, tags and name autocomplete
+  // Render categories, tags, persons and name autocomplete
   await renderCategories();
   await renderTags();
+  await renderPersonSelect();
   await renderNameAutocomplete();
 
   // Group by toggle
@@ -97,6 +100,39 @@ async function getTags() {
 
   const data = await response.json();
   return data;
+}
+
+async function getPersons() {
+  const response = await fetch(`${API_URL}/persons`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (response.status === 401) {
+    window.location.href = '/login';
+    return [];
+  }
+
+  if (!response.ok) return [];
+  return response.json();
+}
+
+async function renderPersonSelect() {
+  const select = document.getElementById('personSelect');
+  select.innerHTML = '';
+
+  const none = document.createElement('option');
+  none.value = '';
+  none.setAttribute('data-i18n', 'transactions.bulk_none');
+  none.textContent = i18n.t('transactions.bulk_none') || 'None';
+  select.appendChild(none);
+
+  persons.forEach(person => {
+    const option = document.createElement('option');
+    option.value = person;
+    option.textContent = person;
+    select.appendChild(option);
+  });
 }
 
 async function getBudgets() {
@@ -957,6 +993,7 @@ async function renderCategories() {
 function addTransaction() {
   document.getElementById('transactionForm').reset();
   document.getElementById('categorySelect').value = "";
+  document.getElementById('personSelect').value = "";
   nameInput.clear();
   tagsInput.setValue([]);
   document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];

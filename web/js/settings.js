@@ -745,6 +745,21 @@ async function getPersons() {
 }
 
 async function renderPersons(persons) {
+  // Populate person select in recurring modal
+  const recurringPersonSelect = document.getElementById('recurringPersonSelect');
+  recurringPersonSelect.innerHTML = '';
+  const noneOpt = document.createElement('option');
+  noneOpt.value = '';
+  noneOpt.setAttribute('data-i18n', 'transactions.bulk_none');
+  noneOpt.textContent = i18n.t('transactions.bulk_none') || 'None';
+  recurringPersonSelect.appendChild(noneOpt);
+  persons.forEach(person => {
+    const opt = document.createElement('option');
+    opt.value = person;
+    opt.textContent = person;
+    recurringPersonSelect.appendChild(opt);
+  });
+
   const container = document.getElementById('personBadges');
   container.innerHTML = '';
 
@@ -2230,6 +2245,11 @@ async function initGrid() {
         },
       },
       {
+        field: "person",
+        headerName: i18n.t('settings.recurring.columns.person'),
+        filter: true,
+      },
+      {
         field: "startDate",
         headerName: i18n.t('settings.recurring.columns.start_date'),
         filter: true,
@@ -2392,6 +2412,7 @@ function addRecurring() {
   document.getElementById('modalSubmitButton').textContent = i18n.t('settings.recurring.add_btn');
   document.getElementById('recurringForm').reset();
   document.getElementById('categorySelect').value = "";
+  document.getElementById('recurringPersonSelect').value = "";
   document.getElementById('frequencySelect').value = "";
   tagsInput.clearOptions();
   tags.forEach(tag => {
@@ -2411,6 +2432,7 @@ function editRecurring() {
   // Assign values
   document.getElementById('nameInput').value = selectedRow.name
   document.getElementById('categorySelect').value = selectedRow.category
+  document.getElementById('recurringPersonSelect').value = selectedRow.person || ''
   tagsInput.clearOptions();
   selectedRow.tags.forEach(tag => {
     tagsInput.addOption({ value: tag, text: tag }, user_created=true);
