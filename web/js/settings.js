@@ -11,6 +11,40 @@ let tagSelected;
 let gridInstance;
 let gridApi;
 
+let _undoDeleteTimer = null;
+
+function showUndoToast(message, onExecute) {
+  if (_undoDeleteTimer) {
+    clearTimeout(_undoDeleteTimer);
+    _undoDeleteTimer = null;
+  }
+
+  const toastEl = document.getElementById('undoToast');
+  const msgEl = document.getElementById('undoToastMessage');
+  const undoBtn = document.getElementById('undoToastBtn');
+
+  msgEl.textContent = message;
+
+  const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+  toast.show();
+
+  function handleUndo() {
+    clearTimeout(_undoDeleteTimer);
+    _undoDeleteTimer = null;
+    toast.hide();
+    undoBtn.removeEventListener('click', handleUndo);
+  }
+
+  undoBtn.addEventListener('click', handleUndo);
+
+  _undoDeleteTimer = setTimeout(async () => {
+    undoBtn.removeEventListener('click', handleUndo);
+    toast.hide();
+    _undoDeleteTimer = null;
+    await onExecute();
+  }, 5000);
+}
+
 let modalMode = 'add';
 let selectedRow;
 
@@ -352,39 +386,39 @@ function deleteCategory(category) {
 async function deleteCategorySubmit(event) {
   event.preventDefault();
 
-  try {
-    const response = await fetch(`${API_URL}/categories/${categorySelected}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
+  const categoryToDelete = categorySelected;
 
-    if (response.status === 401) {
-      window.location.href = '/login';
-      return;
-    }
+  // Hide the modal immediately
+  const modal = bootstrap.Modal.getInstance(document.getElementById('categoryModalDelete'));
+  modal.hide();
 
-    const json = await response.json()
+  // Show undo toast — actual delete fires after 5 seconds unless undone
+  showUndoToast(i18n.t('settings.messages.category_deleted'), async () => {
+    try {
+      const response = await fetch(`${API_URL}/categories/${categoryToDelete}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
 
-    if (!response.ok) {
-      if (response.status === 422) throw new Error(json.detail[0].msg)
-      else if ([400, 404].includes(response.status)) throw new Error(json.detail)
-      throw new Error("An error occurred.")
-    }
-    else {
-      // Hide the modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('categoryModalDelete'));
-      modal.hide();
+      if (response.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
 
-      // Show toast
-      bootstrap.showToast({body: i18n.t('settings.messages.category_deleted'), delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+      const json = await response.json();
 
-      // Refresh the categories
+      if (!response.ok) {
+        if (response.status === 422) throw new Error(json.detail[0].msg);
+        else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+        throw new Error("An error occurred.");
+      }
+
       categories = await getCategories();
     }
-  }
-  catch (error) {
-    bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
-  }
+    catch (error) {
+      bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+    }
+  });
 }
 
 // --------
@@ -572,39 +606,39 @@ function deleteTag(tag) {
 async function deleteTagSubmit(event) {
   event.preventDefault();
 
-  try {
-    const response = await fetch(`${API_URL}/tags/${tagSelected}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
+  const tagToDelete = tagSelected;
 
-    if (response.status === 401) {
-      window.location.href = '/login';
-      return;
-    }
+  // Hide the modal immediately
+  const modal = bootstrap.Modal.getInstance(document.getElementById('tagModalDelete'));
+  modal.hide();
 
-    const json = await response.json()
+  // Show undo toast — actual delete fires after 5 seconds unless undone
+  showUndoToast(i18n.t('settings.messages.tag_deleted'), async () => {
+    try {
+      const response = await fetch(`${API_URL}/tags/${tagToDelete}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
 
-    if (!response.ok) {
-      if (response.status === 422) throw new Error(json.detail[0].msg)
-      else if ([400, 404].includes(response.status)) throw new Error(json.detail)
-      throw new Error("An error occurred.")
-    }
-    else {
-      // Hide the modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('tagModalDelete'));
-      modal.hide();
+      if (response.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
 
-      // Show toast
-      bootstrap.showToast({body: i18n.t('settings.messages.tag_deleted'), delay: 1500, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+      const json = await response.json();
 
-      // Refresh the tags
+      if (!response.ok) {
+        if (response.status === 422) throw new Error(json.detail[0].msg);
+        else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+        throw new Error("An error occurred.");
+      }
+
       tags = await getTags();
     }
-  }
-  catch (error) {
-    bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
-  }
+    catch (error) {
+      bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+    }
+  });
 }
 
 // ------------

@@ -10,6 +10,40 @@ let gridApi;
 let modalMode = 'add';
 let selectedRow;
 
+let _undoDeleteTimer = null;
+
+function showUndoToast(message, onExecute) {
+  if (_undoDeleteTimer) {
+    clearTimeout(_undoDeleteTimer);
+    _undoDeleteTimer = null;
+  }
+
+  const toastEl = document.getElementById('undoToast');
+  const msgEl = document.getElementById('undoToastMessage');
+  const undoBtn = document.getElementById('undoToastBtn');
+
+  msgEl.textContent = message;
+
+  const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+  toast.show();
+
+  function handleUndo() {
+    clearTimeout(_undoDeleteTimer);
+    _undoDeleteTimer = null;
+    toast.hide();
+    undoBtn.removeEventListener('click', handleUndo);
+  }
+
+  undoBtn.addEventListener('click', handleUndo);
+
+  _undoDeleteTimer = setTimeout(async () => {
+    undoBtn.removeEventListener('click', handleUndo);
+    toast.hide();
+    _undoDeleteTimer = null;
+    await onExecute();
+  }, 5000);
+}
+
 let currentDate = new Date();
 let tagsInput;
 let nameInput;
@@ -805,39 +839,39 @@ async function submitTransactionEdit(event) {
 async function submitTransactionDelete(event) {
   event.preventDefault();
 
-  try {
-    const response = await fetch(`${API_URL}/transactions/${selectedRow.id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
+  const id = selectedRow.id;
 
-    if (response.status === 401) {
-      window.location.href = '/login';
-      return;
-    }
+  // Hide the modal immediately
+  const modal = bootstrap.Modal.getInstance(document.getElementById('transactionModalDelete'));
+  modal.hide();
 
-    const json = await response.json()
+  // Show undo toast — actual delete fires after 5 seconds unless undone
+  showUndoToast(i18n.t('transactions.messages.transaction_deleted'), async () => {
+    try {
+      const response = await fetch(`${API_URL}/transactions/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
 
-    if (!response.ok) {
-      if (response.status === 422) throw new Error(json.detail[0].msg)
-      else if ([400, 404].includes(response.status)) throw new Error(json.detail)
-      throw new Error("An error occurred.")
-    }
-    else {
-      // Hide the modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('transactionModalDelete'));
-      modal.hide();
+      if (response.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
 
-      // Show toast
-      bootstrap.showToast({body: i18n.t('transactions.messages.transaction_deleted'), delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"})
+      const json = await response.json();
 
-      // Refresh the grid
+      if (!response.ok) {
+        if (response.status === 422) throw new Error(json.detail[0].msg);
+        else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+        throw new Error("An error occurred.");
+      }
+
       getTransactions();
     }
-  }
-  catch (error) {
-    bootstrap.showToast({body: `${error}`, delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
-  }
+    catch (error) {
+      bootstrap.showToast({body: `${error}`, delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+    }
+  });
 }
 
 function toggleRecurring(enabled) {
@@ -907,48 +941,43 @@ function deleteSelectedTransactions() {
 async function submitTransactionDeleteMultiple(event) {
   event.preventDefault();
 
+  // Capture IDs at confirmation time
   const selectedRows = gridApi.getSelectedRows();
   const transactionIds = selectedRows.map(row => row.id);
+  const count = transactionIds.length;
 
-  try {
-    const deletePromises = transactionIds.map(id =>
-    fetch(`${API_URL}/transactions/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    })
-    );
+  // Hide the modal immediately
+  const modal = bootstrap.Modal.getInstance(document.getElementById('transactionModalDeleteMultiple'));
+  modal.hide();
 
-    const responses = await Promise.all(deletePromises);
+  // Show undo toast — actual delete fires after 5 seconds unless undone
+  const message = `${count} transaction${count === 1 ? '' : 's'} deleted.`;
+  showUndoToast(message, async () => {
+    try {
+      const deletePromises = transactionIds.map(id =>
+        fetch(`${API_URL}/transactions/${id}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
+      );
 
-    // Check if any request failed
-    const failedResponse = responses.find(r => !r.ok);
-    if (failedResponse) {
-      if (failedResponse.status === 401) {
-        window.location.href = '/login';
-        return;
+      const responses = await Promise.all(deletePromises);
+
+      const failedResponse = responses.find(r => !r.ok);
+      if (failedResponse) {
+        if (failedResponse.status === 401) {
+          window.location.href = '/login';
+          return;
+        }
+        throw new Error("An error occurred while deleting transactions.");
       }
-      throw new Error("An error occurred while deleting transactions.");
+
+      getTransactions();
     }
-
-    // Hide the modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('transactionModalDeleteMultiple'));
-    modal.hide();
-
-    // Show toast
-    const count = transactionIds.length;
-    bootstrap.showToast({
-      body: `${count} transaction${count === 1 ? '' : 's'} deleted.`,
-      delay: 1000,
-      position: "top-0 start-50 translate-middle-x",
-      toastClass: "text-bg-success"
-    });
-
-    // Refresh the grid
-    getTransactions();
-  }
-  catch (error) {
-    bootstrap.showToast({body: `${error}`, delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"})
-  }
+    catch (error) {
+      bootstrap.showToast({body: `${error}`, delay: 3000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+    }
+  });
 }
 
 // --------

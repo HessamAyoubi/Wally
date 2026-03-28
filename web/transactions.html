@@ -291,5 +291,13 @@
       </form>
     </div>
   </div>
+
+  <!-- Undo Delete Toast -->
+  <div id="undoToast" class="toast position-fixed border-0" style="z-index: 9999; top: 1.25rem; left: 50%; transform: translateX(-50%); min-width: 300px; border-radius: 8px; background: #323232;" role="alert" data-bs-autohide="false">
+    <div class="d-flex align-items-center gap-2 px-3 py-2" style="color: white;">
+      <span id="undoToastMessage" style="font-size: 0.875rem; flex: 1;"></span>
+      <button type="button" id="undoToastBtn" class="btn btn-sm fw-semibold" style="color: #90caf9; padding: 2px 8px; border: none; background: none; white-space: nowrap; font-size: 0.875rem;">Undo</button>
+    </div>
+  </div>
   
 
