@@ -427,7 +427,7 @@ function calculateBreakdown(transactions) {
   const breakdownMap = {};
   const untaggedLabel = i18n.t('dashboard.group_by.untagged');
 
-  for (const { type, amount, date, category, tags: txTags } of transactions) {
+  for (const { type, amount, date, category, tags: txTags, person } of transactions) {
     if (type !== 'expense') continue;
 
     const monthKey = date.slice(0, 7); // YYYY-MM
@@ -440,6 +440,12 @@ function calculateBreakdown(transactions) {
         breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, amount).toNumber();
         breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), amount).toNumber();
       }
+    } else if (chartGroupBy === 'person') {
+      const groupValue = person || 'Unassigned';
+      if (chartDisabledFields.has(groupValue)) continue;
+      if (!breakdownMap[groupValue]) breakdownMap[groupValue] = { total: 0, months: {} };
+      breakdownMap[groupValue].total = Decimal.add(breakdownMap[groupValue].total, amount).toNumber();
+      breakdownMap[groupValue].months[monthKey] = Decimal.add((breakdownMap[groupValue].months[monthKey] || 0), amount).toNumber();
     } else {
       const groupValue = category;
       if (chartDisabledFields.has(groupValue)) continue;
@@ -496,6 +502,10 @@ function updateLegend(transactions, data) {
       else labelSet.add(untaggedLabel);
     });
     uniqueLabels = Array.from(labelSet);
+  } else if (chartGroupBy === 'person') {
+    const labelSet = new Set();
+    monthExpenses.forEach(exp => labelSet.add(exp.person || 'Unassigned'));
+    uniqueLabels = Array.from(labelSet);
   } else {
     uniqueLabels = monthExpenses.map(exp => exp.category).filter((v, i, a) => a.indexOf(v) === i);
   }
@@ -535,6 +545,10 @@ function updateLegend(transactions, data) {
       const keys = tx.tags && tx.tags.length > 0 ? tx.tags : [untaggedLabel];
       return keys.some(t => !chartDisabledFields.has(t));
     })
+    .reduce((sum, x) => Decimal.add(sum, x.amount).toNumber(), 0);
+  } else if (chartGroupBy === 'person') {
+    activeTotal = monthExpenses
+    .filter(x => !chartDisabledFields.has(x.person || 'Unassigned'))
     .reduce((sum, x) => Decimal.add(sum, x.amount).toNumber(), 0);
   } else {
     activeTotal = monthExpenses

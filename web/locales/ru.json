@@ -51,6 +51,7 @@
     "name_placeholder": "Введите название транзакции",
     "category_label": "Категория",
     "tags_label": "Теги",
+    "person_label": "Человек",
     "tags_placeholder": "Добавьте тег и нажмите Enter",
     "date_label": "Дата",
     "type_label": "Тип",
@@ -74,6 +75,7 @@
       "name": "Название",
       "category": "Категория",
       "tags": "Теги",
+      "person": "Человек",
       "date": "Дата",
       "amount": "Сумма",
       "actions": "Действия"
@@ -265,6 +267,16 @@
         "amount": "Сумма",
         "actions": "Действия"
       }
+    },
+    "persons": {
+      "title": "Люди",
+      "placeholder": "Добавить нового человека",
+      "add": "Добавить",
+      "edit_title": "Редактировать человека",
+      "delete_title": "Удалить человека",
+      "name_label": "Имя человека",
+      "delete_confirm": "Вы уверены, что хотите удалить человека",
+      "delete_warning": "Это очистит человека из всех транзакций, использующих его."
     }
   },
   "common": {

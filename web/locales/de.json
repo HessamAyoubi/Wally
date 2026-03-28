@@ -51,6 +51,7 @@
     "name_placeholder": "Transaktionsname eingeben",
     "category_label": "Kategorie",
     "tags_label": "Tags",
+    "person_label": "Person",
     "tags_placeholder": "Tag hinzufügen und Enter drücken",
     "date_label": "Datum",
     "type_label": "Typ",
@@ -74,6 +75,7 @@
       "name": "Name",
       "category": "Kategorie",
       "tags": "Tags",
+      "person": "Person",
       "date": "Datum",
       "amount": "Betrag",
       "actions": "Aktionen"
@@ -265,6 +267,16 @@
         "amount": "Betrag",
         "actions": "Aktionen"
       }
+    },
+    "persons": {
+      "title": "Personen",
+      "placeholder": "Neue Person hinzufügen",
+      "add": "Hinzufügen",
+      "edit_title": "Person bearbeiten",
+      "delete_title": "Person löschen",
+      "name_label": "Personenname",
+      "delete_confirm": "Sind Sie sicher, dass Sie die Person löschen möchten",
+      "delete_warning": "Dies löscht die Person aus allen Transaktionen, die sie verwenden."
     }
   },
   "common": {

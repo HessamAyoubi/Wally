@@ -51,6 +51,7 @@
     "name_placeholder": "Enter transaction name",
     "category_label": "Category",
     "tags_label": "Tags",
+    "person_label": "Person",
     "tags_placeholder": "Add a tag and press Enter",
     "date_label": "Date",
     "type_label": "Type",
@@ -74,6 +75,7 @@
       "name": "Name",
       "category": "Category",
       "tags": "Tags",
+      "person": "Person",
       "date": "Date",
       "amount": "Amount",
       "actions": "Actions"
@@ -265,6 +267,16 @@
         "amount": "Amount",
         "actions": "Actions"
       }
+    },
+    "persons": {
+      "title": "Persons",
+      "placeholder": "Add new person",
+      "add": "Add",
+      "edit_title": "Edit Person",
+      "delete_title": "Delete Person",
+      "name_label": "Person Name",
+      "delete_confirm": "Are you sure you want to delete the person",
+      "delete_warning": "This will clear the person from all transactions that use it."
     }
   },
   "common": {

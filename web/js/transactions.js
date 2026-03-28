@@ -2,6 +2,7 @@ const API_URL = '/api';
 
 let categories;
 let tags;
+let persons;
 let currency;
 
 let gridInstance;
@@ -66,16 +67,18 @@ async function main() {
   // Show current month
   renderMonth();
 
-  // Get categories, tags and default currency
-  [categories, tags, currency] = await Promise.all([
+  // Get categories, tags, persons and default currency
+  [categories, tags, persons, currency] = await Promise.all([
     getCategories(),
     getTags(),
+    getPersons(),
     getCurrency(),
   ]);
 
-  // Render categories, tags and name autocomplete
+  // Render categories, tags, persons and name autocomplete
   await renderCategories();
   await renderTags();
+  await renderPersonSelect();
   await renderNameAutocomplete();
 
   // Initialize the grid
@@ -126,6 +129,22 @@ async function getTags() {
   return response.json();
 }
 
+async function getPersons() {
+  const response = await fetch(`${API_URL}/persons`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (response.status === 401) {
+    window.location.href = '/login';
+    return [];
+  }
+
+  if (!response.ok) return [];
+
+  return response.json();
+}
+
 async function getCurrency() {
   const response = await fetch(`${API_URL}/currency`, {
     method: 'GET',
@@ -165,6 +184,23 @@ async function renderCategories() {
     option.value = category;
     option.textContent = category;
     option.selected = false;
+    select.appendChild(option);
+  });
+}
+
+async function renderPersonSelect() {
+  const select = document.getElementById('personSelect');
+  select.innerHTML = "";
+
+  const none = document.createElement('option');
+  none.value = "";
+  none.textContent = "None";
+  select.appendChild(none);
+
+  persons.forEach(person => {
+    const option = document.createElement('option');
+    option.value = person;
+    option.textContent = person;
     select.appendChild(option);
   });
 }
@@ -355,6 +391,11 @@ async function initGrid() {
         valueFormatter: (params) => {
           return params.value ? params.value.join(", ") : "";
         },
+      },
+      {
+        field: "person",
+        headerName: i18n.t('transactions.columns.person'),
+        filter: true,
       },
       {
         field: "date",
@@ -653,6 +694,7 @@ function addTransaction() {
   document.getElementById('modalSubmitButton').textContent = i18n.t('transactions.add');
   document.getElementById('transactionForm').reset();
   document.getElementById('categorySelect').value = "";
+  document.getElementById('personSelect').value = "";
   nameInput.clear();
   tagsInput.setValue([]);
   document.getElementById('dateInput').value = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD (Local time)
@@ -670,14 +712,15 @@ function editTransaction() {
   // Assign values
   nameInput.addOption({ value: selectedRow.name, text: selectedRow.name });
   nameInput.setValue(selectedRow.name);
-  document.getElementById('categorySelect').value = selectedRow.category
+  document.getElementById('categorySelect').value = selectedRow.category;
   selectedRow.tags.forEach(tag => {
     tagsInput.addOption({ value: tag, text: tag }, user_created=true);
   });
   tagsInput.setValue(selectedRow.tags);
-  document.getElementById('amountInput').value = selectedRow.amount
-  document.getElementById('typeSelect').value = selectedRow.type
-  document.getElementById('dateInput').value = selectedRow.date
+  document.getElementById('personSelect').value = selectedRow.person || "";
+  document.getElementById('amountInput').value = selectedRow.amount;
+  document.getElementById('typeSelect').value = selectedRow.type;
+  document.getElementById('dateInput').value = selectedRow.date;
 
   // Open modal
   const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('transactionModal'));

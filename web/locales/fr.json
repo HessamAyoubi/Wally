@@ -50,6 +50,7 @@
     "name_placeholder": "Entrez le nom de la transaction",
     "category_label": "Catégorie",
     "tags_label": "Étiquettes",
+    "person_label": "Personne",
     "tags_placeholder": "Ajoutez une étiquette et appuyez sur Entrée",
     "date_label": "Date",
     "type_label": "Type",
@@ -73,6 +74,7 @@
       "name": "Nom",
       "category": "Catégorie",
       "tags": "Étiquettes",
+      "person": "Personne",
       "date": "Date",
       "amount": "Montant",
       "actions": "Actions"
@@ -264,6 +266,16 @@
         "amount": "Montant",
         "actions": "Actions"
       }
+    },
+    "persons": {
+      "title": "Personnes",
+      "placeholder": "Ajouter une nouvelle personne",
+      "add": "Ajouter",
+      "edit_title": "Modifier la personne",
+      "delete_title": "Supprimer la personne",
+      "name_label": "Nom de la personne",
+      "delete_confirm": "Êtes-vous sûr de vouloir supprimer la personne",
+      "delete_warning": "Cela effacera la personne de toutes les transactions qui l'utilisent."
     }
   },
   "common": {

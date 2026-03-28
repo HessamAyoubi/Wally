@@ -51,6 +51,7 @@
     "name_placeholder": "Inserisci il nome della transazione",
     "category_label": "Categoria",
     "tags_label": "Tag",
+    "person_label": "Persona",
     "tags_placeholder": "Aggiungi un tag e premi Invio",
     "date_label": "Data",
     "type_label": "Tipo",
@@ -74,6 +75,7 @@
       "name": "Nome",
       "category": "Categoria",
       "tags": "Tag",
+      "person": "Persona",
       "date": "Data",
       "amount": "Importo",
       "actions": "Azioni"
@@ -265,6 +267,16 @@
         "amount": "Importo",
         "actions": "Azioni"
       }
+    },
+    "persons": {
+      "title": "Persone",
+      "placeholder": "Aggiungi nuova persona",
+      "add": "Aggiungi",
+      "edit_title": "Modifica persona",
+      "delete_title": "Elimina persona",
+      "name_label": "Nome della persona",
+      "delete_confirm": "Sei sicuro di voler eliminare la persona",
+      "delete_warning": "Questo rimuoverà la persona da tutte le transazioni che la utilizzano."
     }
   },
   "common": {

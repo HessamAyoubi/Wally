@@ -51,6 +51,7 @@
     "name_placeholder": "거래 이름 입력",
     "category_label": "카테고리",
     "tags_label": "태그",
+    "person_label": "인물",
     "tags_placeholder": "태그를 추가하고 Enter 누르기",
     "date_label": "날짜",
     "type_label": "유형",
@@ -74,6 +75,7 @@
       "name": "이름",
       "category": "카테고리",
       "tags": "태그",
+      "person": "인물",
       "date": "날짜",
       "amount": "금액",
       "actions": "작업"
@@ -265,6 +267,16 @@
         "amount": "금액",
         "actions": "작업"
       }
+    },
+    "persons": {
+      "title": "인물",
+      "placeholder": "새 인물 추가",
+      "add": "추가",
+      "edit_title": "인물 편집",
+      "delete_title": "인물 삭제",
+      "name_label": "인물 이름",
+      "delete_confirm": "이 인물을 삭제하시겠습니까",
+      "delete_warning": "이렇게 하면 이 인물을 사용하는 모든 거래에서 인물이 지워집니다."
     }
   },
   "common": {

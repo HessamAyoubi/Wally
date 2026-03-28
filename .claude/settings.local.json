@@ -3,7 +3,13 @@
     "allow": [
       "Bash(xargs wc:*)",
       "Bash(ls -lah *.py)",
-      "Bash(wc -l *.py)"
+      "Bash(wc -l *.py)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Files/IT Stuff/GitHub/Wally/**)",
+      "Bash(done)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"import json; d=json.load\\(open\\(''en.json''\\)\\); print\\(json.dumps\\(d.get\\(''settings'',{}\\).get\\(''tags'',{}\\), indent=2\\)\\)\")"
     ]
   }
 }

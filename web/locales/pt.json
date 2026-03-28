@@ -51,6 +51,7 @@
     "name_placeholder": "Digite o nome da transação",
     "category_label": "Categoria",
     "tags_label": "Etiquetas",
+    "person_label": "Pessoa",
     "tags_placeholder": "Adicione uma etiqueta e pressione Enter",
     "date_label": "Data",
     "type_label": "Tipo",
@@ -74,6 +75,7 @@
       "name": "Nome",
       "category": "Categoria",
       "tags": "Etiquetas",
+      "person": "Pessoa",
       "date": "Data",
       "amount": "Quantia",
       "actions": "Ações"
@@ -265,6 +267,16 @@
         "amount": "Quantia",
         "actions": "Ações"
       }
+    },
+    "persons": {
+      "title": "Pessoas",
+      "placeholder": "Adicionar nova pessoa",
+      "add": "Adicionar",
+      "edit_title": "Editar pessoa",
+      "delete_title": "Excluir pessoa",
+      "name_label": "Nome da pessoa",
+      "delete_confirm": "Tem certeza de que deseja excluir a pessoa",
+      "delete_warning": "Isso limpará a pessoa de todas as transações que a utilizam."
     }
   },
   "common": {

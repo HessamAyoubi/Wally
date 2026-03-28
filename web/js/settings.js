@@ -2,11 +2,13 @@ const API_URL = '/api';
 
 let categories;
 let tags;
+let persons;
 let currency;
 let login;
 
 let categorySelected;
 let tagSelected;
+let personSelected;
 
 let gridInstance;
 let gridApi;
@@ -61,10 +63,11 @@ async function main() {
   await i18n.init();
   renderLanguage();
 
-  // Get categories, tags and default currency
-  [categories, tags, currency, login] = await Promise.all([
+  // Get categories, tags, persons and default currency
+  [categories, tags, persons, currency, login] = await Promise.all([
     getCategories(),
     getTags(),
+    getPersons(),
     getCurrency(),
     getLogin(),
     renderTheme(),
@@ -634,6 +637,207 @@ async function deleteTagSubmit(event) {
       }
 
       tags = await getTags();
+    }
+    catch (error) {
+      bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+    }
+  });
+}
+
+// -----------
+// - PERSONS -
+// -----------
+document.getElementById('personModalEdit').addEventListener('shown.bs.modal', () => {
+  document.getElementById('personEditInput').focus();
+});
+
+async function getPersons() {
+  const response = await fetch(`${API_URL}/persons`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (response.status === 401) {
+    window.location.href = '/login';
+    return [];
+  }
+
+  if (!response.ok) return [];
+
+  const data = await response.json();
+  await renderPersons(data);
+  return data;
+}
+
+async function renderPersons(persons) {
+  const container = document.getElementById('personBadges');
+  container.innerHTML = '';
+
+  if (persons.length === 0) {
+    const empty = document.createElement('span');
+    empty.style.fontSize = '0.9rem';
+    empty.innerText = "No persons have been created yet.";
+    empty.style.fontStyle = 'italic';
+    container.appendChild(empty);
+  } else {
+    persons.forEach(person => {
+      const badge = document.createElement('span');
+      badge.className = 'badge rounded-pill me-2 d-inline-flex align-items-center mb-2';
+      badge.style.height = '34px';
+      badge.style.paddingLeft = '12px';
+      badge.style.paddingRight = '12px';
+      badge.style.fontSize = '0.9rem';
+      badge.style.fontWeight = '400';
+      badge.style.cursor = 'pointer';
+      badge.style.transition = 'opacity 0.2s ease, transform 0.1s ease';
+      badge.textContent = person;
+
+      badge.addEventListener('mouseenter', function() {
+        badge.style.opacity = '0.8';
+        badge.style.transform = 'scale(1.05)';
+      });
+      badge.addEventListener('mouseleave', function() {
+        badge.style.opacity = '1';
+        badge.style.transform = 'scale(1)';
+      });
+
+      badge.onclick = function() { openPersonActionsModal(person); };
+      container.appendChild(badge);
+    });
+  }
+}
+
+async function addPerson(event) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const response = await fetch(`${API_URL}/persons`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg);
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+      throw new Error("An error occurred.");
+    } else {
+      persons = await getPersons();
+      bootstrap.showToast({body: 'Person added.', delay: 1000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"});
+      document.getElementById('personForm').reset();
+    }
+  }
+  catch (error) {
+    bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+  }
+}
+
+function openPersonActionsModal(person) {
+  personSelected = person;
+  document.getElementById('personModalActionsName').textContent = person;
+  const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('personModalActions'));
+  modal.show();
+}
+
+function openEditPersonModal() {
+  const actionsModal = bootstrap.Modal.getInstance(document.getElementById('personModalActions'));
+  actionsModal.hide();
+
+  document.getElementById('personEditInput').value = personSelected;
+
+  const editModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('personModalEdit'));
+  editModal.show();
+}
+
+function openDeletePersonModal() {
+  const actionsModal = bootstrap.Modal.getInstance(document.getElementById('personModalActions'));
+  actionsModal.hide();
+
+  document.getElementById('personModalDeleteName').textContent = personSelected;
+
+  const deleteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('personModalDelete'));
+  deleteModal.show();
+}
+
+async function editPersonSubmit(event) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const response = await fetch(`${API_URL}/persons/${personSelected}`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg);
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+      throw new Error("An error occurred.");
+    } else {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('personModalEdit'));
+      modal.hide();
+
+      bootstrap.showToast({body: 'Person updated.', delay: 2500, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-success"});
+
+      persons = await getPersons();
+    }
+  }
+  catch (error) {
+    bootstrap.showToast({body: `${error}`, delay: 2000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});
+  }
+}
+
+async function deletePersonSubmit(event) {
+  event.preventDefault();
+
+  const personToDelete = personSelected;
+
+  const modal = bootstrap.Modal.getInstance(document.getElementById('personModalDelete'));
+  modal.hide();
+
+  showUndoToast('Person deleted.', async () => {
+    try {
+      const response = await fetch(`${API_URL}/persons/${personToDelete}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.status === 401) {
+        window.location.href = '/login';
+        return;
+      }
+
+      const json = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 422) throw new Error(json.detail[0].msg);
+        else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+        throw new Error("An error occurred.");
+      }
+
+      persons = await getPersons();
     }
     catch (error) {
       bootstrap.showToast({body: `${error.message || error}`, delay: 4000, position: "top-0 start-50 translate-middle-x", toastClass: "text-bg-danger"});

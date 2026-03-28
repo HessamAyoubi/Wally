@@ -51,6 +51,7 @@
     "name_placeholder": "लेन-देन का नाम दर्ज करें",
     "category_label": "श्रेणी",
     "tags_label": "टैग",
+    "person_label": "व्यक्ति",
     "tags_placeholder": "एक टैग जोड़ें और Enter दबाएं",
     "date_label": "तारीख",
     "type_label": "प्रकार",
@@ -74,6 +75,7 @@
       "name": "नाम",
       "category": "श्रेणी",
       "tags": "टैग",
+      "person": "व्यक्ति",
       "date": "तारीख",
       "amount": "राशि",
       "actions": "कार्रवाई"
@@ -265,6 +267,16 @@
         "amount": "राशि",
         "actions": "कार्रवाई"
       }
+    },
+    "persons": {
+      "title": "व्यक्ति",
+      "placeholder": "नया व्यक्ति जोड़ें",
+      "add": "जोड़ें",
+      "edit_title": "व्यक्ति संपादित करें",
+      "delete_title": "व्यक्ति हटाएं",
+      "name_label": "व्यक्ति का नाम",
+      "delete_confirm": "क्या आप वाकई इस व्यक्ति को हटाना चाहते हैं",
+      "delete_warning": "यह इसका उपयोग करने वाले सभी लेनदेन से व्यक्ति को हटा देगा।"
     }
   },
   "common": {

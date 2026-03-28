@@ -51,6 +51,7 @@
     "name_placeholder": "输入交易名称",
     "category_label": "类别",
     "tags_label": "标签",
+    "person_label": "人员",
     "tags_placeholder": "添加标签并按Enter",
     "date_label": "日期",
     "type_label": "类型",
@@ -74,6 +75,7 @@
       "name": "名称",
       "category": "类别",
       "tags": "标签",
+      "person": "人员",
       "date": "日期",
       "amount": "金额",
       "actions": "操作"
@@ -265,6 +267,16 @@
         "amount": "金额",
         "actions": "操作"
       }
+    },
+    "persons": {
+      "title": "人员",
+      "placeholder": "添加新人员",
+      "add": "添加",
+      "edit_title": "编辑人员",
+      "delete_title": "删除人员",
+      "name_label": "人员姓名",
+      "delete_confirm": "您确定要删除该人员吗",
+      "delete_warning": "这将从所有使用该人员的交易中清除该人员。"
     }
   },
   "common": {

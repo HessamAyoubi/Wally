@@ -51,6 +51,7 @@
     "name_placeholder": "取引名を入力",
     "category_label": "カテゴリー",
     "tags_label": "タグ",
+    "person_label": "人物",
     "tags_placeholder": "タグを追加してEnterを押す",
     "date_label": "日付",
     "type_label": "種類",
@@ -74,6 +75,7 @@
       "name": "名前",
       "category": "カテゴリー",
       "tags": "タグ",
+      "person": "人物",
       "date": "日付",
       "amount": "金額",
       "actions": "操作"
@@ -265,6 +267,16 @@
         "amount": "金額",
         "actions": "操作"
       }
+    },
+    "persons": {
+      "title": "人物",
+      "placeholder": "新しい人物を追加",
+      "add": "追加",
+      "edit_title": "人物を編集",
+      "delete_title": "人物を削除",
+      "name_label": "人物名",
+      "delete_confirm": "この人物を削除してもよろしいですか",
+      "delete_warning": "これにより、この人物を使用しているすべての取引から人物が削除されます。"
     }
   },
   "common": {

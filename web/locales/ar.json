@@ -51,6 +51,7 @@
     "name_placeholder": "أدخل اسم المعاملة",
     "category_label": "الفئة",
     "tags_label": "العلامات",
+    "person_label": "الشخص",
     "tags_placeholder": "أضف علامة واضغط Enter",
     "date_label": "التاريخ",
     "type_label": "النوع",
@@ -74,6 +75,7 @@
       "name": "الاسم",
       "category": "الفئة",
       "tags": "العلامات",
+      "person": "الشخص",
       "date": "التاريخ",
       "amount": "المبلغ",
       "actions": "الإجراءات"
@@ -265,6 +267,16 @@
         "amount": "المبلغ",
         "actions": "الإجراءات"
       }
+    },
+    "persons": {
+      "title": "الأشخاص",
+      "placeholder": "إضافة شخص جديد",
+      "add": "إضافة",
+      "edit_title": "تعديل الشخص",
+      "delete_title": "حذف الشخص",
+      "name_label": "اسم الشخص",
+      "delete_confirm": "هل أنت متأكد أنك تريد حذف الشخص",
+      "delete_warning": "سيؤدي هذا إلى مسح الشخص من جميع المعاملات التي تستخدمه."
     }
   },
   "common": {
