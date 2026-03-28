@@ -611,7 +611,7 @@ function setupEventListeners() {
   });
 
   document.getElementById('transactionModal').addEventListener('shown.bs.modal', () => {
-    document.getElementById('nameInput').focus()
+    if (modalMode === 'add') nameInput.focus();
   });
 
   document.getElementById('amountInput').addEventListener('input', (event) => {
@@ -668,6 +668,7 @@ function editTransaction() {
   toggleRecurring(false);
 
   // Assign values
+  nameInput.addOption({ value: selectedRow.name, text: selectedRow.name });
   nameInput.setValue(selectedRow.name);
   document.getElementById('categorySelect').value = selectedRow.category
   selectedRow.tags.forEach(tag => {
