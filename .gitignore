@@ -2,4 +2,4 @@ wally.db
 __pycache__
 .DS_Store
 password.txt
-.claude
+.claude/settings.local.json
