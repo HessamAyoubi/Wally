@@ -50,6 +50,7 @@
     "name_label": "الاسم",
     "name_placeholder": "أدخل اسم المعاملة",
     "category_label": "الفئة",
+    "category_placeholder": "اختر الفئة",
     "tags_label": "العلامات",
     "tags_placeholder": "أضف علامة واضغط Enter",
     "date_label": "التاريخ",

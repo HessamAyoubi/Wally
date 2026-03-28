@@ -50,6 +50,7 @@
     "name_label": "이름",
     "name_placeholder": "거래 이름 입력",
     "category_label": "카테고리",
+    "category_placeholder": "카테고리를 선택하세요",
     "tags_label": "태그",
     "tags_placeholder": "태그를 추가하고 Enter 누르기",
     "date_label": "날짜",

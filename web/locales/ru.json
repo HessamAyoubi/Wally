@@ -50,6 +50,7 @@
     "name_label": "Название",
     "name_placeholder": "Введите название транзакции",
     "category_label": "Категория",
+    "category_placeholder": "Выбрать категорию",
     "tags_label": "Теги",
     "tags_placeholder": "Добавьте тег и нажмите Enter",
     "date_label": "Дата",
