@@ -105,7 +105,12 @@
       "delete_title": "Delete Category",
       "name_label": "Category Name",
       "delete_confirm": "Are you sure you want to delete the category",
-      "delete_warning": "This will only work if there are no transactions using this category."
+      "delete_warning": "This will only work if there are no transactions using this category.",
+      "set_budget": "Set Budget",
+      "budget_title": "Set Monthly Budget",
+      "budget_for": "Monthly budget for",
+      "budget_amount": "Budget Amount",
+      "budget_hint": "Leave empty to clear the budget."
     },
     "tags": {
       "title": "Tags",
@@ -169,7 +174,8 @@
       "recurring_deleted": "Recurring transaction deleted.",
       "api_key_created": "API key created.",
       "api_key_deleted": "API key deleted.",
-      "api_key_copied": "API key copied to clipboard."
+      "api_key_copied": "API key copied to clipboard.",
+      "budget_updated": "Budget updated."
     },
     "language": {
       "title": "Language",

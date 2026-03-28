@@ -105,7 +105,12 @@
       "delete_title": "Eliminar Categoria",
       "name_label": "Nom de la Categoria",
       "delete_confirm": "Segur que vols eliminar la categoria",
-      "delete_warning": "Això només funcionarà si no hi ha transaccions utilitzant aquesta categoria."
+      "delete_warning": "Això només funcionarà si no hi ha transaccions utilitzant aquesta categoria.",
+      "set_budget": "Establir pressupost",
+      "budget_title": "Establir pressupost mensual",
+      "budget_for": "Pressupost mensual per a",
+      "budget_amount": "Import del pressupost",
+      "budget_hint": "Deixa-ho buit per eliminar el pressupost."
     },
     "tags": {
       "title": "Etiquetes",
@@ -169,7 +174,8 @@
       "recurring_deleted": "Transacció recurrent eliminada.",
       "api_key_created": "Clau API creada.",
       "api_key_deleted": "Clau API eliminada.",
-      "api_key_copied": "Clau API copiada al porta-retalls."
+      "api_key_copied": "Clau API copiada al porta-retalls.",
+      "budget_updated": "Pressupost actualitzat."
     },
     "language": {
       "title": "Idioma",

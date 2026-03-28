@@ -105,7 +105,12 @@
       "delete_title": "カテゴリーを削除",
       "name_label": "カテゴリー名",
       "delete_confirm": "カテゴリーを削除してもよろしいですか",
-      "delete_warning": "このカテゴリーを使用している取引がない場合のみ機能します。"
+      "delete_warning": "このカテゴリーを使用している取引がない場合のみ機能します。",
+      "set_budget": "予算を設定",
+      "budget_title": "月次予算を設定",
+      "budget_for": "月次予算：",
+      "budget_amount": "予算額",
+      "budget_hint": "空白のままにすると予算をクリアします。"
     },
     "tags": {
       "title": "タグ",
@@ -169,7 +174,8 @@
       "recurring_deleted": "定期取引を削除しました。",
       "api_key_created": "APIキーを作成しました。",
       "api_key_deleted": "APIキーを削除しました。",
-      "api_key_copied": "APIキーをクリップボードにコピーしました。"
+      "api_key_copied": "APIキーをクリップボードにコピーしました。",
+      "budget_updated": "予算を更新しました。"
     },
     "language": {
       "title": "言語",

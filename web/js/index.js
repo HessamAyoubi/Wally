@@ -9,6 +9,7 @@ let chart;
 let chartSelected = "currentMonth";
 let chartGroupBy = 'category';
 let chartDisabledFields = new Set();
+let budgets = {};
 
 let tagsInput;
 let nameInput;
@@ -27,10 +28,11 @@ async function main() {
   });
 
   document.getElementById('dashboardForm').reset();
-  [categories, tags, currency] = await Promise.all([
+  [categories, tags, currency, budgets] = await Promise.all([
     getCategories(),
     getTags(),
     getCurrency(),
+    getBudgets(),
     renderMonth(),
   ]);
 
@@ -95,6 +97,21 @@ async function getTags() {
 
   const data = await response.json();
   return data;
+}
+
+async function getBudgets() {
+  const response = await fetch(`${API_URL}/categories/budgets`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (response.status === 401) {
+    window.location.href = '/login';
+    return {};
+  }
+
+  if (!response.ok) return {};
+  return await response.json();
 }
 
 async function getCurrency() {
@@ -204,6 +221,7 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 
 async function loadChart() {
   const transactions = await getTransactions();
+  budgets = await getBudgets();
   const chartBox = document.querySelector('.chart-box');
   const legendBox = document.getElementById('customLegend');
   const cashflowSection = document.getElementById('cashflow-section');
@@ -523,13 +541,39 @@ function updateLegend(transactions, data) {
     const color = chartColors[index % chartColors.length];
     const percentage = itemData ? ` (${itemData.percentage.toFixed(1)}%)` : '';
     const amount = itemData ? formatCurrency(itemData.total) : '';
+    const spent = itemData ? itemData.total : 0;
+
+    // Budget bar — only for category grouping in current month view
+    const budget = (chartGroupBy === 'category' && chartSelected === 'currentMonth')
+      ? (budgets[label] ?? null)
+      : null;
+
+    let budgetHtml = '';
+    if (budget != null) {
+      const pct = Math.min((spent / budget) * 100, 100);
+      const isOver = spent > budget;
+      const isNear = !isOver && pct >= 80;
+      const barColor = isOver ? 'var(--bs-danger)' : (isNear ? 'var(--bs-warning)' : 'var(--bs-success)');
+      const wrapperClass = isOver ? 'budget-over' : (isNear ? 'budget-near' : '');
+      budgetHtml = `
+        <div class="budget-bar-wrapper ${wrapperClass}">
+          <div class="budget-progress">
+            <div class="budget-progress-bar" style="width: ${pct}%; background-color: ${barColor};"></div>
+          </div>
+          <span class="budget-label">${formatCurrency(spent)} / ${formatCurrency(budget)}${isOver ? ' ⚠ over budget' : ''}</span>
+        </div>`;
+    }
+
     const item = document.createElement('div');
     item.className = `legend-item${chartDisabledFields.has(label) ? ' disabled' : ''}`;
     item.innerHTML = `
     <div class="color-box" style="background-color: ${color}"></div>
     <div class="legend-text">
-    <span>${label}${percentage}</span>
-    <span class="amount">${amount}</span>
+      <div class="legend-text-row">
+        <span>${label}${percentage}</span>
+        <span class="amount">${amount}</span>
+      </div>
+      ${budgetHtml}
     </div>
     `;
     item.addEventListener('click', () => toggleLegend(label));

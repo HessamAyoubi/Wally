@@ -3,6 +3,7 @@ const API_URL = '/api';
 let categories;
 let tags;
 let persons;
+let budgets = {};
 let currency;
 let login;
 
@@ -115,19 +116,22 @@ async function getVersion() {
 }
 
 async function getCategories() {
-  const response = await fetch(`${API_URL}/categories`, {
-    method: 'GET',
-    credentials: 'include',
-  });
+  const [catResponse, budgetsResponse] = await Promise.all([
+    fetch(`${API_URL}/categories`, { method: 'GET', credentials: 'include' }),
+    fetch(`${API_URL}/categories/budgets`, { method: 'GET', credentials: 'include' }),
+  ]);
 
-  if (response.status === 401) {
+  if (catResponse.status === 401) {
     window.location.href = '/login';
     return;
   }
 
-  const data = await response.json();
+  const data = await catResponse.json();
+  if (budgetsResponse.ok) {
+    budgets = await budgetsResponse.json();
+  }
   await renderCategories(data);
-  return categories
+  return data;
 }
 
 async function getTags() {
@@ -187,6 +191,10 @@ document.getElementById('categoryModalEdit').addEventListener('shown.bs.modal', 
   document.getElementById('categoryEditInput').focus();
 });
 
+document.getElementById('categoryModalBudget').addEventListener('shown.bs.modal', () => {
+  document.getElementById('categoryBudgetInput').focus();
+});
+
 function openCategoryActionsModal(category) {
   // Store selected category
   categorySelected = category;
@@ -223,6 +231,64 @@ function openDeleteCategoryModal() {
   // Show delete modal
   const deleteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('categoryModalDelete'));
   deleteModal.show();
+}
+
+function openBudgetCategoryModal() {
+  // Hide actions modal
+  const actionsModal = bootstrap.Modal.getInstance(document.getElementById('categoryModalActions'));
+  actionsModal.hide();
+
+  // Populate modal
+  document.getElementById('categoryBudgetName').textContent = categorySelected;
+  const currentBudget = budgets[categorySelected] ?? null;
+  document.getElementById('categoryBudgetInput').value = currentBudget !== null ? currentBudget : '';
+
+  // Show budget modal
+  const budgetModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('categoryModalBudget'));
+  budgetModal.show();
+}
+
+async function setBudgetSubmit(event) {
+  event.preventDefault();
+
+  const inputVal = document.getElementById('categoryBudgetInput').value.trim();
+  const budgetValue = inputVal === '' ? null : parseFloat(inputVal);
+
+  try {
+    const response = await fetch(`${API_URL}/categories/${encodeURIComponent(categorySelected)}/budget`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ budget: budgetValue }),
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/login';
+      return;
+    }
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) throw new Error(json.detail[0].msg);
+      else if ([400, 404].includes(response.status)) throw new Error(json.detail);
+      throw new Error('An error occurred.');
+    }
+    else {
+      // Hide the modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('categoryModalBudget'));
+      modal.hide();
+
+      // Show success toast
+      bootstrap.showToast({ body: i18n.t('settings.messages.budget_updated'), delay: 2500, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-success' });
+
+      // Refresh categories (also re-fetches budgets)
+      categories = await getCategories();
+    }
+  }
+  catch (error) {
+    bootstrap.showToast({ body: `${error}`, delay: 2000, position: 'top-0 start-50 translate-middle-x', toastClass: 'text-bg-danger' });
+  }
 }
 
 async function editCategorySubmit(event) {
@@ -291,7 +357,16 @@ async function renderCategories(categories) {
       badge.style.fontWeight = '400';
       badge.style.cursor = 'pointer';
       badge.style.transition = 'opacity 0.2s ease, transform 0.1s ease';
-      badge.textContent = category;
+
+      const budget = budgets[category] ?? null;
+      if (budget != null) {
+        const formatted = currency
+          ? (currency.position === 'left' ? `${currency.symbol}${budget.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : `${budget.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${currency.symbol}`)
+          : budget;
+        badge.innerHTML = `${category} <span style="opacity: 0.65; font-size: 0.8em; margin-left: 4px;">· ${formatted}/mo</span>`;
+      } else {
+        badge.textContent = category;
+      }
 
       // Add hover effect
       badge.addEventListener('mouseenter', function() {

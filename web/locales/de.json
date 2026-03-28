@@ -105,7 +105,12 @@
       "delete_title": "Kategorie löschen",
       "name_label": "Kategoriename",
       "delete_confirm": "Möchten Sie die Kategorie wirklich löschen",
-      "delete_warning": "Dies funktioniert nur, wenn keine Transaktionen diese Kategorie verwenden."
+      "delete_warning": "Dies funktioniert nur, wenn keine Transaktionen diese Kategorie verwenden.",
+      "set_budget": "Budget festlegen",
+      "budget_title": "Monatliches Budget festlegen",
+      "budget_for": "Monatliches Budget für",
+      "budget_amount": "Budgetbetrag",
+      "budget_hint": "Leer lassen, um das Budget zu entfernen."
     },
     "tags": {
       "title": "Tags",
@@ -169,7 +174,8 @@
       "recurring_deleted": "Wiederkehrende Transaktion gelöscht.",
       "api_key_created": "API-Schlüssel erstellt.",
       "api_key_deleted": "API-Schlüssel gelöscht.",
-      "api_key_copied": "API-Schlüssel in die Zwischenablage kopiert."
+      "api_key_copied": "API-Schlüssel in die Zwischenablage kopiert.",
+      "budget_updated": "Budget aktualisiert."
     },
     "language": {
       "title": "Sprache",

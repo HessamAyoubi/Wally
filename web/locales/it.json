@@ -105,7 +105,12 @@
       "delete_title": "Elimina Categoria",
       "name_label": "Nome Categoria",
       "delete_confirm": "Sei sicuro di voler eliminare la categoria",
-      "delete_warning": "Questo funzionerà solo se non ci sono transazioni che utilizzano questa categoria."
+      "delete_warning": "Questo funzionerà solo se non ci sono transazioni che utilizzano questa categoria.",
+      "set_budget": "Imposta budget",
+      "budget_title": "Imposta budget mensile",
+      "budget_for": "Budget mensile per",
+      "budget_amount": "Importo del budget",
+      "budget_hint": "Lascia vuoto per rimuovere il budget."
     },
     "tags": {
       "title": "Tag",
@@ -169,7 +174,8 @@
       "recurring_deleted": "Transazione ricorrente eliminata.",
       "api_key_created": "Chiave API creata.",
       "api_key_deleted": "Chiave API eliminata.",
-      "api_key_copied": "Chiave API copiata negli appunti."
+      "api_key_copied": "Chiave API copiata negli appunti.",
+      "budget_updated": "Budget aggiornato."
     },
     "language": {
       "title": "Lingua",

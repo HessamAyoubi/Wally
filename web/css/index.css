@@ -242,8 +242,47 @@ main.container {
 
 .legend-text {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   flex: 1;
+  gap: 0.2rem;
+}
+
+.legend-text-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.budget-bar-wrapper {
+  width: 100%;
+}
+
+.budget-progress {
+  height: 5px;
+  border-radius: 3px;
+  background-color: var(--bs-secondary-bg);
+  overflow: hidden;
+}
+
+.budget-progress-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.budget-label {
+  font-size: 0.72rem;
+  color: var(--bs-secondary-color);
+  font-family: monospace;
+}
+
+.budget-over .budget-label {
+  color: var(--bs-danger);
+  font-weight: 600;
+}
+
+.budget-near .budget-label {
+  color: var(--bs-warning-text-emphasis);
 }
 
 .legend-item {

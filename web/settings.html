@@ -271,6 +271,10 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               <span data-i18n="common.edit">Edit</span>
             </button>
+            <button type="button" class="btn btn-secondary d-flex align-items-center justify-content-center gap-2 py-2" onclick="openBudgetCategoryModal()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span data-i18n="settings.categories.set_budget">Set Budget</span>
+            </button>
             <button type="button" class="btn btn-danger d-flex align-items-center justify-content-center gap-2 py-2" onclick="openDeleteCategoryModal()">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
               <span data-i18n="common.delete">Delete</span>
@@ -322,6 +326,28 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
           <button type="submit" class="btn btn-danger" style="min-width: 120px" data-i18n="common.delete">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Budget Modal -->
+  <div class="modal fade" id="categoryModalBudget" tabindex="-1" aria-labelledby="categoryModalBudgetLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" onsubmit="setBudgetSubmit(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="categoryModalBudgetLabel" data-i18n="settings.categories.budget_title">Set Monthly Budget</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted mb-3" style="font-size: 0.9rem;"><span data-i18n="settings.categories.budget_for">Monthly budget for</span> <strong id="categoryBudgetName"></strong></p>
+          <label for="categoryBudgetInput" class="form-label" data-i18n="settings.categories.budget_amount">Budget Amount</label>
+          <input type="number" class="form-control" id="categoryBudgetInput" name="budget" min="0" step="0.01" placeholder="0.00" />
+          <div class="form-text" data-i18n="settings.categories.budget_hint">Leave empty to clear the budget.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="min-width: 120px" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="min-width: 120px" data-i18n="common.save">Save</button>
         </div>
       </form>
     </div>

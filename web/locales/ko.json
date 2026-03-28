@@ -105,7 +105,12 @@
       "delete_title": "카테고리 삭제",
       "name_label": "카테고리 이름",
       "delete_confirm": "카테고리를 삭제하시겠습니까",
-      "delete_warning": "이 카테고리를 사용하는 거래가 없는 경우에만 작동합니다."
+      "delete_warning": "이 카테고리를 사용하는 거래가 없는 경우에만 작동합니다.",
+      "set_budget": "예산 설정",
+      "budget_title": "월간 예산 설정",
+      "budget_for": "월간 예산:",
+      "budget_amount": "예산 금액",
+      "budget_hint": "예산을 지우려면 비워 두세요."
     },
     "tags": {
       "title": "태그",
@@ -169,7 +174,8 @@
       "recurring_deleted": "반복 거래가 삭제되었습니다.",
       "api_key_created": "API 키가 생성되었습니다.",
       "api_key_deleted": "API 키가 삭제되었습니다.",
-      "api_key_copied": "API 키가 클립보드에 복사되었습니다."
+      "api_key_copied": "API 키가 클립보드에 복사되었습니다.",
+      "budget_updated": "예산이 업데이트되었습니다."
     },
     "language": {
       "title": "언어",

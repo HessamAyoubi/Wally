@@ -105,7 +105,12 @@
       "delete_title": "حذف الفئة",
       "name_label": "اسم الفئة",
       "delete_confirm": "هل أنت متأكد من حذف الفئة",
-      "delete_warning": "سيعمل هذا فقط إذا لم تكن هناك معاملات تستخدم هذه الفئة."
+      "delete_warning": "سيعمل هذا فقط إذا لم تكن هناك معاملات تستخدم هذه الفئة.",
+      "set_budget": "تعيين الميزانية",
+      "budget_title": "تعيين الميزانية الشهرية",
+      "budget_for": "الميزانية الشهرية لـ",
+      "budget_amount": "مبلغ الميزانية",
+      "budget_hint": "اتركه فارغاً لمسح الميزانية."
     },
     "tags": {
       "title": "العلامات",
@@ -169,7 +174,8 @@
       "recurring_deleted": "تم حذف المعاملة المتكررة.",
       "api_key_created": "تم إنشاء مفتاح API.",
       "api_key_deleted": "تم حذف مفتاح API.",
-      "api_key_copied": "تم نسخ مفتاح API إلى الحافظة."
+      "api_key_copied": "تم نسخ مفتاح API إلى الحافظة.",
+      "budget_updated": "تم تحديث الميزانية."
     },
     "language": {
       "title": "اللغة",

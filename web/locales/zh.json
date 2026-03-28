@@ -105,7 +105,12 @@
       "delete_title": "删除类别",
       "name_label": "类别名称",
       "delete_confirm": "确定要删除类别",
-      "delete_warning": "仅当没有交易使用此类别时才能删除。"
+      "delete_warning": "仅当没有交易使用此类别时才能删除。",
+      "set_budget": "设置预算",
+      "budget_title": "设置月度预算",
+      "budget_for": "每月预算用于",
+      "budget_amount": "预算金额",
+      "budget_hint": "留空以清除预算。"
     },
     "tags": {
       "title": "标签",
@@ -169,7 +174,8 @@
       "recurring_deleted": "重复交易已删除.",
       "api_key_created": "API 密钥已创建。",
       "api_key_deleted": "API 密钥已删除。",
-      "api_key_copied": "API 密钥已复制到剪贴板。"
+      "api_key_copied": "API 密钥已复制到剪贴板。",
+      "budget_updated": "预算已更新。"
     },
     "language": {
       "title": "语言",

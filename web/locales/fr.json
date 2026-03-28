@@ -104,7 +104,12 @@
       "delete_title": "Supprimer la catégorie",
       "name_label": "Nom de la catégorie",
       "delete_confirm": "Êtes-vous sûr de vouloir supprimer la catégorie",
-      "delete_warning": "Cela ne fonctionnera que s'il n'y a pas de transactions utilisant cette catégorie."
+      "delete_warning": "Cela ne fonctionnera que s'il n'y a pas de transactions utilisant cette catégorie.",
+      "set_budget": "Définir le budget",
+      "budget_title": "Définir le budget mensuel",
+      "budget_for": "Budget mensuel pour",
+      "budget_amount": "Montant du budget",
+      "budget_hint": "Laissez vide pour supprimer le budget."
     },
     "tags": {
       "title": "Étiquettes",
@@ -168,7 +173,8 @@
       "recurring_deleted": "Transaction récurrente supprimée.",
       "api_key_created": "Clé API créée.",
       "api_key_deleted": "Clé API supprimée.",
-      "api_key_copied": "Clé API copiée dans le presse-papiers."
+      "api_key_copied": "Clé API copiée dans le presse-papiers.",
+      "budget_updated": "Budget mis à jour."
     },
     "language": {
       "title": "Langue",

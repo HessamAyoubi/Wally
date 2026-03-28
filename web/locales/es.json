@@ -104,7 +104,12 @@
       "delete_title": "Eliminar Categoría",
       "name_label": "Nombre de la Categoría",
       "delete_confirm": "¿Seguro que quieres eliminar la categoría",
-      "delete_warning": "Esto solo funcionará si no hay transacciones usando esta categoría."
+      "delete_warning": "Esto solo funcionará si no hay transacciones usando esta categoría.",
+      "set_budget": "Establecer presupuesto",
+      "budget_title": "Establecer presupuesto mensual",
+      "budget_for": "Presupuesto mensual para",
+      "budget_amount": "Monto del presupuesto",
+      "budget_hint": "Déjalo vacío para eliminar el presupuesto."
     },
     "tags": {
       "title": "Etiquetas",
@@ -168,7 +173,8 @@
       "recurring_deleted": "Transacción recurrente eliminada.",
       "api_key_created": "Clave API creada.",
       "api_key_deleted": "Clave API eliminada.",
-      "api_key_copied": "Clave API copiada al portapapeles."
+      "api_key_copied": "Clave API copiada al portapapeles.",
+      "budget_updated": "Presupuesto actualizado."
     },
     "language": {
       "title": "Idioma",
