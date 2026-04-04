@@ -91,7 +91,8 @@
       "transaction_deleted": "交易已删除。",
       "recurring_added": "重复交易已添加。",
       "end_date_later": "结束日期必须晚于开始日期。",
-      "transactions_updated": "已更新 {count} 笔交易。"
+      "transactions_updated": "已更新 {count} 笔交易。",
+      "duplicate_warning": "已存在相同金额、人员和日期的交易。仍然添加吗？"
     },
     "edit": "编辑",
     "edit_multiple_title": "编辑",

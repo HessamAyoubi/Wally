@@ -91,7 +91,8 @@
       "transaction_deleted": "تم حذف المعاملة.",
       "recurring_added": "تمت إضافة المعاملة المتكررة.",
       "end_date_later": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية.",
-      "transactions_updated": "تم تحديث {count} معاملة."
+      "transactions_updated": "تم تحديث {count} معاملة.",
+      "duplicate_warning": "توجد معاملة بنفس المبلغ والشخص والتاريخ. هل تريد الإضافة على أي حال؟"
     },
     "edit": "تعديل",
     "edit_multiple_title": "تعديل",

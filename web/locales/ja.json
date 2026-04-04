@@ -91,7 +91,8 @@
       "transaction_deleted": "取引を削除しました。",
       "recurring_added": "定期取引を追加しました。",
       "end_date_later": "終了日は開始日より後である必要があります。",
-      "transactions_updated": "{count}件の取引を更新しました。"
+      "transactions_updated": "{count}件の取引を更新しました。",
+      "duplicate_warning": "同じ金額、担当者、日付の取引が既に存在します。追加しますか？"
     },
     "edit": "編集",
     "edit_multiple_title": "編集",

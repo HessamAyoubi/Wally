@@ -91,7 +91,8 @@
       "transaction_deleted": "Transacció eliminada.",
       "recurring_added": "Transacció recurrent afegida.",
       "end_date_later": "La data de finalització ha de ser posterior a la data d'inici.",
-      "transactions_updated": "{count} transaccions actualitzades."
+      "transactions_updated": "{count} transaccions actualitzades.",
+      "duplicate_warning": "Ja existeix una transacció amb el mateix import, persona i data. Vols afegir-la igualment?"
     },
     "edit": "Edita",
     "edit_multiple_title": "Edita",

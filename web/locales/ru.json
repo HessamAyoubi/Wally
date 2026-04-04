@@ -91,7 +91,8 @@
       "transaction_deleted": "Транзакция удалена.",
       "recurring_added": "Повторяющаяся транзакция добавлена.",
       "end_date_later": "Дата окончания должна быть позже даты начала.",
-      "transactions_updated": "{count} транзакций обновлено."
+      "transactions_updated": "{count} транзакций обновлено.",
+      "duplicate_warning": "Транзакция с такой же суммой, лицом и датой уже существует. Добавить всё равно?"
     },
     "edit": "Изменить",
     "edit_multiple_title": "Изменить",

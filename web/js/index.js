@@ -1063,6 +1063,25 @@ async function submitTransactionAdd(event) {
   const data = Object.fromEntries(formData.entries());
   data.tags = data.tags ? data.tags.split(',').map(tag => tag.trim()) : [];
 
+  // Duplicate warning: fetch the target month's transactions and check
+  try {
+    const [year, month] = data.date.split('-');
+    const checkResp = await fetch(`${API_URL}/transactions/date/${year}-${month}`, { method: 'GET', credentials: 'include' });
+    if (checkResp.ok) {
+      const existing = await checkResp.json();
+      const newAmount = parseFloat(data.amount);
+      const newPerson = (data.person || '').toLowerCase();
+      const newCategory = (data.category || '').toLowerCase();
+      const hasDupe = existing.some(row =>
+        parseFloat(row.amount) === newAmount &&
+        (row.person || '').toLowerCase() === newPerson &&
+        row.date === data.date &&
+        (row.category || '').toLowerCase() === newCategory
+      );
+      if (hasDupe && !confirm(i18n.t('transactions.messages.duplicate_warning'))) return;
+    }
+  } catch (_) { /* proceed if check fails */ }
+
   try {
     const response = await fetch(`${API_URL}/transactions`, {
       method: 'POST',

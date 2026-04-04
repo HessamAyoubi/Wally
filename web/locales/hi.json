@@ -91,7 +91,8 @@
       "transaction_deleted": "लेन-देन हटाया गया।",
       "recurring_added": "आवर्ती लेन-देन जोड़ा गया।",
       "end_date_later": "समाप्ति तिथि प्रारंभ तिथि के बाद होनी चाहिए।",
-      "transactions_updated": "{count} लेनदेन अपडेट किए गए।"
+      "transactions_updated": "{count} लेनदेन अपडेट किए गए।",
+      "duplicate_warning": "समान राशि, व्यक्ति और तारीख वाला लेन-देन पहले से मौजूद है। फिर भी जोड़ें?"
     },
     "edit": "संपादित करें",
     "edit_multiple_title": "संपादित करें",

@@ -91,7 +91,8 @@
       "transaction_deleted": "거래가 삭제되었습니다.",
       "recurring_added": "반복 거래가 추가되었습니다.",
       "end_date_later": "종료 날짜는 시작 날짜보다 늦어야 합니다.",
-      "transactions_updated": "{count}건 거래가 업데이트되었습니다."
+      "transactions_updated": "{count}건 거래가 업데이트되었습니다.",
+      "duplicate_warning": "같은 금액, 담당자, 날짜의 거래가 이미 존재합니다. 그래도 추가하시겠습니까?"
     },
     "edit": "편집",
     "edit_multiple_title": "편집",

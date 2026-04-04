@@ -91,7 +91,8 @@
       "transaction_deleted": "Transação eliminada.",
       "recurring_added": "Transação recorrente adicionada.",
       "end_date_later": "A data de término deve ser posterior à data de início.",
-      "transactions_updated": "{count} transações atualizadas."
+      "transactions_updated": "{count} transações atualizadas.",
+      "duplicate_warning": "Já existe uma transação com o mesmo valor, pessoa e data. Adicionar mesmo assim?"
     },
     "edit": "Editar",
     "edit_multiple_title": "Editar",

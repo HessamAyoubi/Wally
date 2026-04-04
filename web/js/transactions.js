@@ -12,6 +12,69 @@ let modalMode = 'add';
 let selectedRow;
 
 let _undoDeleteTimer = null;
+let duplicateColorMap = {};
+
+const DUPLICATE_COLORS_LIGHT = [
+  'rgba(255, 179, 186, 0.30)',
+  'rgba(255, 218, 170, 0.30)',
+  'rgba(255, 255, 170, 0.30)',
+  'rgba(170, 235, 185, 0.30)',
+  'rgba(170, 215, 255, 0.30)',
+  'rgba(210, 180, 255, 0.30)',
+  'rgba(255, 180, 230, 0.30)',
+];
+const DUPLICATE_COLORS_DARK = [
+  'rgba(255, 120, 130, 0.18)',
+  'rgba(255, 180, 120, 0.18)',
+  'rgba(255, 255, 120, 0.18)',
+  'rgba(120, 220, 150, 0.18)',
+  'rgba(120, 180, 255, 0.18)',
+  'rgba(180, 130, 255, 0.18)',
+  'rgba(255, 130, 200, 0.18)',
+];
+
+function computeDuplicateColorMap(rows) {
+  duplicateColorMap = {};
+  if (!rows || rows.length === 0) return;
+
+  const groups = {};
+  rows.forEach(row => {
+    const key = `${parseFloat(row.amount)}|${(row.person || '').toLowerCase()}|${row.date}|${(row.category || '').toLowerCase()}`;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(row.id);
+  });
+
+  const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+  const palette = isDark ? DUPLICATE_COLORS_DARK : DUPLICATE_COLORS_LIGHT;
+  let colorIdx = 0;
+
+  Object.values(groups).forEach(ids => {
+    if (ids.length > 1) {
+      const color = palette[colorIdx % palette.length];
+      ids.forEach(id => { duplicateColorMap[id] = color; });
+      colorIdx++;
+    }
+  });
+}
+
+function checkDuplicateBeforeAdd(data) {
+  if (!gridApi) return false;
+  const rows = [];
+  gridApi.forEachNode(node => { if (node.data) rows.push(node.data); });
+
+  const newAmount = parseFloat(data.amount);
+  const newPerson = (data.person || '').toLowerCase();
+  const newDate = data.date;
+
+  const newCategory = (data.category || '').toLowerCase();
+
+  return rows.some(row =>
+    parseFloat(row.amount) === newAmount &&
+    (row.person || '').toLowerCase() === newPerson &&
+    row.date === newDate &&
+    (row.category || '').toLowerCase() === newCategory
+  );
+}
 
 function showUndoToast(message, onExecute) {
   if (_undoDeleteTimer) {
@@ -348,6 +411,12 @@ async function initGrid() {
       flex: 1,
       minWidth: 150,
     },
+    getRowStyle: (params) => {
+      if (params.data && duplicateColorMap[params.data.id]) {
+        return { backgroundColor: duplicateColorMap[params.data.id] };
+      }
+      return null;
+    },
     overlayNoRowsTemplate: `<span style="padding: 10px; border: 1px solid var(--bs-border-color); background: var(--bs-body-bg);">${i18n.t('common.no_rows')}</span>`,
     onGridReady: async params => {
       gridApi = params.api;
@@ -632,6 +701,7 @@ async function getTransactions() {
     }
 
     const data = await response.json()
+    computeDuplicateColorMap(data);
     gridApi.setGridOption('rowData', data)
   }
   else {
@@ -652,6 +722,7 @@ async function getTransactions() {
     }
 
     const data = await response.json()
+    computeDuplicateColorMap(data);
     gridApi.setGridOption('rowData', data)
   }
   updateFooter(gridApi);
@@ -819,6 +890,11 @@ async function submitTransactionAdd(event) {
   const formData = new FormData(event.target);
   const data = Object.fromEntries(formData.entries());
   data.tags = data.tags ? data.tags.split(',').map(tag => tag.trim()) : [];
+
+  // Duplicate warning
+  if (checkDuplicateBeforeAdd(data)) {
+    if (!confirm(i18n.t('transactions.messages.duplicate_warning'))) return;
+  }
 
   try {
     const response = await fetch(`${API_URL}/transactions`, {

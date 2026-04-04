@@ -91,7 +91,8 @@
       "transaction_deleted": "Transaction deleted.",
       "recurring_added": "Recurring transaction added.",
       "end_date_later": "The end date must be later than the start date.",
-      "transactions_updated": "{count} transactions updated."
+      "transactions_updated": "{count} transactions updated.",
+      "duplicate_warning": "A transaction with the same amount, person, and date already exists. Add anyway?"
     },
     "edit": "Edit",
     "edit_multiple_title": "Edit",
