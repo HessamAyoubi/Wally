@@ -14,6 +14,7 @@ let budgets = {};
 
 let tagsInput;
 let nameInput;
+let categoryTagsMap = {};
 
 // Execute the main function when DOM has loaded
 document.addEventListener('DOMContentLoaded', () => main());
@@ -257,6 +258,7 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 
 async function loadChart() {
   const transactions = await getTransactions();
+  buildCategoryTagsMap(transactions);
   budgets = await getBudgets();
   const chartBox = document.querySelector('.chart-box');
   const legendBox = document.getElementById('customLegend');
@@ -877,6 +879,25 @@ document.getElementById('amountInput').addEventListener('input', (event) => {
   }
 });
 
+function buildCategoryTagsMap(rows) {
+  categoryTagsMap = {};
+  if (!rows) return;
+  rows.forEach(row => {
+    if (row.category && row.tags && row.tags.length) {
+      if (!categoryTagsMap[row.category]) categoryTagsMap[row.category] = {};
+      row.tags.forEach(tag => {
+        categoryTagsMap[row.category][tag] = (categoryTagsMap[row.category][tag] || 0) + 1;
+      });
+    }
+  });
+}
+
+function getSuggestedTags() {
+  const cat = document.getElementById('categorySelect').value;
+  if (!cat || !categoryTagsMap[cat]) return [];
+  return Object.keys(categoryTagsMap[cat]);
+}
+
 async function renderTags() {
   tagsInput = new TomSelect('#tagsInput', {
     plugins: {
@@ -890,11 +911,36 @@ async function renderTags() {
       no_results: function(data, escape) {
         return '';
       },
-    }
+      option: function(data, escape) {
+        const suggested = getSuggestedTags();
+        const isSuggested = suggested.includes(data.value);
+        return `<div class="${isSuggested ? 'tag-suggested' : ''}">${escape(data.text)}</div>`;
+      },
+    },
+    score: function(search) {
+      const original = this.getScoreFunction(search);
+      return function(item) {
+        const suggested = getSuggestedTags();
+        const bonus = suggested.includes(item.value) ? 0.5 : 0;
+        return original(item) + bonus;
+      };
+    },
   });
 
   tags.forEach(tag => {
     tagsInput.addOption({ value: tag, text: tag }, user_created=false);
+  });
+
+  // Refresh tag suggestions when category changes
+  document.getElementById('categorySelect').addEventListener('change', () => {
+    // Refresh dropdown rendering
+    if (tagsInput.dropdown_content) {
+      tagsInput.dropdown_content.querySelectorAll('.option').forEach(el => {
+        const val = el.getAttribute('data-value');
+        const suggested = getSuggestedTags();
+        el.classList.toggle('tag-suggested', suggested.includes(val));
+      });
+    }
   });
 }
 

@@ -12,6 +12,7 @@ let modalMode = 'add';
 let selectedRow;
 
 let _undoDeleteTimer = null;
+let categoryTagsMap = {};
 let duplicateColorMap = {};
 
 const DUPLICATE_COLORS_LIGHT = [
@@ -32,6 +33,36 @@ const DUPLICATE_COLORS_DARK = [
   'rgba(180, 130, 255, 0.18)',
   'rgba(255, 130, 200, 0.18)',
 ];
+
+function buildCategoryTagsMap(rows) {
+  categoryTagsMap = {};
+  if (!rows) return;
+  rows.forEach(row => {
+    if (row.category && row.tags && row.tags.length) {
+      if (!categoryTagsMap[row.category]) categoryTagsMap[row.category] = {};
+      row.tags.forEach(tag => {
+        categoryTagsMap[row.category][tag] = (categoryTagsMap[row.category][tag] || 0) + 1;
+      });
+    }
+  });
+}
+
+function getSuggestedTags() {
+  const cat = document.getElementById('categorySelect').value;
+  if (!cat || !categoryTagsMap[cat]) return [];
+  return Object.keys(categoryTagsMap[cat]);
+}
+
+function refreshTagSuggestions() {
+  if (!tagsInput) return;
+  const suggested = getSuggestedTags();
+  const dropdown = tagsInput.dropdown_content;
+  if (!dropdown) return;
+  dropdown.querySelectorAll('.option').forEach(el => {
+    const val = el.getAttribute('data-value');
+    el.classList.toggle('tag-suggested', suggested.includes(val));
+  });
+}
 
 function computeDuplicateColorMap(rows) {
   duplicateColorMap = {};
@@ -302,11 +333,29 @@ async function renderTags() {
       no_results: function(data, escape) {
         return '';
       },
-    }
+      option: function(data, escape) {
+        const suggested = getSuggestedTags();
+        const isSuggested = suggested.includes(data.value);
+        return `<div class="${isSuggested ? 'tag-suggested' : ''}">${escape(data.text)}</div>`;
+      },
+    },
+    score: function(search) {
+      const original = this.getScoreFunction(search);
+      return function(item) {
+        const suggested = getSuggestedTags();
+        const bonus = suggested.includes(item.value) ? 0.5 : 0;
+        return original(item) + bonus;
+      };
+    },
   });
 
   tags.forEach(tag => {
     tagsInput.addOption({ value: tag, text: tag }, user_created=false);
+  });
+
+  // Refresh tag suggestions when category changes
+  document.getElementById('categorySelect').addEventListener('change', () => {
+    refreshTagSuggestions();
   });
 }
 
@@ -702,6 +751,7 @@ async function getTransactions() {
 
     const data = await response.json()
     computeDuplicateColorMap(data);
+    buildCategoryTagsMap(data);
     gridApi.setGridOption('rowData', data)
   }
   else {
@@ -723,6 +773,7 @@ async function getTransactions() {
 
     const data = await response.json()
     computeDuplicateColorMap(data);
+    buildCategoryTagsMap(data);
     gridApi.setGridOption('rowData', data)
   }
   updateFooter(gridApi);

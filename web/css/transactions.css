@@ -516,3 +516,14 @@ main.container {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--bs-secondary-color);
 }
+
+/* Tag suggestions: highlight tags previously used with selected category */
+.ts-dropdown .tag-suggested {
+  border-left: 3px solid #0d6efd;
+  background-color: rgba(13, 110, 253, 0.08);
+  font-weight: 600;
+}
+:root[data-bs-theme="dark"] .ts-dropdown .tag-suggested {
+  border-left-color: #6ea8fe;
+  background-color: rgba(110, 168, 254, 0.12);
+}
