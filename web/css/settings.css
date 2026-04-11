@@ -139,7 +139,10 @@ input, .option {
   box-shadow: var(--card-shadow);
   transition: box-shadow 0.3s ease;
   overflow: visible;
-  background-color: var(--header-bg);
+}
+
+:root[data-bs-theme="light"] .card {
+  background-color: #ffffff;
 }
 
 .card:hover {
