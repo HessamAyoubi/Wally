@@ -83,8 +83,9 @@
         API Docs
       </a>
     </div>
+    <!-- Row 1: Categories & Tags (content-heavy, need space) -->
     <div class="row">
-      <div class="col-md-4 mt-3">
+      <div class="col-md-6 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.categories.title">Categories</div>
           <div class="card-body d-flex flex-column" style="height: 100%;">
@@ -98,7 +99,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4 mt-3">
+      <div class="col-md-6 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.tags.title">Tags</div>
           <div class="card-body d-flex flex-column" style="height: 100%;">
@@ -112,6 +113,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Row 2: Persons, Theme, Language (compact widgets) -->
+    <div class="row">
       <div class="col-md-4 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.persons.title">Persons</div>
@@ -126,10 +131,7 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 mt-3">
+      <div class="col-md-4 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.theme.title">Theme</div>
           <div class="card-body">
@@ -142,30 +144,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6 mt-3">
-        <div class="card h-100">
-          <div class="card-header d-flex align-items-center" style="font-weight: 500">
-            <span data-i18n="settings.currency.title">Currency</span>
-            <button class="btn btn-sm btn-primary ms-auto" style="white-space: nowrap" data-bs-toggle="modal" data-bs-target="#currencyModal" data-i18n="settings.currency.manage">Manage</button>
-          </div>
-          <div class="card-body">
-            <p class="card-text" style="font-size: 0.9rem; margin-bottom: 0.5rem" data-i18n="settings.currency.description">Select the currency to be used for transactions.</p>
-            <select class="form-select" id="currencySelect" style="font-size: 0.9rem; margin-bottom: 0.75rem" onchange="changeCurrency(event)"></select>
-            <p class="card-text" style="font-size: 0.9rem; margin-bottom: 0.5rem" data-i18n="settings.currency.position">Symbol position:</p>
-            <div class="btn-group w-100" role="group">
-              <input type="radio" class="btn-check" name="currencyPosition" id="positionLeft" value="left" autocomplete="off" onchange="changeCurrencyPosition(event)">
-              <label class="btn btn-outline-primary" for="positionLeft" id="positionLeftLabel" style="font-size: 0.9rem">$100</label>
-              
-              <input type="radio" class="btn-check" name="currencyPosition" id="positionRight" value="right" autocomplete="off" onchange="changeCurrencyPosition(event)">
-              <label class="btn btn-outline-primary" for="positionRight" id="positionRightLabel" style="font-size: 0.9rem">100$</label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 mt-3">
+      <div class="col-md-4 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500" data-i18n="settings.language.title">Language</div>
           <div class="card-body">
@@ -188,6 +167,30 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Row 3: Currency & Login -->
+    <div class="row">
+      <div class="col-md-6 mt-3">
+        <div class="card h-100">
+          <div class="card-header d-flex align-items-center" style="font-weight: 500">
+            <span data-i18n="settings.currency.title">Currency</span>
+            <button class="btn btn-sm btn-primary ms-auto" style="white-space: nowrap" data-bs-toggle="modal" data-bs-target="#currencyModal" data-i18n="settings.currency.manage">Manage</button>
+          </div>
+          <div class="card-body">
+            <p class="card-text" style="font-size: 0.9rem; margin-bottom: 0.5rem" data-i18n="settings.currency.description">Select the currency to be used for transactions.</p>
+            <select class="form-select" id="currencySelect" style="font-size: 0.9rem; margin-bottom: 0.75rem" onchange="changeCurrency(event)"></select>
+            <p class="card-text" style="font-size: 0.9rem; margin-bottom: 0.5rem" data-i18n="settings.currency.position">Symbol position:</p>
+            <div class="btn-group w-100" role="group">
+              <input type="radio" class="btn-check" name="currencyPosition" id="positionLeft" value="left" autocomplete="off" onchange="changeCurrencyPosition(event)">
+              <label class="btn btn-outline-primary" for="positionLeft" id="positionLeftLabel" style="font-size: 0.9rem">$100</label>
+
+              <input type="radio" class="btn-check" name="currencyPosition" id="positionRight" value="right" autocomplete="off" onchange="changeCurrencyPosition(event)">
+              <label class="btn btn-outline-primary" for="positionRight" id="positionRightLabel" style="font-size: 0.9rem">100$</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-md-6 mt-3">
         <div class="card h-100">
           <div class="card-header" style="font-weight: 500">
@@ -206,6 +209,7 @@
       </div>
     </div>
 
+    <!-- Row 4: Import / Export (compact) -->
     <div class="row">
       <div class="col-md-12 mt-3">
         <div class="card h-100">
