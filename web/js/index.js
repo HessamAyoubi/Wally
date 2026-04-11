@@ -380,16 +380,19 @@ function updateTrends(currentTransactions) {
     const cls = c.diff > 0 ? 'trend-alert-up' : 'trend-alert-down';
 
     let detail;
+    let itemCls;
     if (c.pctChange === null) {
-      // New category this month
-      detail = `<span class="trend-alert-pct ${cls}">${i18n.t('dashboard.trends.new_label') || 'new'}</span>`;
+      // New category this month — use distinct "new" style
+      detail = `<span class="trend-alert-pct trend-alert-new">${i18n.t('dashboard.trends.new_label') || 'new'}</span>`;
+      itemCls = 'trend-alert-new';
     } else {
       detail = `<span class="trend-alert-pct ${cls}">${arrow} ${Math.abs(c.pctChange).toFixed(0)}%</span>`;
+      itemCls = cls;
     }
 
     const diffSign = c.diff > 0 ? '+' : '';
     return `
-      <div class="trend-alert-item ${cls}">
+      <div class="trend-alert-item ${itemCls}">
         <div class="trend-alert-category">${c.category}</div>
         <div class="trend-alert-values">
           ${detail}
@@ -436,8 +439,8 @@ function updateChart(data) {
         datasets: [{
           data: data.map(x => x.total),
           backgroundColor: chartColors,
-          borderColor: '#1a1a1a',
-          borderWidth: 1
+          borderColor: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#1a1a2e' : '#ffffff',
+          borderWidth: 2
         }]
       },
       options: {
