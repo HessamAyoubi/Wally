@@ -730,6 +730,136 @@ main.container {
   }
 }
 
+/* Savings Rate Section */
+.savings-rate-card {
+  margin-top: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--bs-border-color);
+  background: var(--header-bg);
+  padding: 1rem 1.25rem;
+}
+
+.savings-rate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.savings-rate-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--pill-color);
+}
+
+.savings-rate-subtitle {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+}
+
+.savings-person-filter {
+  display: flex;
+  gap: 3px;
+  background-color: var(--pill-bg);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.savings-filter-btn {
+  padding: 4px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--pill-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.savings-filter-btn:hover:not(.active) {
+  background-color: rgba(128, 128, 128, 0.15);
+}
+
+.savings-filter-btn.active {
+  background-color: var(--toggle-active-bg);
+  color: var(--toggle-active-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.savings-rate-summary {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.savings-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.savings-stat-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.savings-stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.savings-stat-great {
+  color: #10b981;
+}
+
+.savings-stat-ok {
+  color: #f59e0b;
+}
+
+.savings-stat-negative {
+  color: #ef4444;
+}
+
+.savings-rate-chart-wrapper {
+  height: 220px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .savings-rate-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .savings-rate-summary {
+    gap: 1rem;
+  }
+
+  .savings-rate-chart-wrapper {
+    height: 180px;
+  }
+
+  .savings-stat-value {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .chart-container {
     flex-direction: column;

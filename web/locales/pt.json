@@ -27,6 +27,17 @@
       "vs_last_month": "vs mês anterior",
       "new_label": "novo"
     },
+    "savings": {
+      "title": "Taxa de poupança",
+      "subtitle": "últimos 12 meses",
+      "all": "Todos",
+      "rate_label": "Taxa de poupança",
+      "no_income": "Sem rendimento",
+      "saved": "Poupado",
+      "current": "Atual",
+      "average": "Média",
+      "total_saved": "Total poupado"
+    },
     "modal": {
       "title": "Mudar Painel",
       "select_prompt": "Seleciona um painel para visualizar:",

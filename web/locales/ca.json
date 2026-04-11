@@ -26,6 +26,17 @@
       "vs_last_month": "vs mes anterior",
       "new_label": "nou"
     },
+    "savings": {
+      "title": "Taxa d'estalvi",
+      "subtitle": "últims 12 mesos",
+      "all": "Tot",
+      "rate_label": "Taxa d'estalvi",
+      "no_income": "Sense ingressos",
+      "saved": "Estalviat",
+      "current": "Actual",
+      "average": "Mitjana",
+      "total_saved": "Total estalviat"
+    },
     "modal": {
       "title": "Canviar Gràfic",
       "select_prompt": "Selecciona un gràfic per veure:",

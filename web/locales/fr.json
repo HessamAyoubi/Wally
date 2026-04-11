@@ -26,6 +26,17 @@
       "vs_last_month": "vs mois précédent",
       "new_label": "nouveau"
     },
+    "savings": {
+      "title": "Taux d'épargne",
+      "subtitle": "12 derniers mois",
+      "all": "Tout",
+      "rate_label": "Taux d'épargne",
+      "no_income": "Aucun revenu",
+      "saved": "Épargné",
+      "current": "Actuel",
+      "average": "Moyenne",
+      "total_saved": "Total épargné"
+    },
     "modal": {
       "title": "Changer le Tableau de bord",
       "select_prompt": "Sélectionnez un tableau de bord à afficher:",

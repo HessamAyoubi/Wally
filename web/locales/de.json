@@ -27,6 +27,17 @@
       "vs_last_month": "vs. letzter Monat",
       "new_label": "neu"
     },
+    "savings": {
+      "title": "Sparquote",
+      "subtitle": "letzte 12 Monate",
+      "all": "Alle",
+      "rate_label": "Sparquote",
+      "no_income": "Kein Einkommen",
+      "saved": "Gespart",
+      "current": "Aktuell",
+      "average": "Durchschnitt",
+      "total_saved": "Gesamt gespart"
+    },
     "modal": {
       "title": "Dashboard ändern",
       "select_prompt": "Wählen Sie ein Dashboard zum Anzeigen:",

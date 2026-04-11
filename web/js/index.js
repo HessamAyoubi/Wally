@@ -17,6 +17,9 @@ let nameInput;
 let categoryTagsMap = {};
 let previousMonthData = null; // For spending trends
 
+let savingsChart = null;
+let savingsPersonFilter = 'all'; // 'all' or a person name
+
 // Execute the main function when DOM has loaded
 document.addEventListener('DOMContentLoaded', () => main());
 
@@ -51,6 +54,9 @@ async function main() {
 
   // Group by toggle
   setupGroupByToggle();
+
+  // Load savings rate chart
+  await loadSavingsRate();
 
   // Show page after all translations are applied
   i18n.showPage();
@@ -993,6 +999,230 @@ function updateMonthHeaderAll() {
     ? `${formatDate(window.customRangeFrom)} - ${formatDate(window.customRangeTo)}`
     : mapRange[chartSelected];
   }
+}
+
+// -----------------
+// - Savings Rate  -
+// -----------------
+async function loadSavingsRate() {
+  const section = document.getElementById('savings-rate-section');
+  if (!section) return;
+
+  try {
+    const response = await fetch(`${API_URL}/transactions/past-12-months`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    if (!response.ok) { section.style.display = 'none'; return; }
+    const transactions = await response.json();
+
+    if (!transactions || transactions.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    // Build person filter buttons
+    buildSavingsPersonFilter(transactions);
+
+    // Render the chart
+    renderSavingsChart(transactions);
+
+    section.style.display = 'block';
+  } catch (_) {
+    section.style.display = 'none';
+  }
+}
+
+function buildSavingsPersonFilter(transactions) {
+  const container = document.getElementById('savings-person-filter');
+  const personSet = new Set();
+  transactions.forEach(t => { if (t.person) personSet.add(t.person); });
+
+  // Don't show filter if only one or no persons
+  if (personSet.size <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const allLabel = i18n.t('dashboard.savings.all') || 'All';
+  let html = `<button class="savings-filter-btn${savingsPersonFilter === 'all' ? ' active' : ''}" data-person="all">${allLabel}</button>`;
+  Array.from(personSet).sort().forEach(person => {
+    const isActive = savingsPersonFilter === person ? ' active' : '';
+    html += `<button class="savings-filter-btn${isActive}" data-person="${person}">${person}</button>`;
+  });
+  container.innerHTML = html;
+
+  // Event listeners
+  container.querySelectorAll('.savings-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      savingsPersonFilter = btn.dataset.person;
+      container.querySelectorAll('.savings-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Re-render chart with cached transactions
+      loadSavingsRate();
+    });
+  });
+}
+
+function renderSavingsChart(transactions) {
+  // Generate last 12 months labels
+  const months = [];
+  const today = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    months.push(`${d.getFullYear()}-${m}`);
+  }
+
+  // Filter by person if needed
+  const filtered = savingsPersonFilter === 'all'
+    ? transactions
+    : transactions.filter(t => t.person === savingsPersonFilter);
+
+  // Compute per-month income, expenses, savings rate
+  const monthlyData = months.map(month => {
+    const monthTx = filtered.filter(t => t.date.startsWith(month));
+    const income = monthTx.filter(t => t.type === 'income').reduce((s, t) => Decimal.add(s, t.amount).toNumber(), 0);
+    const expenses = monthTx.filter(t => t.type === 'expense').reduce((s, t) => Decimal.add(s, t.amount).toNumber(), 0);
+    const rate = income > 0 ? ((income - expenses) / income) * 100 : null;
+    return { month, income, expenses, rate };
+  });
+
+  // Update summary
+  updateSavingsSummary(monthlyData);
+
+  // Destroy old chart
+  if (savingsChart) savingsChart.destroy();
+
+  const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+  const zeroLineColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)';
+
+  const rates = monthlyData.map(d => d.rate);
+  const hasData = rates.some(r => r !== null);
+
+  if (!hasData) {
+    document.getElementById('savings-rate-section').style.display = 'none';
+    return;
+  }
+
+  savingsChart = new Chart('savingsChartCanvas', {
+    type: 'line',
+    data: {
+      labels: months.map(m => formatDate(m)),
+      datasets: [{
+        label: i18n.t('dashboard.savings.rate_label') || 'Savings Rate',
+        data: rates,
+        fill: true,
+        backgroundColor: (ctx) => {
+          const chart = ctx.chart;
+          const { ctx: context, chartArea } = chart;
+          if (!chartArea) return 'rgba(16, 185, 129, 0.1)';
+          const gradient = context.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+          gradient.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+          return gradient;
+        },
+        borderColor: '#10b981',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: (ctx) => {
+          const val = ctx.raw;
+          if (val === null) return 'transparent';
+          return val >= 0 ? '#10b981' : '#ef4444';
+        },
+        pointBorderColor: isDark ? '#1a1a2e' : '#ffffff',
+        pointBorderWidth: 2,
+        tension: 0.3,
+        spanGaps: true,
+        segment: {
+          borderColor: (ctx) => {
+            const val = ctx.p1.raw;
+            return val !== null && val < 0 ? '#ef4444' : '#10b981';
+          },
+        },
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { maxRotation: 45, minRotation: 0 },
+        },
+        y: {
+          grid: { color: (ctx) => ctx.tick.value === 0 ? zeroLineColor : gridColor },
+          ticks: {
+            callback: (value) => `${value}%`,
+          },
+        },
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          padding: 12,
+          titleFont: { size: 14, weight: 'bold' },
+          bodyFont: { size: 13 },
+          bodySpacing: 6,
+          displayColors: false,
+          callbacks: {
+            label: (ctx) => {
+              const d = monthlyData[ctx.dataIndex];
+              if (d.rate === null) return i18n.t('dashboard.savings.no_income') || 'No income';
+              const lines = [
+                `${i18n.t('dashboard.savings.rate_label') || 'Savings Rate'}: ${d.rate.toFixed(1)}%`,
+                `${i18n.t('dashboard.cashflow.income') || 'Income'}: ${formatCurrency(d.income)}`,
+                `${i18n.t('dashboard.cashflow.expenses') || 'Expenses'}: ${formatCurrency(d.expenses)}`,
+                `${i18n.t('dashboard.savings.saved') || 'Saved'}: ${formatCurrency(Decimal.sub(d.income, d.expenses))}`,
+              ];
+              return lines;
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+function updateSavingsSummary(monthlyData) {
+  const container = document.getElementById('savings-rate-summary');
+
+  // Calculate overall stats from months with income
+  const validMonths = monthlyData.filter(d => d.rate !== null);
+  if (validMonths.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const avgRate = validMonths.reduce((s, d) => s + d.rate, 0) / validMonths.length;
+  const totalIncome = validMonths.reduce((s, d) => Decimal.add(s, d.income).toNumber(), 0);
+  const totalExpenses = validMonths.reduce((s, d) => Decimal.add(s, d.expenses).toNumber(), 0);
+  const totalSaved = Decimal.sub(totalIncome, totalExpenses).toNumber();
+  const currentRate = validMonths[validMonths.length - 1]?.rate;
+
+  const rateClass = (r) => r >= 20 ? 'savings-stat-great' : r >= 0 ? 'savings-stat-ok' : 'savings-stat-negative';
+
+  container.innerHTML = `
+    <div class="savings-stat">
+      <span class="savings-stat-label">${i18n.t('dashboard.savings.current') || 'Current'}</span>
+      <span class="savings-stat-value ${rateClass(currentRate)}">${currentRate !== null && currentRate !== undefined ? currentRate.toFixed(1) + '%' : '—'}</span>
+    </div>
+    <div class="savings-stat">
+      <span class="savings-stat-label">${i18n.t('dashboard.savings.average') || 'Average'}</span>
+      <span class="savings-stat-value ${rateClass(avgRate)}">${avgRate.toFixed(1)}%</span>
+    </div>
+    <div class="savings-stat">
+      <span class="savings-stat-label">${i18n.t('dashboard.savings.total_saved') || 'Total Saved'}</span>
+      <span class="savings-stat-value ${totalSaved >= 0 ? 'savings-stat-great' : 'savings-stat-negative'}">${formatCurrency(totalSaved)}</span>
+    </div>
+  `;
 }
 
 // ----------------

@@ -27,6 +27,17 @@
       "vs_last_month": "지난달 대비",
       "new_label": "신규"
     },
+    "savings": {
+      "title": "저축률",
+      "subtitle": "최근 12개월",
+      "all": "전체",
+      "rate_label": "저축률",
+      "no_income": "수입 없음",
+      "saved": "저축액",
+      "current": "현재",
+      "average": "평균",
+      "total_saved": "총 저축"
+    },
     "modal": {
       "title": "대시보드 변경",
       "select_prompt": "볼 대시보드 선택:",

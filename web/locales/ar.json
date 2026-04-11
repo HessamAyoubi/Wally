@@ -27,6 +27,17 @@
       "vs_last_month": "مقارنة بالشهر الماضي",
       "new_label": "جديد"
     },
+    "savings": {
+      "title": "معدل التوفير",
+      "subtitle": "آخر 12 شهر",
+      "all": "الكل",
+      "rate_label": "معدل التوفير",
+      "no_income": "لا يوجد دخل",
+      "saved": "تم توفيره",
+      "current": "الحالي",
+      "average": "المتوسط",
+      "total_saved": "إجمالي التوفير"
+    },
     "modal": {
       "title": "تغيير لوحة التحكم",
       "select_prompt": "اختر لوحة تحكم للعرض:",

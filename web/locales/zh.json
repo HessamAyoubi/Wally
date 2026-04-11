@@ -27,6 +27,17 @@
       "vs_last_month": "与上月相比",
       "new_label": "新增"
     },
+    "savings": {
+      "title": "储蓄率",
+      "subtitle": "最近12个月",
+      "all": "全部",
+      "rate_label": "储蓄率",
+      "no_income": "无收入",
+      "saved": "已储蓄",
+      "current": "当前",
+      "average": "平均",
+      "total_saved": "总储蓄"
+    },
     "modal": {
       "title": "更改仪表板",
       "select_prompt": "选择要查看的仪表板：",

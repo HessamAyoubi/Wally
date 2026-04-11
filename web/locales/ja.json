@@ -27,6 +27,17 @@
       "vs_last_month": "先月比",
       "new_label": "新規"
     },
+    "savings": {
+      "title": "貯蓄率",
+      "subtitle": "過去12ヶ月",
+      "all": "全員",
+      "rate_label": "貯蓄率",
+      "no_income": "収入なし",
+      "saved": "貯蓄額",
+      "current": "今月",
+      "average": "平均",
+      "total_saved": "貯蓄合計"
+    },
     "modal": {
       "title": "ダッシュボードを変更",
       "select_prompt": "表示するダッシュボードを選択：",

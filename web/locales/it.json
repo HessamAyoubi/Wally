@@ -27,6 +27,17 @@
       "vs_last_month": "vs mese precedente",
       "new_label": "nuovo"
     },
+    "savings": {
+      "title": "Tasso di risparmio",
+      "subtitle": "ultimi 12 mesi",
+      "all": "Tutto",
+      "rate_label": "Tasso di risparmio",
+      "no_income": "Nessun reddito",
+      "saved": "Risparmiato",
+      "current": "Attuale",
+      "average": "Media",
+      "total_saved": "Totale risparmiato"
+    },
     "modal": {
       "title": "Cambia Dashboard",
       "select_prompt": "Seleziona una dashboard da visualizzare:",

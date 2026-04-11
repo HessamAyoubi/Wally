@@ -27,6 +27,17 @@
       "vs_last_month": "vs last month",
       "new_label": "new"
     },
+    "savings": {
+      "title": "Savings Rate",
+      "subtitle": "last 12 months",
+      "all": "All",
+      "rate_label": "Savings Rate",
+      "no_income": "No income",
+      "saved": "Saved",
+      "current": "Current",
+      "average": "Average",
+      "total_saved": "Total Saved"
+    },
     "modal": {
       "title": "Change Dashboard",
       "select_prompt": "Select a dashboard to view:",

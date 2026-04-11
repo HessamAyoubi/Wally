@@ -26,6 +26,17 @@
       "vs_last_month": "vs mes anterior",
       "new_label": "nuevo"
     },
+    "savings": {
+      "title": "Tasa de ahorro",
+      "subtitle": "últimos 12 meses",
+      "all": "Todo",
+      "rate_label": "Tasa de ahorro",
+      "no_income": "Sin ingresos",
+      "saved": "Ahorrado",
+      "current": "Actual",
+      "average": "Promedio",
+      "total_saved": "Total ahorrado"
+    },
     "modal": {
       "title": "Cambiar Panel",
       "select_prompt": "Selecciona un panel para ver:",

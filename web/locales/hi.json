@@ -27,6 +27,17 @@
       "vs_last_month": "पिछले महीने की तुलना",
       "new_label": "नया"
     },
+    "savings": {
+      "title": "बचत दर",
+      "subtitle": "पिछले 12 महीने",
+      "all": "सभी",
+      "rate_label": "बचत दर",
+      "no_income": "कोई आय नहीं",
+      "saved": "बचत",
+      "current": "वर्तमान",
+      "average": "औसत",
+      "total_saved": "कुल बचत"
+    },
     "modal": {
       "title": "डैशबोर्ड बदलें",
       "select_prompt": "देखने के लिए एक डैशबोर्ड चुनें:",
