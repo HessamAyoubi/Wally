@@ -22,6 +22,11 @@
       "expenses": "Despesas",
       "balance": "Saldo"
     },
+    "trends": {
+      "title": "Tendências de gastos",
+      "vs_last_month": "vs mês anterior",
+      "new_label": "novo"
+    },
     "modal": {
       "title": "Mudar Painel",
       "select_prompt": "Seleciona um painel para visualizar:",

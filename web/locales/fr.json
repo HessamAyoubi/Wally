@@ -21,6 +21,11 @@
       "expenses": "Dépenses",
       "balance": "Solde"
     },
+    "trends": {
+      "title": "Tendances de dépenses",
+      "vs_last_month": "vs mois précédent",
+      "new_label": "nouveau"
+    },
     "modal": {
       "title": "Changer le Tableau de bord",
       "select_prompt": "Sélectionnez un tableau de bord à afficher:",

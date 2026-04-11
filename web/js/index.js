@@ -15,6 +15,7 @@ let budgets = {};
 let tagsInput;
 let nameInput;
 let categoryTagsMap = {};
+let previousMonthData = null; // For spending trends
 
 // Execute the main function when DOM has loaded
 document.addEventListener('DOMContentLoaded', () => main());
@@ -260,16 +261,31 @@ async function loadChart() {
   const transactions = await getTransactions();
   buildCategoryTagsMap(transactions);
   budgets = await getBudgets();
+
+  // Fetch previous month data for spending trends (only in currentMonth view)
+  previousMonthData = null;
+  if (chartSelected === 'currentMonth') {
+    try {
+      const prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+      const prevMonth = String(prevDate.getMonth() + 1).padStart(2, '0');
+      const prevYear = prevDate.getFullYear();
+      const resp = await fetch(`${API_URL}/transactions/date/${prevYear}-${prevMonth}`, { method: 'GET', credentials: 'include' });
+      if (resp.ok) previousMonthData = await resp.json();
+    } catch (_) { /* ignore */ }
+  }
+
   const chartBox = document.querySelector('.chart-box');
   const legendBox = document.getElementById('customLegend');
   const cashflowSection = document.getElementById('cashflow-section');
   const noDataMessage = document.getElementById('noDataMessage');
+  const trendsSection = document.getElementById('trends-section');
   const hasExpenses = transactions.some(t => t.type === 'expense');
 
   if (!hasExpenses) {
     chartBox.style.display = 'none';
     legendBox.style.display = 'none';
     cashflowSection.style.display = 'none';
+    if (trendsSection) trendsSection.style.display = 'none';
     noDataMessage.style.display = 'block';
   }
   else {
@@ -282,6 +298,7 @@ async function loadChart() {
     updateChart(data);
     updateLegend(transactions, data);
     updateCashflow(transactions);
+    updateTrends(transactions);
   }
 }
 
@@ -302,6 +319,98 @@ function updateCashflow(transactions) {
     balanceElement.classList.add('negative');
     balanceElement.classList.remove('positive');
   }
+}
+
+function computeCategorySpending(transactions) {
+  const map = {};
+  transactions.filter(t => t.type === 'expense').forEach(t => {
+    map[t.category] = Decimal.add(map[t.category] || 0, t.amount).toNumber();
+  });
+  return map;
+}
+
+function updateTrends(currentTransactions) {
+  const section = document.getElementById('trends-section');
+  if (!section) return;
+
+  // Only show trends in currentMonth view with category grouping
+  if (chartSelected !== 'currentMonth' || chartGroupBy !== 'category' || !previousMonthData) {
+    section.style.display = 'none';
+    return;
+  }
+
+  const currSpending = computeCategorySpending(currentTransactions);
+  const prevSpending = computeCategorySpending(previousMonthData);
+
+  // Compute all category changes
+  const allCategories = new Set([...Object.keys(currSpending), ...Object.keys(prevSpending)]);
+  const changes = [];
+
+  allCategories.forEach(cat => {
+    const curr = currSpending[cat] || 0;
+    const prev = prevSpending[cat] || 0;
+    if (prev === 0 && curr === 0) return;
+
+    const diff = Decimal.sub(curr, prev).toNumber();
+    let pctChange = null;
+    if (prev > 0) pctChange = ((curr - prev) / prev) * 100;
+
+    changes.push({ category: cat, curr, prev, diff, pctChange });
+  });
+
+  // Filter out trivial changes (< 5% or both < 1)
+  const significant = changes.filter(c => {
+    if (c.pctChange === null) return c.curr > 0; // new category
+    return Math.abs(c.pctChange) >= 5 && (c.curr > 0 || c.prev > 0);
+  });
+
+  if (significant.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  // Sort by absolute diff (biggest movers first)
+  significant.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
+
+  // Take top 4
+  const top = significant.slice(0, 4);
+
+  const alertsHtml = top.map(c => {
+    const arrow = c.diff > 0 ? '↑' : '↓';
+    const cls = c.diff > 0 ? 'trend-alert-up' : 'trend-alert-down';
+
+    let detail;
+    if (c.pctChange === null) {
+      // New category this month
+      detail = `<span class="trend-alert-pct ${cls}">${i18n.t('dashboard.trends.new_label') || 'new'}</span>`;
+    } else {
+      detail = `<span class="trend-alert-pct ${cls}">${arrow} ${Math.abs(c.pctChange).toFixed(0)}%</span>`;
+    }
+
+    const diffSign = c.diff > 0 ? '+' : '';
+    return `
+      <div class="trend-alert-item ${cls}">
+        <div class="trend-alert-category">${c.category}</div>
+        <div class="trend-alert-values">
+          ${detail}
+          <span class="trend-alert-diff">${diffSign}${formatCurrency(c.diff)}</span>
+        </div>
+        <div class="trend-alert-compare">${formatCurrency(c.prev)} → ${formatCurrency(c.curr)}</div>
+      </div>
+    `;
+  }).join('');
+
+  section.innerHTML = `
+    <div class="trends-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      <span data-i18n="dashboard.trends.title">${i18n.t('dashboard.trends.title') || 'Spending Trends'}</span>
+      <span class="trends-subtitle" data-i18n="dashboard.trends.vs_last_month">${i18n.t('dashboard.trends.vs_last_month') || 'vs last month'}</span>
+    </div>
+    <div class="trends-grid">${alertsHtml}</div>
+  `;
+  section.style.display = 'block';
 }
 
 const chartColors = [
@@ -602,13 +711,30 @@ function updateLegend(transactions, data) {
         </div>`;
     }
 
+    // Compute trend badge for current month view
+    let trendHtml = '';
+    if (chartSelected === 'currentMonth' && chartGroupBy === 'category' && previousMonthData) {
+      const prevSpending = computeCategorySpending(previousMonthData);
+      const prevAmount = prevSpending[label] || 0;
+      if (prevAmount > 0 && spent > 0) {
+        const pctChange = ((spent - prevAmount) / prevAmount) * 100;
+        if (Math.abs(pctChange) >= 1) {
+          const arrow = pctChange > 0 ? '↑' : '↓';
+          const cls = pctChange > 0 ? 'trend-up' : 'trend-down';
+          trendHtml = `<span class="trend-badge ${cls}">${arrow} ${Math.abs(pctChange).toFixed(0)}%</span>`;
+        }
+      } else if (prevAmount === 0 && spent > 0) {
+        trendHtml = `<span class="trend-badge trend-new">${i18n.t('dashboard.trends.new_label') || 'new'}</span>`;
+      }
+    }
+
     const item = document.createElement('div');
     item.className = `legend-item${chartDisabledFields.has(label) ? ' disabled' : ''}`;
     item.innerHTML = `
     <div class="color-box" style="background-color: ${color}"></div>
     <div class="legend-text">
       <div class="legend-text-row">
-        <span>${label}${percentage}</span>
+        <span>${label}${percentage} ${trendHtml}</span>
         <span class="amount">${amount}</span>
       </div>
       ${budgetHtml}

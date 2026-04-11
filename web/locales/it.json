@@ -22,6 +22,11 @@
       "expenses": "Spese",
       "balance": "Saldo"
     },
+    "trends": {
+      "title": "Tendenze di spesa",
+      "vs_last_month": "vs mese precedente",
+      "new_label": "nuovo"
+    },
     "modal": {
       "title": "Cambia Dashboard",
       "select_prompt": "Seleziona una dashboard da visualizzare:",

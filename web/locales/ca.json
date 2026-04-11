@@ -21,6 +21,11 @@
       "expenses": "Despeses",
       "balance": "Balanç"
     },
+    "trends": {
+      "title": "Tendències de despesa",
+      "vs_last_month": "vs mes anterior",
+      "new_label": "nou"
+    },
     "modal": {
       "title": "Canviar Gràfic",
       "select_prompt": "Selecciona un gràfic per veure:",

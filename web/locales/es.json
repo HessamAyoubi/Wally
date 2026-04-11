@@ -21,6 +21,11 @@
       "expenses": "Gastos",
       "balance": "Balance"
     },
+    "trends": {
+      "title": "Tendencias de gasto",
+      "vs_last_month": "vs mes anterior",
+      "new_label": "nuevo"
+    },
     "modal": {
       "title": "Cambiar Panel",
       "select_prompt": "Selecciona un panel para ver:",

@@ -22,6 +22,11 @@
       "expenses": "支出",
       "balance": "残高"
     },
+    "trends": {
+      "title": "支出トレンド",
+      "vs_last_month": "先月比",
+      "new_label": "新規"
+    },
     "modal": {
       "title": "ダッシュボードを変更",
       "select_prompt": "表示するダッシュボードを選択：",

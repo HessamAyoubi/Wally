@@ -22,6 +22,11 @@
       "expenses": "खर्च",
       "balance": "शेष"
     },
+    "trends": {
+      "title": "खर्च के रुझान",
+      "vs_last_month": "पिछले महीने की तुलना",
+      "new_label": "नया"
+    },
     "modal": {
       "title": "डैशबोर्ड बदलें",
       "select_prompt": "देखने के लिए एक डैशबोर्ड चुनें:",

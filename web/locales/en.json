@@ -22,6 +22,11 @@
       "expenses": "Expenses",
       "balance": "Balance"
     },
+    "trends": {
+      "title": "Spending Trends",
+      "vs_last_month": "vs last month",
+      "new_label": "new"
+    },
     "modal": {
       "title": "Change Dashboard",
       "select_prompt": "Select a dashboard to view:",

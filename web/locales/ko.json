@@ -22,6 +22,11 @@
       "expenses": "지출",
       "balance": "잔액"
     },
+    "trends": {
+      "title": "지출 동향",
+      "vs_last_month": "지난달 대비",
+      "new_label": "신규"
+    },
     "modal": {
       "title": "대시보드 변경",
       "select_prompt": "볼 대시보드 선택:",

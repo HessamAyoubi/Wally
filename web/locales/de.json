@@ -22,6 +22,11 @@
       "expenses": "Ausgaben",
       "balance": "Saldo"
     },
+    "trends": {
+      "title": "Ausgabentrends",
+      "vs_last_month": "vs. letzter Monat",
+      "new_label": "neu"
+    },
     "modal": {
       "title": "Dashboard ändern",
       "select_prompt": "Wählen Sie ein Dashboard zum Anzeigen:",

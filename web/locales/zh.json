@@ -22,6 +22,11 @@
       "expenses": "支出",
       "balance": "余额"
     },
+    "trends": {
+      "title": "支出趋势",
+      "vs_last_month": "与上月相比",
+      "new_label": "新增"
+    },
     "modal": {
       "title": "更改仪表板",
       "select_prompt": "选择要查看的仪表板：",
