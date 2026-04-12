@@ -56,12 +56,29 @@ function getSuggestedTags() {
 function refreshTagSuggestions() {
   if (!tagsInput) return;
   const suggested = getSuggestedTags();
-  const dropdown = tagsInput.dropdown_content;
-  if (!dropdown) return;
-  dropdown.querySelectorAll('.option').forEach(el => {
-    const val = el.getAttribute('data-value');
-    el.classList.toggle('tag-suggested', suggested.includes(val));
+  const selected = tagsInput.getValue(); // preserve current selection
+
+  // Clear and re-add in correct order: suggested first, then the rest
+  tagsInput.clearOptions();
+  const suggestedTags = tags.filter(t => suggested.includes(t)).sort();
+  const otherTags = tags.filter(t => !suggested.includes(t)).sort();
+  suggestedTags.concat(otherTags).forEach(tag => {
+    tagsInput.addOption({ value: tag, text: tag }, false);
   });
+
+  // Restore selection
+  if (selected.length) tagsInput.setValue(selected, true);
+
+  // Refresh dropdown and apply highlight classes
+  tagsInput.refreshOptions(false);
+  setTimeout(() => {
+    if (tagsInput.dropdown_content) {
+      tagsInput.dropdown_content.querySelectorAll('.option').forEach(el => {
+        const val = el.getAttribute('data-value');
+        el.classList.toggle('tag-suggested', suggested.includes(val));
+      });
+    }
+  }, 0);
 }
 
 function computeDuplicateColorMap(rows) {
@@ -353,10 +370,9 @@ async function renderTags() {
     tagsInput.addOption({ value: tag, text: tag }, user_created=false);
   });
 
-  // Refresh tag suggestions when category changes
-  document.getElementById('categorySelect').addEventListener('change', () => {
-    refreshTagSuggestions();
-  });
+  // Refresh tag suggestions when category changes and on dropdown open
+  document.getElementById('categorySelect').addEventListener('change', refreshTagSuggestions);
+  tagsInput.on('dropdown_open', refreshTagSuggestions);
 }
 
 async function renderNameAutocomplete() {

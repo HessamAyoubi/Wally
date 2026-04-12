@@ -268,16 +268,16 @@ async function loadChart() {
   buildCategoryTagsMap(transactions);
   budgets = await getBudgets();
 
-  // Fetch previous month data for spending trends (only in currentMonth view)
+  // Fetch previous month data for spending trends (non-blocking, runs in parallel)
   previousMonthData = null;
+  let trendsPromise = null;
   if (chartSelected === 'currentMonth') {
-    try {
-      const prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-      const prevMonth = String(prevDate.getMonth() + 1).padStart(2, '0');
-      const prevYear = prevDate.getFullYear();
-      const resp = await fetch(`${API_URL}/transactions/date/${prevYear}-${prevMonth}`, { method: 'GET', credentials: 'include' });
-      if (resp.ok) previousMonthData = await resp.json();
-    } catch (_) { /* ignore */ }
+    const prevDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+    const prevMonth = String(prevDate.getMonth() + 1).padStart(2, '0');
+    const prevYear = prevDate.getFullYear();
+    trendsPromise = fetch(`${API_URL}/transactions/date/${prevYear}-${prevMonth}`, { method: 'GET', credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .catch(() => null);
   }
 
   const chartBox = document.querySelector('.chart-box');
@@ -304,6 +304,11 @@ async function loadChart() {
     updateChart(data);
     updateLegend(transactions, data);
     updateCashflow(transactions);
+
+    // Await trends data (was fetching in parallel) then render
+    if (trendsPromise) {
+      previousMonthData = await trendsPromise;
+    }
     updateTrends(transactions);
   }
 }
@@ -1286,21 +1291,40 @@ async function renderTags() {
     },
   });
 
+  function reorderTagOptions() {
+    const suggested = getSuggestedTags();
+    const selected = tagsInput.getValue(); // preserve current selection
+
+    // Clear and re-add in correct order: suggested first, then the rest
+    tagsInput.clearOptions();
+    const suggestedTags = tags.filter(t => suggested.includes(t)).sort();
+    const otherTags = tags.filter(t => !suggested.includes(t)).sort();
+    suggestedTags.concat(otherTags).forEach(tag => {
+      tagsInput.addOption({ value: tag, text: tag }, false);
+    });
+
+    // Restore selection
+    if (selected.length) tagsInput.setValue(selected, true);
+
+    // Refresh dropdown and apply highlight classes
+    tagsInput.refreshOptions(false);
+    setTimeout(() => {
+      if (tagsInput.dropdown_content) {
+        tagsInput.dropdown_content.querySelectorAll('.option').forEach(el => {
+          const val = el.getAttribute('data-value');
+          el.classList.toggle('tag-suggested', suggested.includes(val));
+        });
+      }
+    }, 0);
+  }
+
   tags.forEach(tag => {
-    tagsInput.addOption({ value: tag, text: tag }, user_created=false);
+    tagsInput.addOption({ value: tag, text: tag }, false);
   });
 
-  // Refresh tag suggestions when category changes
-  document.getElementById('categorySelect').addEventListener('change', () => {
-    // Refresh dropdown rendering
-    if (tagsInput.dropdown_content) {
-      tagsInput.dropdown_content.querySelectorAll('.option').forEach(el => {
-        const val = el.getAttribute('data-value');
-        const suggested = getSuggestedTags();
-        el.classList.toggle('tag-suggested', suggested.includes(val));
-      });
-    }
-  });
+  // Refresh on category change and dropdown open
+  document.getElementById('categorySelect').addEventListener('change', reorderTagOptions);
+  tagsInput.on('dropdown_open', reorderTagOptions);
 }
 
 async function renderNameAutocomplete() {
