@@ -65,6 +65,7 @@
     "name_label": "Nom",
     "name_placeholder": "Entrez le nom de la transaction",
     "category_label": "Catégorie",
+    "category_placeholder": "Sélectionner une catégorie",
     "tags_label": "Étiquettes",
     "person_label": "Personne",
     "tags_placeholder": "Ajoutez une étiquette et appuyez sur Entrée",

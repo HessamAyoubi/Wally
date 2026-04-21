@@ -66,6 +66,7 @@
     "name_label": "名前",
     "name_placeholder": "取引名を入力",
     "category_label": "カテゴリー",
+    "category_placeholder": "カテゴリを選択",
     "tags_label": "タグ",
     "person_label": "人物",
     "tags_placeholder": "タグを追加してEnterを押す",
