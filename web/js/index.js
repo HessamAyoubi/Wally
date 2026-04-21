@@ -1404,7 +1404,7 @@ async function renderCategories() {
   // First static placeholder option
   const placeholder = document.createElement('option');
   placeholder.value = "";
-  placeholder.textContent = "Select category";
+  placeholder.textContent = i18n.t('transactions.category_placeholder');
   placeholder.selected = true;
   placeholder.disabled = true;
   select.appendChild(placeholder);

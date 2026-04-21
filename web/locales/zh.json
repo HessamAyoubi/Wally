@@ -66,6 +66,7 @@
     "name_label": "名称",
     "name_placeholder": "输入交易名称",
     "category_label": "类别",
+    "category_placeholder": "选择类别",
     "tags_label": "标签",
     "person_label": "人员",
     "tags_placeholder": "添加标签并按Enter",

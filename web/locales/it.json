@@ -66,6 +66,7 @@
     "name_label": "Nome",
     "name_placeholder": "Inserisci il nome della transazione",
     "category_label": "Categoria",
+    "category_placeholder": "Seleziona la categoria",
     "tags_label": "Tag",
     "person_label": "Persona",
     "tags_placeholder": "Aggiungi un tag e premi Invio",
